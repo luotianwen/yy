@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/all.iml" filepath="$PROJECT_DIR$/all.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sf-dao/sf-dao.iml" filepath="$PROJECT_DIR$/sf-dao/sf-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sf-pay/sf-pay.iml" filepath="$PROJECT_DIR$/sf-pay/sf-pay.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sf_provider/sf-provider.iml" filepath="$PROJECT_DIR$/sf_provider/sf-provider.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sf-service/sf-service.iml" filepath="$PROJECT_DIR$/sf-service/sf-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sf-webapi/sf-webapi.iml" filepath="$PROJECT_DIR$/sf-webapi/sf-webapi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sfcommon/sfcommon.iml" filepath="$PROJECT_DIR$/sfcommon/sfcommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sfmall/sfmall.iml" filepath="$PROJECT_DIR$/sfmall/sfmall.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sfop/sfop.iml" filepath="$PROJECT_DIR$/sfop/sfop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sfseller/sfseller.iml" filepath="$PROJECT_DIR$/sfseller/sfseller.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/leftbar.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/css/account_msg.css" />
+    
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/laydate/laydate.js"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+	
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'账户信息'}){}%>
+<% include("/detailnav.btl"){}%>
+	<div class="boxw clearfix">
+		<% include("../my-left.btl",{type:'账户信息'}){}%>
+		
+		<form id="form">
+		<div class="fr content clearfix">
+			<div class="top-tit">
+				<i></i>账户信息
+			</div>
+			<div class="mod-main">
+				<!--<div class="mt">
+					<ul>
+						<li class="current">
+							<a href="#">基本信息</a>
+						</li>
+						<li>
+							<a href="#">更多个人信息</a>
+						</li>
+						<li>
+							<a href="#">更多个人信息</a>
+						</li>
+						<li>
+							<a href="#">更多个人信息</a>
+						</li>
+					</ul>
+				</div>-->
+				<div class="mc clearfix">
+					<input type="hidden" id="id" name="id" value="${user.uId}"/>
+					<div class="nickname">
+						<label>用户昵称：</label>
+						<input type="text" name="name" id="name" value="${user.uName}"/>
+					</div>
+					<div class="head_portrait clearfix">
+						<label>头像：</label>
+						<span id="upload">
+							<img id="uploadImg" <%if(isEmpty(user.portrait)){%>class="mo"<%}%> src="<%if(!isEmpty(user.portrait)){%>${user.portrait}<%}else{%>/static/img/uploading.png<%}%>"/>
+							<input type="hidden" id="portrait" name="portrait" value="${user.portrait}"/>
+						</span>
+					</div>
+					<div class="gender">
+						<label>性别：</label>
+						<span><input type="radio" value="1" name="sex" <%if(user.sex=="1"){%>checked="checked"<%}%>/>男</span>
+						<span><input type="radio" value="2" name="sex" <%if(user.sex=="2"){%>checked="checked"<%}%>/>女</span>
+						<span><input type="radio" value="3" name="sex" <%if(user.sex=="3"){%>checked="checked"<%}%>/>保密</span>
+					</div>
+					<div class="birthday">
+						<label>生日：</label>
+						<input type="text" readonly="readonly" name="birthday" id="birthday" value="${user.birthday}"/>
+					</div>
+					<div class="site">
+						<label>所在地：</label>
+						<select id="province" name="province">
+							<%
+								for(province in provinces){
+							%>
+								<option value="${province.id}" <%if(province.id==user.province){%>selected<%}%>>${province.name}</option>
+							<%
+								}
+							%>
+						</select>
+						<select id="city" name="city"></select>
+						<select id="region" name="region"></select>
+					</div>
+					<div class="particular">
+						<label>详细地址：</label>
+						<input type="text" id="address" name="address" value="${user.address}"/>
+					</div>
+					<div id="submit" class="btn">提交</div>
+					<!-- <span style="color: #b6b6b6; margin-bottom: 36px; display: block;">温馨提示：完善更多个人信息，有助于我们为您提供更加个性化的服务；世峰户外商城将尊重并保护您的隐私。</span> -->
+				</div>
+			</div>
+		</div>
+
+		</form>
+	</div>
+</div>
+
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+
+<script type="text/javascript">
+	var cityid = "${user.city}";
+	var regionid = "${user.region}";
+</script>
+<script type="text/javascript" src="/static/js/user/userInfo.js"></script>
+<script type="text/javascript" src="/static/upload/plupload-2.1.8/js/plupload.full.min.js"></script>
+<script type="text/javascript" src="/static/js/user/uploadImg.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 世峰e卡(c_card)Mapper -->
+<mapper namespace="cardMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	number,password ,sdate ,edate ,status ,cdate ,userid ,money ,updateuser ,udate ,batch ,remark ,phone ,sendstatus ,sendremark 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.card.Card" id="CardReturnMap">
+	  <!-- 卡号 -->
+      <id column="number" property="number"/>
+	  <!-- 密码 -->
+      <result column="password" property="password"/>
+	  <!-- 开始时间 -->
+      <result column="sdate" property="sdate"/>
+	  <!-- 结束时间 -->
+      <result column="edate" property="edate"/>
+	  <!-- 状态（1未绑定2未使用3部分使用4已用完5已作废6已过期） -->
+      <result column="status" property="status"/>
+	  <!-- 创建时间 -->
+      <result column="cdate" property="cdate"/>
+	  <!-- 创建人 -->
+      <result column="userid" property="userid"/>
+	  <!-- 金额 -->
+      <result column="money" property="money"/>
+	  <!-- 修改人 -->
+      <result column="updateuser" property="updateuser"/>
+	  <!-- 修改时间 -->
+      <result column="udate" property="udate"/>
+	  <!-- 生成批次 -->
+      <result column="batch" property="batch"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 手机号 -->
+      <result column="phone" property="phone"/>
+	  <!-- 发送状态（1：未发送；2：已发送；3：发送失败） -->
+      <result column="sendstatus" property="sendstatus"/>
+	  <!-- 短信备注 -->
+      <result column="sendremark" property="sendremark"/>
+   </resultMap>
+   
+    <!-- 新增表 -->
+	<insert id="saveCard" parameterType="com.shifeng.entity.card.Card">
+		insert into c_card
+			(
+		      number,password, sdate, edate, status, cdate, userid, money, batch, remark
+			)
+		values
+		<foreach collection="list" index="index" item="item" separator=",">
+			(
+			  #{item.number},
+		      #{item.password},
+		      #{item.sdate},
+		      #{item.edate},
+		      1,
+		      now(),
+		      #{item.userid},
+		      #{item.money},
+		      #{item.batch},
+		      #{item.remark}
+			)
+		</foreach>
+	</insert>
+  
+	<!-- 获取最大批次号 -->
+	<select id="findMaxBatch" resultType="String">
+	    select max(batch) from c_card
+	</select>
+    
+</mapper>

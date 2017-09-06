@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	
+	<settings> 
+		<!-- 全局映射器启用缓存 -->
+  		<setting name="cacheEnabled" value="true" />
+        <setting name="useGeneratedKeys" value="false" /> 
+        <setting name="defaultExecutorType" value="REUSE" /> 
+        <!-- 设置JDBC类型为空时,某些驱动程序 要指定值 --> 
+        <setting name="jdbcTypeForNull" value="VARCHAR"/>
+        <!-- 日志 -->
+        <setting name="logImpl" value="STDOUT_LOGGING"/> 
+        <!--打开延迟加载的开关  -->
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <!--将积极加载改为消极加载及按需加载  -->
+        <setting name="aggressiveLazyLoading" value="false"/>
+        
+    </settings>
+	<typeAliases>
+		<!-- 分页 -->
+		<typeAlias type="com.shifeng.plugin.page.Page" alias="Page"/>
+	</typeAliases>
+</configuration>

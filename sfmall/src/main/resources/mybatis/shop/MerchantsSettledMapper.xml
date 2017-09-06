@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 入驻基本信息填写(s_merchants_settled)Mapper -->
+<mapper namespace="merchantssettledMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+    <!-- 根据ID查询表 -->
+    <select id="findMerchantsSettledByUserId" parameterType="String" resultType="com.shifeng.mall.settled.dto.ShopDTO">
+		select
+			*
+		from 
+			s_merchants_settled
+		where 
+			userId = #{id}
+	</select>
+	
+    <resultMap type="com.shifeng.mall.settled.dto.ShopDTO" id="ShopDTOResultMap">
+        <id property="s_merchants_id" column="s_merchants_id"/>
+        
+        <!-- 店铺负责人 -->
+        <collection property="storeSupervisors" ofType="com.shifeng.entity.shop.StoreSupervisor" column="s_merchants_id" select="storesupervisorMapper.findAllStoreSupervisor"></collection>
+    	
+        <!-- 店铺类目 -->
+    	<collection property="shopCategorys" ofType="com.shifeng.entity.shop.ShopCategory" column="s_merchants_id" select="shopcategoryMapper.findShopCategoryById"></collection>
+    </resultMap>
+    
+    <select id="findShopByUserId" parameterType="String" resultMap="ShopDTOResultMap">
+		select
+		s.*,m.next,m.id,m.cooperation
+		from
+		s_merchants_settled m
+		left join s_shopinfo s on s.s_merchants_id = m.id
+		where
+		m.userId = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateMerchantsSettled" parameterType="com.shifeng.mall.settled.dto.ShopDTO">
+		update
+		s_merchants_settled
+		set
+		onlinestore = #{onlinestore},
+		channel = #{channel},
+		head_name = #{head_name},
+		head_phone = #{head_phone},
+		head_email = #{head_email},
+		website = #{website},
+		userId = #{userId},
+		type = #{type},
+		cooperation = #{cooperation},
+		isEntrust = #{isEntrust},
+		phone = #{phone},
+		legalRepresentative = #{legalRepresentative},
+		legalPersonPhone = #{legalPersonPhone},
+		id_number = #{id_number},
+		name = #{name},
+		companyArea = #{companyArea},
+		companyAddress = #{companyAddress},
+		companyPhone = #{companyPhone},
+		erptype = #{erptype},
+		corporate_front_card = #{corporate_front_card},
+		corporate_back_card = #{corporate_back_card},
+		bank_image = #{bank_image},
+		isThree = #{isThree},
+		threeInOneImage = #{threeInOneImage},
+		organizationImage = #{organizationImage},
+		taxImage = #{taxImage},
+		licenseImage = #{licenseImage},
+		bankName = #{bankName},
+		bankNum = #{bankNum},
+		bankBranchName = #{bankBranchName},
+		locationBankbranch = #{locationBankbranch},
+		taxpayerType = #{taxpayerType},
+		taxpayerCoding = #{taxpayerCoding},
+		next =2
+		where
+		id = #{id}
+	</update>
+	
+	<!-- 修改当前步骤 -->
+	<update id="updateNext" parameterType="java.util.Map">
+	    update s_merchants_settled set
+	    next = #{next}
+	    where id = #{id}
+	</update>
+	
+	<!-- 查询当前步骤 -->
+	<select id="findNext" parameterType="String" resultType="String">
+		select next from s_merchants_settled
+		where userId = #{userId}
+	</select>
+	
+	<!-- 审核进度 -->
+	<select id="findProgress" parameterType="String" resultType="com.shifeng.mall.settled.dto.ProgressDTO">
+	    select m.next,m.state,si.fstate
+	    from s_merchants_settled m
+	    left join s_shopinfo si on si.s_merchants_id = m.id
+	    where m.userId = #{userId}
+	</select>
+	
+</mapper>

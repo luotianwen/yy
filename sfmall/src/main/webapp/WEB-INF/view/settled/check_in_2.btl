@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<% include("/basecss.btl"){}%>
+		<link rel="stylesheet" type="text/css" href="/static/css/check_in.css"/>
+	</head>
+	<body>
+	<% include("/header.btl"){}%>
+		<div class="h_container h_feature_1">
+			<div class="boxw">
+				<div class="h_function">
+					<div class="logo_1 fl">
+						<a href="http://www.seebong.com/" target="_blank"><img src="/static/img/all/logo.jpg" /></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="CheckNav">
+			<div class="boxw">
+				<ul class="CheckList">
+					<li  class="check_active">招商首页</li>
+					<li>申请进度</li>
+					<li>招商标准</li>
+					<li>资费标准</li>
+				</ul>
+			</div>			
+		</div>
+		<div class="boxw">
+			<div class="check_message_1" id="check_message_1">
+				<ul class="check_num">
+					<li class="m_item_first">
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="m_item_active">
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="m_item_last"></li>
+				</ul>
+				<ul class="check_text">
+					<li class="active">
+						<i>1</i>
+						查看入住须知及协议
+					</li>
+					<li class="active">
+						<i>2</i>
+						填写公司信息
+					</li>
+					<li class="active">
+						<i>3</i>
+						填写店铺信息
+					</li>
+					<li>
+						<i>4</i>
+						完成，等待审核
+					</li>
+					<li>
+						<i>5</i>
+						付款
+					</li>
+					<li>
+						<i>6</i>
+						入驻成功
+					</li>
+				</ul>
+			</div>
+			<form id="form" method="post">
+				<input type="hidden" name="s_merchants_id" value="${shopDTO.id}">
+				<div class="store_message">
+					<h1>店铺详细信息</h1>
+					<dl class="clearfix">
+						<dt><span class="c-red">*</span>店铺logo：</dt>
+						<dd id="upload">
+							<input id="logo" name="logo" type="hidden" value="${shopDTO.logo}">
+							<%
+								var button_name = "上传LOGO";
+								if(!isEmpty(shopDTO.logo)){
+									button_name = "更改LOGO";
+							%>
+								<img id="logosrc" src="${shopDTO.logo}" style="width:80px;height:80px;">
+							<%
+								}else{
+							%>
+								<img id="logosrc" src="">
+							<%
+								}
+							%>
+							<button id="uploadImg" type="button">${button_name}</button>
+						</dd>
+					</dl>
+					<dl class="clearfix">
+						<dt><span class="c-red">*</span>店铺名称：</dt>
+						<dd>
+							<input id="name" name="name" value="${shopDTO.name}" class="input" type="text" style="width: 230px;"><span class="messageSpan"><span class="eg_1">*请使用公司名称或品牌名称，15个字不能出现“网”“商城”“馆”“店铺”等字样</span></span>
+						</dd>
+					</dl>
+					<dl class="clearfix">
+						<dt><span class="c-red">*</span>店铺类型：</dt>
+						<dd>
+							<select id="grade" name="grade">
+								<option value="1">【官方旗舰店】</option>
+								<option value="2">【(品牌)授权专卖店】</option>
+								<option value="3">【品牌专营店】</option>
+							</select><span class="messageSpan"><span class="eg_1">*请根据实际营销品牌选择店铺类型</span></span>
+						</dd>
+					</dl>
+					<dl class="clearfix">
+						<dt><span class="c-red">*</span>登录账号：</dt>
+						<dd>
+							<input id="account" name="account" value="${shopDTO.account}" <%if(shopDTO.account!=null&&shopDTO.account!=''){%><%}%> class="input" type="text"><span class="messageSpan"><span class="eg_1">*登录账号设定后无法修改，请牢记该账号</span></span>
+						</dd>
+					</dl>
+					<dl class="clearfix">
+						<dt><span class="c-red">*</span>客服电话：</dt>
+						<dd>
+							<input id="fax" name="fax" value="${shopDTO.fax}" class="input" type="text"><span class="messageSpan"><span class="eg_1">*请填写有效电话号码，如：010-4000928400</span></span>
+						</dd>
+					</dl>
+					<dl class="clearfix">
+						<dt><span class="c-red">*</span>在线客服QQ号：</dt>
+						<dd>
+							<input id="qq" name="qq" value="${shopDTO.qq}"  class="input" type="text"><span class="messageSpan"><span class="eg_1">*请填写有效QQ号码</span></span>
+						</dd>
+					</dl>
+					<dl class="clearfix" style="margin-top: 38px;">
+						<dt style="margin-right: 20px;"><span class="c-red">*</span>店铺负责人员：</dt>
+						<dd style="text-align: center;margin-left: 100px;margin-top: 25px;">
+							<table id="supervisor" border="1" width="850" height="360" s>
+								<tr class="b_f0f0f0 tr_item">
+									<th style="background: #fff;width: 100px;"></th>
+									<th><span class="c-red">*</span>姓名</th>
+									<th><span class="c-red">*</span>手机号</th>
+									<th>座机</th>
+									<th>电子邮箱</th>
+									<th>QQ号码</th>
+								</tr>
+								<tr class="tr_item">
+									<td style="width: 100px;">店铺负责人<input type="hidden" name="storeSupervisors[0].type" value="1"/></td>
+									<td><input type="text" required name="storeSupervisors[0].name" placeholder="请填写姓名" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[0].name:''}"/></td>
+									<td><input type="number" required class="isMobile" name="storeSupervisors[0].phone" placeholder="请填写手机号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[0].phone:''}"/></td>
+									<td><input type="text" class="isPhone" name="storeSupervisors[0].landline" placeholder="请填写座机号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[0].landline:''}"/></td>
+									<td><input type="text" email name="storeSupervisors[0].email" placeholder="请填写邮箱" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[0].email:''}"/></td>
+									<td><input type="number" name="storeSupervisors[0].qq" placeholder="请填写有效QQ号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[0].qq:''}"/></td>
+								</tr>
+								<tr class="tr_item">
+									<td style="width: 100px;">运营联系人<input type="hidden" name="storeSupervisors[1].type" value="2"/></td>
+									<td><input type="text" required name="storeSupervisors[1].name" placeholder="请填写姓名" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[1].name:''}"/></td>
+									<td><input type="number" required class="isMobile" name="storeSupervisors[1].phone" placeholder="请填写手机号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[1].phone:''}"/></td>
+									<td><input type="text" class="isPhone" name="storeSupervisors[1].landline" placeholder="请填写座机号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[1].landline:''}"/></td>
+									<td><input type="text" email name="storeSupervisors[1].email" placeholder="请填写邮箱" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[1].email:''}"/></td>
+									<td><input type="number" name="storeSupervisors[1].qq" placeholder="请填写有效QQ号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[1].qq:''}"/></td>
+								</tr>
+								<tr class="tr_item">
+									<td style="width: 100px;">售后联系人<input type="hidden" name="storeSupervisors[2].type" value="3"/></td>
+									<td><input type="text" required name="storeSupervisors[2].name" placeholder="请填写姓名" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[2].name:''}"/></td>
+									<td><input type="number" required class="isMobile" name="storeSupervisors[2].phone" placeholder="请填写手机号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[2].phone:''}"/></td>
+									<td><input type="text" class="isPhone" name="storeSupervisors[2].landline" placeholder="请填写座机号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[2].landline:''}"/></td>
+									<td><input type="text" email name="storeSupervisors[2].email" placeholder="请填写邮箱" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[2].email:''}"/></td>
+									<td><input type="number" name="storeSupervisors[2].qq" placeholder="请填写有效QQ号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[2].qq:''}"/></td>
+								</tr>
+								<tr class="tr_item">
+									<td style="width: 100px;">财务联系人<input type="hidden" name="storeSupervisors[3].type" value="4"/></td>
+									<td><input type="text" required name="storeSupervisors[3].name" placeholder="请填写姓名" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[3].name:''}"/></td>
+									<td><input type="number" required class="isMobile" name="storeSupervisors[3].phone" placeholder="请填写手机号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[3].phone:''}"/></td>
+									<td><input type="text" class="isPhone" name="storeSupervisors[3].landline" placeholder="请填写座机号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[3].landline:''}"/></td>
+									<td><input type="text" email name="storeSupervisors[3].email" placeholder="请填写邮箱" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[3].email:''}"/></td>
+									<td><input type="number" name="storeSupervisors[3].qq" placeholder="请填写有效QQ号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[3].qq:''}"/></td>
+								</tr>
+								<tr class="tr_item">
+									<td style="width: 100px;">技术负责人<input type="hidden" name="storeSupervisors[4].type" value="5"/></td>
+									<td><input type="text" required name="storeSupervisors[4].name" placeholder="请填写姓名" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[4].name:''}"/></td>
+									<td><input type="number" required class="isMobile" name="storeSupervisors[4].phone" placeholder="请填写手机号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[4].phone:''}"/></td>
+									<td><input type="text" class="isPhone" name="storeSupervisors[4].landline" placeholder="请填写座机号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[4].landline:''}"/></td>
+									<td><input type="text" email name="storeSupervisors[4].email" placeholder="请填写邮箱" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[4].email:''}"/></td>
+									<td><input type="number" name="storeSupervisors[4].qq" placeholder="请填写有效QQ号码" value="${shopDTO.storeSupervisors!=null&&shopDTO.storeSupervisors.~size>0?shopDTO.storeSupervisors[4].qq:''}"/></td>
+								</tr>
+							</table>
+							<span class="eg_1 important_content"><span class="c-red">*</span>姓名、手机号为必填项，其他为选填项</span>
+						</dd>
+					</dl>
+					<dl class="clearfix manage_project" style="margin-top: 38px;">
+						<dt><span class="c-red">*</span>店铺经营类目：</dt>
+						<dd>
+							<!--<select id="operatingItems" name="operatingItems" class="input">
+								
+							</select>
+							<span class="messageSpan"><span class="eg_1">*请填写经营类目</span></span>-->
+								<input id="searchCategory" class="input" type="text">
+								<span class="messageSpan">
+									<button type="button" class="search" id="search">搜索</button>
+									<span class="eg_1">*请填写经营类目</span>
+								</span>
+						</dd>
+						<dd class="p_item_1">
+							<div class="" style="cursor: pointer;height: 300px;min-height: .01%;overflow-x: auto;">
+								<ul class="p_items" id="pcategory">
+									<%
+										for(category in categorys){
+									%>
+										<li data_id="${category.id}">${category.descript}</li>
+									<%
+										}
+									%>
+								</ul>
+								<ul id="ccategory">
+								</ul>
+							</div>
+							<button type="button" class="p_btn" id="submit">预选</button>
+						</dd>
+					</dl>
+					<dl class="clearfix Charges_preview" style="margin-top: 38px;">
+						<dd id="categoryFee">
+							<ul class="headline">
+								<li style="width: 120px;">产品类目</li>
+								<li style="width: 292px;">类目保证金标准（元）</li>
+								<li style="width: 158px;">平台使用费</li>
+								<li style="width: 100px;">扣点</li>
+								<li style="width: 72px;">操作</li>
+							</ul>
+							<%
+								if(shopDTO.shopCategorys==null){
+							%>
+							<ul class="Data_rates" id="no_select">
+                                <li style="width: 100%;">尚未选择类目</li>
+                            </ul>
+							<%
+								}else{
+								for(shopCategory in shopDTO.shopCategorys){
+							%>
+								<ul class="Data_rates" data_id="${shopCategory.c_category_id}">
+									<input type="hidden" name="c_category_id" value="${shopCategory.c_category_id}"/>
+	                                <li style="width: 120px;">${shopCategory.categoryName}<input type="hidden" name="categoryName" value="${shopCategory.categoryName}"/></li>
+	                                <li style="width: 292px;">${shopCategory.deposit}<input type="hidden" name="deposit" value="${shopCategory.deposit}"/></li>
+	                                <li style="width: 158px;">${shopCategory.platformfee}<input type="hidden" name="platformfee" value="${shopCategory.platformfee}"/></li>
+	                                <li style="width: 100px;">${shopDTO.cooperation==1?shopCategory.consignmentpoints:shopCategory.points}<input type="hidden" name="points" value="${shopCategory.points}"/><input type="hidden" name="consignmentpoints" value="${shopCategory.consignmentpoints}"/></li>
+	                                <li class="last_item" style="width: 72px;"><i></i></li>
+	                            </ul>
+							<%
+								}}
+							%>
+						</dd>
+						<span class="c-fc4d10 fl" style="margin-left: 177px;margin-top: 10px;">*类目保证金不累加，以您经营的商品类目最高的保证金为准；各产品类目的扣点也不尽相同。</span>
+						<span class="c-fc4d10 fl" style="margin-left: 177px;">*代销店铺扣点≥30</span>
+					</dl>
+					<div class="next_btn clearfix" id="next_btn_" style="margin-top: 72px;">
+						<button type="button" class="btn_038a2a" id="nextbtn">下一步</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<% include("/footer.btl"){}%>
+		<% include("/basejs.btl"){}%>
+		<script type="text/javascript" src="/static/js/settled/settled.js"></script>
+		<script type="text/javascript" src="/static/js/validate/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="/static/js/validate/messages_zh.min.js"></script>	
+		<script type="text/javascript" src="/static/upload/plupload-2.1.8/js/plupload.full.min.js"></script>
+		<script type="text/javascript" src="/static/js/check/uploadCheck2.js"></script>
+		
+		<script type="text/javascript">
+			$("#nextbtn").click(function() {
+				if($("#form").valid()&&valid()){
+					$.post("/settled/check_in_2_save", $('#form').serialize(), function(data) {
+						if (data.RESPONSE_STATE == '200') {
+							window.location.href="/settled/check_in_3";
+						}
+					});
+				}
+			});
+			function valid() {
+				var bool = true;
+				if($("#no_select").length>0){
+					bool = false;
+				}else{
+					if($("#categoryFee").find("ul").length<=1){
+						bool = false;
+					}
+				}
+				if(!bool){
+					layer.tips("请选择店铺经营类目", $("#searchCategory"), {
+						tips : [ 1, '#019F95' ],
+						time : 1500,
+						tipsMore: true
+					});
+					$("html, body").animate({scrollTop: $("#searchCategory").offset().top});
+				}
+				
+				return bool;
+			}
+			
+			$(function(){
+				/*$("#operatingItems").on("change",function(){
+					var id = $(this).val();
+					$.post("/navigationcategory/findAllNavigationCategoryByNid.json",{id:id},function(data){
+						var html = "";
+						for(var i=0,len=data.length;i<len;i++){
+							html += "<li data_id='"+data[i].cid+"'>"+data[i].cName+"  ></li>";
+						}
+						$("#pcategory").html(html);
+						if(html!=""){
+							$("#pcategory").find("li").eq(0).trigger("click");
+						}
+					})
+				})*/
+				
+				$("#pcategory").on("click","li",function(){
+					var _this = $(this);
+					if(!_this.hasClass("p_item_active")){
+						$("#pcategory").find("li").removeClass("p_item_active");
+						_this.addClass("p_item_active");
+						
+						var id = _this.attr("data_id");
+						$.post("/category/findCategoryByPid.json",{id:id},function(data){
+							var html = "";
+							for(var i=0,len=data.category.length;i<len;i++){
+								html += "<li data_id='"+data.category[i].id+"' data_name='"+data.category[i].descript+"'>"+data.category[i].descript+"  ></li>";
+							}
+							$("#ccategory").html(html);
+						})
+					}
+				})
+				
+				$("#ccategory").on("click","li",function(){
+					var _this = $(this);
+					if(!_this.hasClass("p_item_active")){
+						$("#ccategory").find("li").removeClass("p_item_active");
+						_this.addClass("p_item_active");
+					}
+				})
+				
+				//$("#operatingItems").trigger("change");
+				
+				$("#search").on("click",function(){
+					var name = $("#searchCategory").val().trim();
+					$.post("/settled/findCategory.json",{name,name},function(data){
+						if(data.length>0){
+							var html = "";
+							for(var i=0,len=data.length;i<len;i++){
+								html += "<li data_id='"+data[i].id+"'>"+data[i].descript+"</li>"
+							}
+							$("#pcategory").html(html);
+						}
+					})
+				})
+				
+				$("#submit").on("click",function(){
+					var li = $("#ccategory").find("li.p_item_active");
+					if(li.length>0){
+						var id = li.attr("data_id");
+						var name = li.attr("data_name");
+						var bool = true;
+						$("#categoryFee").find("ul").each(function(){
+							if($(this).attr("data_id")==id){
+								bool = false;
+							}
+						})
+						
+						if(bool){
+							$("#no_select").remove();
+							$.post("/category/findCategoryFeeById.json",{id:id},function(data){
+								var html = '<ul class="Data_rates" data_id="'+id+'">'+
+										   '	 <input type="hidden" name="c_category_id" value="'+id+'"/>'+
+				                           '     <li style="width: 120px;">'+name+'<input type="hidden" name="categoryName" value="'+name+'"/></li>'+
+				                           '     <li style="width: 292px;">'+data.deposit+'<input type="hidden" name="deposit" value="'+data.deposit+'"/></li>'+
+				                           '     <li style="width: 158px;">'+data.platformfee+'<input type="hidden" name="platformfee" value="'+data.platformfee+'"/></li>'+
+				                           '     <li style="width: 100px;">';
+				                   <%if(shopDTO.cooperation==1){%>
+										html += data.consignmentpoints;
+				                   <%}else{%>
+				                   		html += data.points;
+				                   <%}%>
+				                   
+				                   html += '<input type="hidden" name="points" value="'+data.points+'"/><input type="hidden" name="consignmentpoints" value="'+data.consignmentpoints+'"/></li>'+
+				                           '     <li class="last_item" style="width: 72px;"><i></i></li>'+
+				                           '</ul>';
+								
+								$("#categoryFee").append(html);
+							})
+						}else{
+							layer.alert("已选择该分类！",{icon:0,title:"提醒"});
+						}
+					}else{
+						layer.alert("请选择二级分类！",{icon:0,title:"提醒"})
+					}
+				})
+				
+				$("#categoryFee").on("click","ul li i",function(){
+					$(this).closest("ul").remove();
+					if($(".Data_rates").length==0){
+						var html = '<ul class="Data_rates" id="no_select">'+
+			                       '     <li style="width: 100%;">尚未选择类目</li>'+
+			                       '</ul>';
+                        $("#categoryFee").append(html);
+					}
+				})
+				
+				$("#form").validate({
+					onfocusout : false,
+					onkeyup : false,
+					onclick : false,
+					rules : {
+						logo : {
+							required:true
+						},
+						name : {
+							required:true
+						},
+						account : {
+							required:true
+						},
+						fax : {
+							isPhone:true
+						},
+						qq : {
+							required:true,
+							digits:true
+						}
+					},
+					messages : {
+						logo : {
+							required : "请上传店铺logo"
+						},
+						name : {
+							required : "请输入店铺名称"
+						},
+						account : {
+							required : "请输入登录账号"
+						},
+						fax : "请输入正确的电话号码",
+						qq : "请输入正确的QQ号"
+					},
+					showErrors: function(errorMap, errorList) {
+	            		var msg = "";
+	            		var a;
+	            		var id = "";
+	            		$.each(errorList,function(i,v){
+	             			msg = v.message+"\r\n";
+	             			a = v.element;
+	             			id = a.id;
+	             			
+	             			if(id == "logo"){
+	             				id = "uploadImg";
+	             			}
+	             			if(msg!=''){
+	             				if(id!=""){
+	             					layer.tips(msg, $("#"+id), {
+										tips : [ 1, '#019F95' ],
+										time : 1500,
+										tipsMore: true
+									});
+	             				}else{
+	             					layer.tips(msg, $("input[name='"+a.name+"']"), {
+										tips : [ 1, '#019F95' ],
+										time : 1500,
+										tipsMore: true
+									});
+	             				}
+	            			}
+	            			if(i==0){
+	            				if(id!=""){
+	            					$("html, body").animate({scrollTop: $('#'+id).offset().top});
+	            				}else{
+	            					$("html, body").animate({scrollTop: $("input[name='"+a.name+"']").offset().top});
+	            				}
+	            			}
+	            		});
+	        		},
+	        		onfocusout: false
+				});
+				
+				// 手机号码验证
+				jQuery.validator.addMethod("isMobile", function(value, element) {
+					var length = value.length;
+					var mobile = /^0?(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$/;
+					return this.optional(element) || (length == 11 && mobile.test(value));
+				},"请输入正确的手机号码");
+				// 座机号验证
+				jQuery.validator.addMethod("isPhone", function(value, element) {
+					var mobile = /^0\d{2,3}-\d{5,10}$/;
+					return this.optional(element) || mobile.test(value);
+				},"请输入正确的电话号码");
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 产品属性表(p_product_property)Mapper -->
+<mapper namespace="productpropertyMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,productId ,propertyValueId ,propertyId ,categoryId 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.product.ProductProperty" id="ProductPropertyReturnMap">
+	  <!-- 主键 -->
+      <id column="id" property="id"/>
+	  <!-- 产品ID -->
+      <result column="productId" property="productId"/>
+	  <!-- 属性值ID -->
+      <result column="propertyValueId" property="propertyValueId"/>
+	  <!-- 属性ID -->
+      <result column="propertyId" property="propertyId"/>
+	  <!-- 分类ID -->
+      <result column="categoryId" property="categoryId"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllProductProperty" parameterType="String" resultMap="ProductPropertyReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_product_property
+		where productId = #{id}
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findProductPropertyById" parameterType="String" resultMap="ProductPropertyReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_product_property
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateProductProperty" parameterType="com.shifeng.entity.product.ProductProperty">
+		update 
+			p_product_property 
+		set
+	      	productId = #{productId},
+	      	propertyValueId = #{propertyValueId},
+	      	propertyId = #{propertyId},
+	      	categoryId = #{categoryId}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveProductProperty" parameterType="com.shifeng.seller.product.dto.ProductPropertyDTO">
+		insert into p_product_property
+			(
+		      productId, propertyValueId, propertyId, categoryId 
+			)
+		values
+			<foreach collection="list" item="item" separator=",">
+			    <foreach collection="item.propertyValues" item="valueId" separator=",">
+			        (
+				      #{item.productId},
+				      #{valueId},
+				      #{item.propertyId},
+				      #{item.categoryId}
+					)
+			    </foreach>
+			</foreach>
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteProductProperty" parameterType="String">
+  		delete from p_product_property
+  		where productId = #{id}
+  	</delete>
+	
+</mapper>

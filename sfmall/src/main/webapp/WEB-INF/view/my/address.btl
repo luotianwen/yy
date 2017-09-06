@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/userinfo.css" />
+    
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/js/layer/laypage/laypage.js"></script>
+	
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'收货地址'}){}%>
+<% include("/detailnav.btl"){}%>
+	<div class="boxw clearfix">
+		<% include("my-left.btl",{type:'收货地址'}){}%>
+		<div class="fr content clearfix">
+			<div class="top-tit">
+				<i></i>收货地址
+			</div>
+			<div class="mod-main">
+				<div class="a-mt">
+					<a id="add" class="address-add">新增收货地址</a><span>您已创建<b id="all">${datas.~size}</b>个收货地址，最多可创建<b>20</b>个
+					</span>
+				</div>
+				<div class="form-address">
+					<form id="addressform">
+						<input type="hidden" id="id" name="id" value="${dto.id}"/>
+						<dl>
+							<dd style="padding-left: 30px;">
+								省：<select required class="form-control" id="province" name="province">
+									<option value="">请选择</option>
+									<%if(!isEmpty(provinces))
+										for(province in provinces){
+									%>
+										<option value="${province.id}">${province.name}</option>
+									<%}%>
+								</select>
+								市：<select  class="form-control" required id="city" name="city">
+									<option value="">请选择</option>
+								</select>
+								区：<select class="form-control" required id="area" name="area">
+									<option value="">请选择</option>
+								</select>
+							</dd>
+						</dl>
+						<dl>
+							<dt>详细地址：</dt>
+							<dd>
+								<textarea class="form-control" style="width: 798px" required name="address" id="address" value="${dto.address}">${dto.address}</textarea>
+							</dd>
+						</dl>
+						<dl>
+							<dt>收货人：</dt>
+							<dd>
+								<input name="contacts" id="contacts" type="text" required class="form-control w120" value="${dto.contacts}"/>
+							</dd>
+						</dl>
+						<dl>
+							<dt>手机号码：</dt>
+							<dd>
+								<input name="phone" id="phone" required type="number" class="form-control w120" value="${dto.phone}"/>
+							</dd>
+						</dl>
+						<dl>
+							<dt>是否设为默认地址：</dt>
+							<dd>
+								<input name="first" id="first" required type="hidden" class="form-control w120" value="<%if(!isEmpty(dto.first)){%>${dto.first}<%}else{%>2<%}%>"/>
+								<input id="checkbox" type="checkbox" class="form-control w120" <%if(dto.first==1){%>checked<%}%>/>
+							</dd>
+						</dl>
+						<div class="btn-area">
+							<a id="submit" class="btn-confirm">保存</a>
+						</div>
+					</form>
+				</div>
+				
+				<%
+					if(!isEmpty(datas))
+					for(data in datas){
+				%>
+					<div class="mc">
+						<div class="address-list">
+							<%if(data.first==1){%><a class="default-address">默认地址</a><%}%>
+							<div class="extra">
+								<%if(data.first!=1){%><a data_id="${data.id}" class="default">设为默认地址</a><%}%>
+								<a data_id="${data.id}" class="edit">编辑</a>
+								<a data_id="${data.id}" class="del">删除</a>
+							</div>
+							<dl class="clearfix">
+								<dt>收货人：</dt>
+								<dd>${data.contacts}</dd>
+							</dl>
+							<dl class="clearfix">
+								<dt>所在地区：</dt>
+								<dd>${data.provinceName+data.cityName+data.areaName}</dd>
+							</dl>
+							<dl class="clearfix">
+								<dt>详细地址：</dt>
+								<dd>${data.address}</dd>
+							</dl>
+							<dl class="clearfix">
+								<dt>联系方式：</dt>
+								<dd>${data.phone}</dd>
+							</dl>
+						</div>
+					</div>
+				<%
+					}
+				%>
+			</div>
+		</div>
+	</div>
+
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+
+<script type="text/javascript" src="/static/js/validate/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/static/js/validate/messages_zh.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var province = "${dto.province}";
+		var city = "${dto.city}";
+		var area = "${dto.area}";
+		
+		$("#addressform").validate({
+	        onfocusout : false,
+	        onkeyup : false,
+	        onclick : false,
+	        showErrors: function(errorMap, errorList) {
+	            var msg = "";
+	            var a;
+	            $.each(errorList,function(i,v){
+	                msg = v.message+"\r\n";
+	                a = v.element;
+	                if(msg!=''){
+	                    layer.tips(msg, a, {
+	                        tips : [ 1, '#019F95' ],
+	                        time : 1500,
+	                        tipsMore: true
+	                    });
+	                }
+	                if(i==0){
+	                    $("html, body").animate({scrollTop: $('#'+a.id).offset().top});
+	                }
+	            });
+	        },
+	        onfocusout: false
+	    });
+		
+		$("#province").on("change",function(){
+			var _province=$(this).val();
+	        $.post("/getAllCityByPid",{pid:_province},function (data) {
+	            var _html='<option value="">请选择</option>';
+	            for(var i=0,len=data.length;i<len;i++){
+					if(city==data[i].id){
+						_html += "<option value='"+data[i].id+"' checked>"+data[i].name+"</option>";
+					}else{
+						_html += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+					}
+	            }
+	            $("#city").html(_html);
+
+				if(city!=""){
+	    			$("#city").val(city);
+					city = "";
+	    			$("#city").trigger("change");
+	    		}
+	        })
+	        
+	    });
+	    $("#city").on("change",function(){
+			var _cid=$(this).val();
+	        $.post("/getAllAreaByCid",{cid:_cid},function (data) {
+	            var _html='<option value="">请选择</option>';
+	            for(var i=0,len=data.length;i<len;i++){
+					_html += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+	            }
+	            $("#area").html(_html);
+	            $("#area").val(area);
+	            area = "";
+	        })
+	    });
+		
+	    if(province!=""){
+	    	$("#province").val(province);
+	    }
+	    $("#province").trigger("change");
+	    
+	    $("#submit").click(function () {
+			if($("#addressform").valid()){
+				var url = "";
+				if($("#id").val()==null||$("#id").val()==""||$("#id").val()=="0"){
+					url = "/my/addaddress";
+				}else{
+					url = "/my/updateAddress";
+				}
+				$.post(url,$("#addressform").serialize(),function(data){
+					if(data.code==0){
+						window.location.href = "/my/address.html";
+					}else{
+						layer.alert(data.msg, {
+							icon : 0
+						});
+					}
+				});
+	        }
+	    })
+	    
+		$(".default").on("click",function(){
+			var id = $(this).attr("data_id");
+	    	$.post("/my/setAddressAllDefaultById",{id:id},function(data){
+	    		if (data.RESPONSE_STATE == '200') {
+					layer.msg('修改成功', {
+						icon : 1,
+						time : 1 * 1000
+					}, function() {
+						location.reload() 
+					});
+				} else {
+					layer.alert(data.ERROR_INFO, {
+						icon : 0
+					});
+				}
+	    	})
+	    })
+	    
+		$(".edit").on("click",function(){
+	    	window.location.href = "/my/address.html?id="+$(this).attr("data_id");
+	    })
+	    
+		$(".del").on("click",function(){
+			var _this = $(this);
+			var id = _this.attr("data_id");
+			layer.confirm("确认删除吗?", {
+				shade : 0.3,
+				btn : [ '确认', '取消' ],
+				icon : 3
+			}, function(layerIndex) {
+				layer.close(layerIndex);
+				$.post("my/deleteAddress.json",{id:id},function(data){
+					layer.closeAll('loading');
+					if (data.RESPONSE_STATE == '200') {
+						layer.msg('删除成功!', {icon : 1,time : 1 * 1000}, function() {
+							_this.closest("div.mc").remove();
+						})
+					}else{
+						layer.alert(data.ERROR_INFO, {
+							icon : 0
+						});
+					}
+				})
+			})
+	    })
+	    
+	    $("#checkbox").on("click",function(){
+	    	if($(this)[0].checked==true){
+	    		$("#first").val(1);
+	    	}else{
+	    		$("#first").val(2);
+	    	}
+	    })
+	    
+	})
+	
+</script>
+
+</body>
+</html>

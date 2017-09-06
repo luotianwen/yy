@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 商品评价图片(p_product_evaluate_img)Mapper -->
+<mapper namespace="productevaluateimgMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,ppeid ,imgpath ,cdate 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.product.ProductEvaluateImg" id="ProductEvaluateImgReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 评价id -->
+      <result column="ppeid" property="ppeid"/>
+	  <!-- 图片地址 -->
+      <result column="imgpath" property="imgpath"/>
+	  <!-- 创建时间 -->
+      <result column="cdate" property="cdate"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllProductEvaluateImgPage" parameterType="Page" resultMap="ProductEvaluateImgReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_product_evaluate_img
+		where 1=1
+			<if test="t.ppeid!=null and t.ppeid!=''">
+				and ppeid = #{t.ppeid}
+			</if>
+			<if test="t.imgpath!=null and t.imgpath!=''">
+				and imgpath = #{t.imgpath}
+			</if>
+			<if test="t.cdate!=null and t.cdate!=''">
+				and cdate = #{t.cdate}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findProductEvaluateImgById" parameterType="String" resultMap="ProductEvaluateImgReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_product_evaluate_img
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateProductEvaluateImg" parameterType="com.shifeng.entity.product.ProductEvaluateImg">
+		update 
+			p_product_evaluate_img 
+		set
+	      	ppeid = #{ppeid},
+	      	imgpath = #{imgpath},
+	      	cdate = #{cdate}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveProductEvaluateImg" parameterType="com.shifeng.entity.product.ProductEvaluateImg">
+		insert into p_product_evaluate_img
+			(
+		      ppeid, imgpath, cdate 
+			)
+		values
+			(
+		      #{ppeid},
+		      #{imgpath},
+		      #{cdate}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteProductEvaluateImg" parameterType="String">
+  		delete from p_product_evaluate_img
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

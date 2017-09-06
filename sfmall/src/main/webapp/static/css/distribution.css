@@ -1,0 +1,143 @@
+.drm-total {
+  padding: 20px;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+.drm-total li {
+  float: left;
+  padding: 0 30px;
+}
+.drm-total li.item {
+  border-right: 1px solid #c8c8c8;
+}
+.drm-total li .order-num {
+  width: 44px;
+  height: 44px;
+  background: url(../img/indent_img.png) no-repeat;
+  display: block;
+  margin-left: 5px;
+  margin-bottom: 4px;
+}
+.drm-total li .order-money {
+  width: 44px;
+  height: 44px;
+  background: url(../img/order_amount.png) no-repeat;
+  display: block;
+  margin-left: 15px;
+  margin-bottom: 4px;
+}
+.drm-total li .order-money-take {
+  width: 51px;
+  height: 46px;
+  background: url(../img/withdrawal.png) no-repeat;
+  display: block;
+  margin-left: 10px;
+  margin-bottom: 4px;
+}
+.drm-total li .s1 {
+  font-size: 14px;
+  color: #000;
+  float: left;
+  text-align: center;
+  display: block;
+}
+.drm-total li .s2 {
+  font-size: 45px;
+  color: #505050;
+  float: left;
+  margin-left: 70px;
+}
+.nav-box {
+  padding: 20px 0;
+}
+.nav-box .navbar {
+  float: left;
+}
+.nav-box .navbar li {
+  float: left;
+  width: 120px;
+  height: 40px;
+}
+.nav-box .navbar li a {
+  width: 120px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+  display: inline-block;
+  background: #fff;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+}
+.nav-box .navbar li.active a {
+  border-bottom: 3px solid #06b639;
+}
+.drm-order-list li.drm-order-item {
+  padding-bottom: 20px;
+}
+.drm-order-list li.drm-order-item .drm-order-info-1 {
+  height: 40px;
+  line-height: 40px;
+  background: #f4f4f4;
+  border-bottom: 1px solid #e4e4e4;
+  padding: 0 15px;
+  position: relative;
+}
+.drm-order-list li.drm-order-item .drm-order-info-1 .shop-name {
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+  margin-left: 10px;
+}
+.drm-order-list li.drm-order-item .drm-order-info-1 .order-num,
+.drm-order-list li.drm-order-item .drm-order-info-1 .order-date {
+  font-size: 14px;
+  color: #999;
+  margin-left: 27px;
+}
+.drm-order-list li.drm-order-item .drm-order-info-2 li {
+  border-bottom: 1px solid #e4e4e4;
+}
+.drm-order-list li.drm-order-item .drm-order-info-2 li .goods-img {
+  padding: 20px 10px;
+}
+.drm-order-list li.drm-order-item .drm-order-info-2 li .goods-img img {
+  width: 100px;
+  height: 100px;
+}
+.drm-order-list li.drm-order-item .drm-order-info-2 li .goods-info {
+  padding: 0 30px;
+  margin: 20px 0;
+  height: 100px;
+  width: 310px;
+  line-height: 26px;
+  border-right: 1px solid #dcdcdc;
+}
+.drm-order-list li.drm-order-item .drm-order-info-2 li .goods-info .g-tit {
+  font-size: 14px;
+  color: #787878;
+}
+.drm-order-list li.drm-order-item .drm-order-info-2 li .goods-info .g-tit a {
+  color: #787878;
+}
+.drm-order-list li.drm-order-item .drm-order-info-2 li .order-price {
+  padding: 30px 20px;
+  font-size: 16px;
+  color: #787878;
+}
+.drm-order-list li.drm-order-item .drm-order-info-2 li .order-price p {
+  margin-bottom: 20px;
+}
+.drm-order-list li.drm-order-item .drm-order-info-2 li .order-price p .fred {
+  font-size: 16px;
+  color: #ff5b2d;
+  font-weight: bold;
+}
+.drm-order-list li.drm-order-item .drm-order-info-2 li .order-price p .fgray {
+  font-size: 16px;
+  color: #787878;
+  font-weight: bold;
+}

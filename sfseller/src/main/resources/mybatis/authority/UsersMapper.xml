@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UsersMapper">
+
+	<!--mybatis ehcache缓存配置 -->
+	<!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/> -->
+
+
+	<!-- 根据手机号/邮箱登录用户 -->
+	<select id="loginUserByPhoneOrEmail" parameterType="com.shifeng.seller.entity.users.Users"
+		resultType="com.shifeng.seller.entity.users.Users" useCache="false">
+
+		SELECT
+		u_id as uid,a.*
+		FROM seller_users a WHERE ISFROZEN = 2 and  u_id=#{uId}
+	</select>
+
+
+	<!-- 改变用户登录信息（IP、最后登录时间、登录次数） -->
+	<update id="updateUserLoginInfo" parameterType="com.shifeng.seller.entity.users.Users">
+		update seller_users set
+		ULOGINIP=#{uLoginIp},uLoginDate=#{uLoginDate},uLoginCount=#{uLoginCount}
+		where u_id = #{uId}
+	</update>
+
+
+
+
+</mapper>

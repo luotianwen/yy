@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/leftbar.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/css/sf.css" />
+    
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/laydate/laydate.js"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+	
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'我的世峰'}){}%>
+<% include("/detailnav.btl"){}%>
+	<div class="boxw clearfix">
+		<% include("../my-left.btl",{type:'我的世峰'}){}%>
+
+		<div class="fr content clearfix">
+			<div class="top-tit">
+				<i></i>我的世峰
+			</div>
+			<div class="mod-main">
+				<div class="mc clearfix">
+					<div class="msg">
+						<div class="title">
+							<span class="t_item1"><img src="${user.portrait}" /></span>
+							<span class="t_item2">${user.uName}</span>
+						</div>
+						<ul class="money clearfix">
+							<li><span>账户余额：<i>${user.coin}</i></span></li>
+							<li><span>积分总计：<i>${user.integral}</i></span></li>
+							<li><span>消费金额：<i>0.00</i></span></li>
+						</ul>
+						<ul class="indent clearfix">
+							<li class="i_item1"><img src="/static/img/fk.png" alt="" /><a href="/my/order.html?state=0"><i>待付款</i></a></li>
+							<li class="i_item2"><img src="/static/img/dfh.png" alt="" /><a href="/my/order.html?state=1"><i>待发货</i></a></li>
+							<li class="i_item3"><img src="/static/img/dsh.png" alt="" /><a href="/my/order.html?state=2"><i>待收货</i></a></li>
+							<li class="i_item4"><img src="/static/img/pj.png" alt="" /><a href="/my/order.html?state=3"><i>待评价</i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+
+</body>
+</html>

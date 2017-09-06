@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 分销用户余额(fx_user_money)Mapper -->
+<mapper namespace="fxusermoneyMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	uid,money ,allmoney ,costmoney ,pending_income ,lasttime 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.fx.FxUserMoney" id="FxUserMoneyReturnMap">
+	  <!-- uid -->
+      <id column="uid" property="uid"/>
+	  <!-- 金额 -->
+      <result column="money" property="money"/>
+	  <!-- 所有佣金 -->
+      <result column="allmoney" property="allmoney"/>
+	  <!-- 已提现佣金 -->
+      <result column="costmoney" property="costmoney"/>
+	  <!-- 待收益佣金 -->
+      <result column="pending_income" property="pending_income"/>
+	  <!-- 最后更新时间 -->
+      <result column="lasttime" property="lasttime"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllFxUserMoneyPage" parameterType="Page" resultMap="FxUserMoneyReturnMap">
+		select
+        f.uid,f.money ,f.allmoney ,f.costmoney ,f.pending_income ,f.lasttime ,
+        u.uname as name
+        from
+        fx_user_money f,
+        mall_users u
+        where u.id=f.uid
+
+        <if test="t.name!=null and t.name!=''">
+            and u.uname = #{t.name}
+        </if>
+        <if test="t.uid!=null and t.uid!=''">
+            and u.id = #{t.uid}
+        </if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findFxUserMoneyById" parameterType="String" resultMap="FxUserMoneyReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			fx_user_money
+		where 
+			uid = #{uid}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateFxUserMoney" parameterType="com.shifeng.entity.fx.FxUserMoney">
+		update 
+			fx_user_money 
+		set
+	      	money = #{money},
+	      	allmoney = #{allmoney},
+	      	costmoney = #{costmoney},
+	      	pending_income = #{pending_income},
+	      	lasttime = now()
+		 where
+			uid = #{uid}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveFxUserMoney" parameterType="com.shifeng.entity.fx.FxUserMoney">
+		insert into fx_user_money
+			(
+		      money, allmoney, costmoney, pending_income, lasttime 
+			)
+		values
+			(
+		      #{money},
+		      #{allmoney},
+		      #{costmoney},
+		      #{pending_income},
+		      now()
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteFxUserMoney" parameterType="String">
+  		delete from fx_user_money
+  		where uid = #{uid}
+  	</delete>
+	
+</mapper>

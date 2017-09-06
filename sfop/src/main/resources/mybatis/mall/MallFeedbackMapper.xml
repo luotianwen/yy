@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 意见反馈(mall_feedback)Mapper -->
+<mapper namespace="mallfeedbackMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	feedback_id,feedback_type ,feedback_content ,user_id ,feedback_time ,source ,operator_name ,operate_time ,opinion ,operate_type 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.mall.MallFeedback" id="MallFeedbackReturnMap">
+	  <!-- ID -->
+      <id column="feedback_id" property="feedback_id"/>
+	  <!-- 反馈问题类型 -->
+      <result column="feedback_type" property="feedback_type"/>
+	  <!-- 内容 -->
+      <result column="feedback_content" property="feedback_content"/>
+	  <!-- 反馈用户ID -->
+      <result column="user_id" property="user_id"/>
+	  <!-- 反馈时间 -->
+      <result column="feedback_time" property="feedback_time"/>
+	  <!-- 反馈来源 -->
+      <result column="source" property="source"/>
+	  <!-- 处理人 -->
+      <result column="operator_name" property="operator_name"/>
+	  <!-- 处理时间 -->
+      <result column="operate_time" property="operate_time"/>
+	  <!-- 处理意见 -->
+      <result column="opinion" property="opinion"/>
+	  <!-- 处理状态 -->
+      <result column="operate_type" property="operate_type"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllMallFeedbackPage" parameterType="Page" resultMap="MallFeedbackReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_feedback
+		where 1=1
+			<if test="t.feedback_type!=null and t.feedback_type!=''">
+				and feedback_type = #{t.feedback_type}
+			</if>
+			<if test="t.feedback_content!=null and t.feedback_content!=''">
+				and feedback_content like  CONCAT('%',#{t.feedback_content},'%')
+			</if>
+			<if test="t.user_id!=null and t.user_id!=''">
+				and user_id = #{t.user_id}
+			</if>
+			<if test="t.feedback_time!=null and t.feedback_time!=''">
+				and feedback_time = #{t.feedback_time}
+			</if>
+			<if test="t.source!=null and t.source!=''">
+				and source = #{t.source}
+			</if>
+			<if test="t.operator_name!=null and t.operator_name!=''">
+				and operator_name = #{t.operator_name}
+			</if>
+			<if test="t.operate_time!=null and t.operate_time!=''">
+				and operate_time = #{t.operate_time}
+			</if>
+			<if test="t.opinion!=null and t.opinion!=''">
+				and opinion = #{t.opinion}
+			</if>
+			<if test="t.operate_type!=null and t.operate_type!=''">
+				and operate_type = #{t.operate_type}
+			</if>
+		order by feedback_time desc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findMallFeedbackById" parameterType="String" resultMap="MallFeedbackReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_feedback
+		where 
+			feedback_id = #{feedback_id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateMallFeedback" parameterType="com.shifeng.entity.mall.MallFeedback">
+		update 
+			mall_feedback 
+		set
+
+	      	operator_name = #{operator_name},
+	      	operate_time = now(),
+	      	operate_type=2,
+	      	opinion = #{opinion}
+		 where
+			feedback_id = #{feedback_id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveMallFeedback" parameterType="com.shifeng.entity.mall.MallFeedback">
+		insert into mall_feedback
+			(
+		      feedback_type, feedback_content, user_id, feedback_time, source, operator_name, operate_time, opinion, operate_type 
+			)
+		values
+			(
+		      #{feedback_type},
+		      #{feedback_content},
+		      #{user_id},
+		      #{feedback_time},
+		      #{source},
+		      #{operator_name},
+		      #{operate_time},
+		      #{opinion},
+		      #{operate_type}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteMallFeedback" parameterType="String">
+  		delete from mall_feedback
+  		where feedback_id = #{feedback_id}
+  	</delete>
+	
+</mapper>

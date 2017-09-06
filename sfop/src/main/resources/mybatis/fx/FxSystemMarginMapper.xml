@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 系统分销利率设置(fx_system_margin)Mapper -->
+<mapper namespace="fxsystemmarginMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,smarginrate ,emarginrate ,commissionrate ,lasttime ,updateName 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.fx.FxSystemMargin" id="FxSystemMarginReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 开始毛利率 -->
+      <result column="smarginrate" property="smarginrate"/>
+	  <!-- 结束毛利率 -->
+      <result column="emarginrate" property="emarginrate"/>
+	  <!-- 佣金比率 -->
+      <result column="commissionrate" property="commissionrate"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updateName" property="updateName"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllFxSystemMarginPage" parameterType="Page" resultMap="FxSystemMarginReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			fx_system_margin
+		where 1=1
+			<if test="t.smarginrate!=null and t.smarginrate!=''">
+				and smarginrate = #{t.smarginrate}
+			</if>
+			<if test="t.emarginrate!=null and t.emarginrate!=''">
+				and emarginrate = #{t.emarginrate}
+			</if>
+			<if test="t.commissionrate!=null and t.commissionrate!=''">
+				and commissionrate = #{t.commissionrate}
+			</if>
+			<if test="t.lasttime!=null and t.lasttime!=''">
+				and lasttime = #{t.lasttime}
+			</if>
+			<if test="t.updatename!=null and t.updatename!=''">
+				and updateName = #{t.updateName}
+			</if>
+	</select>
+	<!-- 查询所有表 -->
+	<select id="findFxSystemMargin" parameterType="com.shifeng.entity.fx.FxSystemMargin" resultType="int">
+
+		select
+		count(id)
+		from
+		fx_system_margin
+		where 1=1
+		<if test="id!=null and id!=''">
+			 and id != #{id}
+		</if>
+
+			and
+		(
+		emarginrate BETWEEN  #{smarginrate} and #{emarginrate}
+		or smarginrate BETWEEN  #{smarginrate} and #{emarginrate}
+		)
+
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findFxSystemMarginById" parameterType="String" resultMap="FxSystemMarginReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			fx_system_margin
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateFxSystemMargin" parameterType="com.shifeng.entity.fx.FxSystemMargin">
+		update 
+			fx_system_margin 
+		set
+	      	smarginrate = #{smarginrate},
+	      	emarginrate = #{emarginrate},
+	      		lastTime = NOW(),
+	      	updateName = #{updateName},
+	      	commissionrate = #{commissionrate}
+
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveFxSystemMargin" parameterType="com.shifeng.entity.fx.FxSystemMargin">
+		insert into fx_system_margin
+			(
+		      smarginrate, emarginrate, 	lastTime  ,
+	      	updateName  ,commissionrate
+			)
+		values
+			(
+		      #{smarginrate},
+		      #{emarginrate},NOW(), #{updateName},
+		      #{commissionrate}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteFxSystemMargin" parameterType="String">
+  		delete from fx_system_margin
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

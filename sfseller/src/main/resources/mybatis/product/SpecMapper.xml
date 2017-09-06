@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 规格表(p_spec)Mapper -->
+<mapper namespace="specMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,pid ,name ,categoryspecid
+    </sql>
+
+    <resultMap type="com.shifeng.entity.product.Spec" id="SpecReturnMap">
+	  <!-- 编号 -->
+      <id column="id" property="id"/>
+	  <!-- pid -->
+      <result column="pid" property="pid"/>
+	  <!-- 规格名称 -->
+      <result column="name" property="name"/>
+      <!-- 分类颜色ID -->
+      <result column="categoryspecid" property="categoryspecid"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllSpec" parameterType="String" resultMap="SpecReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_spec
+		where pid = #{id}
+		order by id asc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findSpecById" parameterType="String" resultMap="SpecReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_spec
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateSpec" parameterType="com.shifeng.entity.product.Spec">
+		update 
+			p_spec 
+		set
+	      	pid = #{pid}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveSpec" parameterType="com.shifeng.entity.product.Spec" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into p_spec
+			(
+		      pid,name ,categoryspecid
+			)
+		values
+			(
+		      #{pid},#{name},#{categoryspecid}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteSpec" parameterType="String">
+  		delete from p_spec
+  		where pid = #{pid}
+  	</delete>
+	
+</mapper>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/userinfo.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/upload/style.css"/>
+	<script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'订单评价页'}){}%>
+<% include("/detailnav.btl"){}%>
+	
+<form id="form">
+	<input type="hidden" name="orderid" id="orderid" value="${orderInfo.orderId}"/>
+	<input type="hidden" name="shopid" id="shopid" value="${orderInfo.shopId}"/>
+	
+	<div class="boxw clearfix">
+		<div class="c-order-info">
+			<h3 class="c-tit">
+				<i></i>评价订单
+			</h3>
+			<span>订单号：${orderInfo.orderId}</span><span class="m">${orderInfo.subTime,"yyyy-MM-dd HH:mm:ss"}</span>
+		</div>
+		<%
+			var count = 0;
+			for(ware in orderInfo.wares){
+		%>
+		<div class="mycomment-detail clearfix">
+			<input type="hidden" name="wareComments[${count}].sku" value="${ware.sku}"/>
+			<div class="comment-goods">
+				<div class="p-img">
+					<a href="/detail/${ware.sku}.html" target="_blank">
+						<img src="${ware.productImage}" alt="${ware.productName}">
+					</a>
+				</div>
+				<div class="p-name">
+					<a href="/detail/${ware.sku}.html" target="_blank">${ware.productName}</a>
+				</div>
+
+				<div class="p-attr">
+					<% 
+						if(!isEmpty(ware.color)){
+					%> 
+						<span class="fl">颜色：${ware.color}</span>
+					<% 
+						}
+					%>
+					<%
+						if(!isEmpty(ware.specification)){
+					%>
+						<span class="fr">规格：${ware.specification}</span>
+					<%
+						}
+					%>
+				</div>
+
+				<div class="p-price">¥${ware.totalMoney}</div>
+			</div>
+			<div class="cline"></div>
+			<div class="comment-form">
+				<dl>
+					<dt>商品评分：</dt>
+					<dd>
+						<div class="m">
+							<span class="commstar">
+								<span data_type="1" class="star star1"></span>
+								<span data_type="2" class="star star2"></span>
+								<span data_type="3" class="star star3"></span>
+								<span data_type="4" class="star star4"></span>
+								<span data_type="5" class="star star5"></span>
+							</span>
+							<input class="score" type="hidden" name="wareComments[${count}].score"/>
+						</div>
+					</dd>
+				</dl>
+				<dl>
+					<dt>评价晒单：</dt>
+					<dd>
+						<div class="m460">
+							<textarea class="form-control" maxlength="500" style="width: 412px;height: 63px;" name="wareComments[${count}].content"></textarea>
+							<em class="textarea-num"><b>0</b>/500</em>
+							<div class="imgshow clearfix" data_count="${count}">
+								<div class="img-add" id="upload_${ware.sku}">
+									<span class="btn-upload" id="uploadImg_${ware.sku}"></span>
+									<span class="upload-num">
+										共<b id="allimg_${ware.sku}">0</b>张,还能上传<b id="residueimg_${ware.sku}">10</b>张
+									</span>
+								</div>
+							</div>
+						</div>
+					</dd>
+				</dl>
+			</div>
+		</div>
+		<%
+				count = count + 1;
+			}
+		%>
+
+		<div class="mycomment-detail clearfix" style="margin-top: 80px;">
+			<div class="comment-form">
+				<dl>
+					<dt>店铺评分：</dt>
+					<dd>
+						<div class="m">
+							描述相符 <span class="commstar">
+								<span data_type="1" class="star star1"></span>
+								<span data_type="2" class="star star2"></span>
+								<span data_type="3" class="star star3"></span>
+								<span data_type="4" class="star star4"></span>
+								<span data_type="5" class="star star5"></span>
+							</span>
+							<input type="hidden" name="describe_score" id="describe_score"/>
+						</div>
+						<div class="m">
+							物流服务 <span class="commstar">
+								<span data_type="1" class="star star1"></span>
+								<span data_type="2" class="star star2"></span>
+								<span data_type="3" class="star star3"></span>
+								<span data_type="4" class="star star4"></span>
+								<span data_type="5" class="star star5"></span>
+							</span>
+							<input type="hidden" name="lservice" id="lservice"/>
+						</div>
+						<div class="m">
+							服务态度 <span class="commstar">
+								<span data_type="1" class="star star1"></span>
+								<span data_type="2" class="star star2"></span>
+								<span data_type="3" class="star star3"></span>
+								<span data_type="4" class="star star4"></span>
+								<span data_type="5" class="star star5"></span>
+							</span>
+							<input type="hidden" name="sservice" id="sservice"/>
+						</div>
+					</dd>
+				</dl>
+				<div class="btn-box">
+					<a id="submit" class="btn-submit">提交</a>
+					<span class="f-checkbox">
+						<input type="hidden" id="anonymous" name="anonymous" value="1"/>
+						<input id="anonymous_check" class="i-check" checked="checked" type="checkbox">
+						<label for="anonymous_check">匿名评价</label>
+					</span>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	
+</form>
+
+	<% include("/rightnav.btl"){}%>
+	<% include("/footer.btl"){}%>
+	<script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/js/order/comment.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="/static/upload/plupload-2.1.8/js/plupload.full.min.js"></script>
+	<script type="text/javascript" src="/static/js/order/uploadcomment.js"></script>
+	<script type="text/javascript" src="/static/js/order/textarea_number.js"></script>
+	
+	<script type="text/javascript">
+		<% for(ware in orderInfo.wares){ %>
+			var uploader_${ware.sku} = uploader("uploadImg_${ware.sku}","upload_${ware.sku}","file_${ware.sku}","${ware.sku}");
+			uploader_${ware.sku}.init();
+		<%}%>
+	</script>
+	
+</body>
+</html>

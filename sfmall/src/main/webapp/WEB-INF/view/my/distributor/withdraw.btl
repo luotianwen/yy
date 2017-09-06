@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/css/leftbar.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/dis-add.css" />	
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'提现'}){}%>
+<% include("/detailnav.btl"){}%>
+<div class="boxw clearfix">
+	<% include("../my-left.btl",{type:'提现'}){}%>
+	<div class="fr content clearfix">
+		<div class="top-tit"><i></i>提现</div>
+		<div class="drm-tx clearfix">
+			<form id="form">
+				<ul class="clearfix">
+					<li>
+						<i class="income-commission"></i>
+						<div class="num-item">
+							<span>已收入佣金</span>
+							<p>¥${data.costmoney}</p>
+						</div>
+					</li>
+					<li>
+						<i class="available-commission"></i>
+						<div class="num-item">
+							<span>可提现佣金</span>
+							<p>¥${data.money}</p>
+						</div>
+					</li>
+					<li>
+						<i class="return-commission"></i>
+						<div class="num-item">
+							<span>待收益佣金</span>
+							<p>¥${data.pending_income}</p>
+						</div>
+					</li>
+				</ul>
+				<div class="btn-area">
+					<a href="#" target="_blank">佣金明细</a>
+				</div>
+				<dl class="form-group clearfix">
+					<dt>选择提现方式：</dt>
+					<dd>
+						<p class="tips">*目前仅支持提现到世峰E卡</p>
+						<div class="tx-way">
+							<div><img src="/static/img/img-e.jpg" width="54" height="54" alt="" />
+								<p>世峰E卡</p>
+								<p><input name="type" value="1" type="radio" checked></p>
+							</div>
+							<div><img src="/static/img/img-pay.jpg" width="54" height="54" alt="" />
+								<p class="f969696">支付宝</p>
+								<p><input name="type" value="2" type="radio" disabled></p>
+							</div>
+							<div><img src="/static/img/img-mechat.jpg" width="54" height="54" alt="" />
+								<p class="f969696">微信钱包</p>
+								<p><input name="type" value="3" type="radio" disabled></p>
+							</div>
+							<!-- <div><img src="/static/img/img-bank.jpg" width="54" height="54" alt="" />
+								<p class="f969696">银行卡</p>
+								<p><input type="radio" disabled></p>
+							</div> -->
+						</div>
+					</dd>
+				</dl>
+				<dl class="form-group clearfix">
+					<dt>提现金额：</dt>
+					<dd><input class="input" id="money" name="money" type="text" max="${data.money}" placeholder="输入金额"> 元<span class="num-prompt">可提现金额<b>${data.money}元</b></span>
+					</dd>
+				</dl>
+				<dl class="form-group clearfix">
+					<dt></dt>
+					<dd>
+						<a <%if(data.money>0){%>id="submit" class="btn-tx"<%}else{%>class="btn-tx-no"<%}%>>我要提现</a>
+					</dd>
+				</dl>
+			</form>
+		</div>
+		<div class="drm-tx clearfix">
+			<div class="notice">
+				<h2><i></i>提现须知</h2>
+				<dl>
+					<dt>Q：什么是已收入佣金？</dt>
+					<dd>A：已收入佣金，即所有通过分销已提现的佣金总和。</dd>
+				</dl>
+				<dl>
+					<dt>Q：什么是可提现佣金？</dt>
+					<dd>A：“我的”分销商购买商品分得佣金。可提现佣金中，不包含已支付，但未过7天无理由退货的订单。</dd>
+				</dl>
+				<dl>
+					<dt>Q：什么是待收益佣金？</dt>
+					<dd>A：“我的”分销商购买商品，分得佣金。待收益佣金指的是，用户已下单并支付，但未过7天无理由退货的订单。过了7天无理由退货后，转变为可提现佣金。</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+</div>
+	<script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		$(function(){
+			$("#submit").on("click",function(){
+				if($("#money").attr("max")!="0"&&$("#money").val()<=$("#money").attr("max")){
+					layer.tips('可提现金额不正确！', '#money', {
+						tips : [ 1, '#019F95' ],
+						time : 1500
+					});
+					$('#money').focus();
+					return;
+				}
+				
+				layer.load(0, {
+					shade : 0.3
+				});
+				$.post("/my/exchange.json",$("#form").serialize(),function(){
+					layer.closeAll('loading');
+					if (data.RESPONSE_STATE == '200') {
+						layer.msg('保存成功', {
+							icon : 1,
+							time : 1 * 1000
+						}, function() {
+							location.reload();
+						});
+					} else {
+						layer.alert(data.ERROR_INFO, {
+							icon : 0
+						});
+					}
+				})
+			})
+		})
+	</script>
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+</body>
+</html>

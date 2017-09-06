@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 未支付订单Mapper -->
+<mapper namespace="UnpaidOrderMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+ 
+
+	<!-- 根据订单号获取未支付的商品订单(父订单)信息 -->
+	<select id="getUnpaidWaresOrderById" parameterType="String" resultType="com.shifeng.pay.entity.order.UnpaidOrderInfo">
+		select
+			op.perentId AS order_id,order_payment AS total_fee,oo.productName AS order_name
+		from 
+			o_porderInfo op
+		left join 
+			o_orderDetailInfo oo on oo.perentId = op.perentId
+		where
+			op.perentId = #{order_id}
+			and op.orderStatus = 0
+			limit 2
+	</select>
+	
+	
+	<!-- 根据订单号获取未支付的商品订单(子订单)信息 -->
+	<select id="getUnpaidWareOrderById" parameterType="String" resultType="com.shifeng.pay.entity.order.UnpaidOrderInfo">
+		SELECT
+			op.orderId AS order_id,order_payment AS total_fee,oo.productName AS order_name
+		FROM 
+			o_orderInfo op
+		LEFT JOIN 
+			o_orderDetailInfo oo ON oo.perentId = op.perentId
+		WHERE
+			op.orderId = #{order_id}
+			AND op.orderStatus = 0
+			LIMIT 2
+	</select>
+
+	<!-- 根据订单号获取商家店铺入驻续费未支付订单 -->
+	<select id="getUnpaidShopOrderById" parameterType="String" resultType="com.shifeng.pay.entity.order.UnpaidOrderInfo">
+		SELECT
+		     orderId AS order_id ,payAmount AS total_fee,note AS order_name,status AS orderStatus
+		FROM
+			s_shopinfo_pay				
+		WHERE
+			orderId = #{order_id}
+			 and status = 0 
+	</select>
+	 
+	
+</mapper>

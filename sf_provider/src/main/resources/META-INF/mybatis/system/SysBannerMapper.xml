@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 系统banner(sys_banner)Mapper -->
+<mapper namespace="sysbannerMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,name ,imgPath ,imgLink ,module ,sort ,state ,lasttime ,updatename ,remark 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.system.SysBanner" id="SysBannerReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 名称 -->
+      <result column="name" property="name"/>
+	  <!-- 图片地址 -->
+      <result column="imgPath" property="imgPath"/>
+	  <!-- 链接 -->
+      <result column="imgLink" property="imgLink"/>
+	  <!-- 类型 -->
+      <result column="module" property="module"/>
+	  <!-- 序号 -->
+      <result column="sort" property="sort"/>
+	  <!-- 状态 -->
+      <result column="state" property="state"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllSysBannerPage" parameterType="Page" resultMap="SysBannerReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			sys_banner
+		where 1=1
+			<if test="t.name!=null and t.name!=''">
+				and name = #{t.name}
+			</if>
+			<if test="t.imgPath!=null and t.imgPath!=''">
+				and imgPath = #{t.imgPath}
+			</if>
+			<if test="t.imgLink!=null and t.imgLink!=''">
+				and imgLink = #{t.imgLink}
+			</if>
+			<if test="t.module!=null and t.module!=''">
+				and module = #{t.module}
+			</if>
+			<if test="t.sort!=null and t.sort!=''">
+				and sort = #{t.sort}
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and state = #{t.state}
+			</if>
+			<if test="t.lasttime!=null and t.lasttime!=''">
+				and lasttime = #{t.lasttime}
+			</if>
+			<if test="t.updatename!=null and t.updatename!=''">
+				and updatename = #{t.updatename}
+			</if>
+			<if test="t.remark!=null and t.remark!=''">
+				and remark = #{t.remark}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findSysBannerById" parameterType="String" resultMap="SysBannerReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			sys_banner
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateSysBanner" parameterType="com.shifeng.entity.system.SysBanner">
+		update 
+			sys_banner 
+		set
+	      	name = #{name},
+	      	imgPath = #{imgPath},
+	      	imgLink = #{imgLink},
+	      	module = #{module},
+	      	sort = #{sort},
+	      	state = #{state},
+	      	lasttime = now(),
+	      	updatename = #{updatename},
+	      	remark = #{remark}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveSysBanner" parameterType="com.shifeng.entity.system.SysBanner">
+		insert into sys_banner
+			(
+		      name, imgPath, imgLink, module, sort, state, lasttime, updatename, remark 
+			)
+		values
+			(
+		      #{name},
+		      #{imgPath},
+		      #{imgLink},
+		      #{module},
+		      #{sort},
+		      #{state},
+		      now(),
+		      #{updatename},
+		      #{remark}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteSysBanner" parameterType="String">
+  		delete from sys_banner
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

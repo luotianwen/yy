@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<% include("/basecss.btl"){}%>
+		<link rel="stylesheet" type="text/css" href="/static/css/check_in.css"/>
+	</head>
+	<body>
+		<% include("/header.btl"){}%>
+		<div class="h_container h_feature_1">
+			<div class="boxw">
+				<div class="h_function">
+					<div class="logo_1 fl">
+						<a href="http://www.seebong.com/" target="_blank"><img src="/static/img/all/logo.jpg" /></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="CheckNav">
+			<div class="boxw">
+				<ul class="CheckList">
+					<li class="check_active">招商首页</li>
+					<li>申请进度</li>
+					<li>招商标准</li>
+					<li>资费标准</li>
+				</ul>
+			</div>
+		</div>
+		<div class="boxw">
+			<div class="check_message_1" id="check_message_1">
+				<ul class="check_num">
+					<li class="m_item_first">
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class=" m_item_active">
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="m_item_active">
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="m_item_active">
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="m_item_last"></li>
+				</ul>
+				<ul class="check_text">
+					<li class="active">
+						<i>1</i> 查看入住须知及协议
+					</li>
+					<li class="active">
+						<i>2</i> 填写公司信息
+					</li>
+					<li class="active">
+						<i>3</i> 填写店铺信息
+					</li>
+					<li class="active">
+						<i>4</i> 完成，等待审核
+					</li>
+					<li>
+						<i>5</i> 付款
+					</li>
+					<li>
+						<i>6</i> 入驻成功
+					</li>
+				</ul>
+			</div>
+			<div class="wait_review clearfix">
+				<h1></h1>
+				<p>您填写的信息已提交，<br/> 请等待审核，我们会在三个工作日给你回复</p>
+			</div>
+		</div>
+		
+		<% include("/footer.btl"){}%>
+		<% include("/basejs.btl"){}%>
+		<script type="text/javascript" src="/static/js/settled/settled.js"></script>
+	</body>
+</html>

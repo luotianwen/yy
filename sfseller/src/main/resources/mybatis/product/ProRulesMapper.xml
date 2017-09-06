@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- SKU表(p_pro_rules)Mapper -->
+<mapper namespace="prorulesMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	sku ,pid ,stocks ,weight ,costprice ,marketprice ,price ,number , lasttime ,updatename ,remark ,colorid ,specid ,starttime ,endtime ,activitytype ,activityprice ,activitystocks
+    </sql>
+	
+    <resultMap type="com.shifeng.entity.product.ProRules" id="ProRulesReturnMap">
+	  <!-- sku -->
+      <id column="sku" property="sku"/>
+	  <!-- 商品编号 -->
+      <result column="pid" property="pid"/>
+	  <!-- 库存 -->
+      <result column="stocks" property="stocks"/>
+	  <!-- 重量 -->
+      <result column="weight" property="weight"/>
+	  <!-- 进货价 -->
+      <result column="costprice" property="costprice"/>
+	  <!-- 市场价 -->
+      <result column="marketprice" property="marketprice"/>
+	  <!-- 世峰价 -->
+      <result column="price" property="price"/>
+	  <!-- 商品货号 -->
+      <result column="number" property="number"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 颜色 -->
+      <result column="colorid" property="colorid"/>
+	  <!-- 规格 -->
+      <result column="specid" property="specid"/>
+	  <!-- 开始时间 -->
+      <result column="starttime" property="starttime"/>
+	  <!-- 结束时间 -->
+      <result column="endtime" property="endtime"/>
+	  <!-- 活动类型 -->
+      <result column="activitytype" property="activitytype"/>
+	  <!-- 活动价 -->
+      <result column="activityprice" property="activityprice"/>
+	  <!-- 活动数量 -->
+      <result column="activitystocks" property="activitystocks"/>
+   </resultMap>
+   
+    <resultMap type="com.shifeng.seller.product.dto.ProRulesDTO" id="ProRulesDTOReturnMap">
+        <id property="sku" column="sku"/>
+        <result property="pid" column="pid"/>
+        <result column="colorid" property="colorid"/>
+        
+        <association property="count" javaType="Integer" column="{pid=pid,colorid=colorid}" select="prorulesMapper.findCountByColor"></association>
+    </resultMap>
+    
+   	<!-- 查询所有表 -->
+	<select id="findAllProRulesByPid" parameterType="String" resultMap="ProRulesDTOReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_pro_rules
+		where pid = #{id}
+	</select>
+	
+	<!-- 查询所有表 -->
+	<select id="findAllProRulesPage" parameterType="Page" resultType="com.shifeng.seller.product.dto.ProRulesDTO">
+		select
+			ppr.sku,ppr.pid,ppr.number,ppr.stocks,ppr.colorid,ppr.specid,pp.name,pc.name colorname,ps.name specname
+		from 
+			p_pro_rules ppr
+		left join p_product pp on pp.id = ppr.pid
+		left join p_color pc on pc.id = ppr.colorid
+		left join p_spec ps on ps.id = ppr.specid
+		where pp.state != 3 and pp.shopid = #{t.shopid}
+		<if test="t.pid>0">
+			and pp.id = #{t.pid}
+		</if>
+		<if test="t.name!=null and t.name!=''">
+			and pp.name like CONCAT("%",#{t.name},"%")
+		</if>
+		<if test="t.state>0">
+			and pp.state = #{t.state}
+		</if>
+	</select>
+
+	<!-- 查询该颜色的SKU总数 -->
+	<select id="findCountByColor" parameterType="java.util.Map" resultType="Integer">
+	    select count(0) from p_pro_rules
+	    where pid = #{pid} and colorid = #{colorid}
+	</select>
+	
+	
+	<!-- 根据ID查询表 -->
+	<select id="findProRulesById" parameterType="String" resultMap="ProRulesReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_pro_rules
+		where 
+			sku = #{sku}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateProRules" parameterType="com.shifeng.entity.product.ProRules">
+		update 
+			p_pro_rules 
+		set
+	      	stocks = #{stocks},
+	      	weight = #{weight},
+	      	marketprice = #{marketprice},
+	      	price = #{price},
+	      	number = #{number},
+	      	lasttime = now(),
+	      	updatename = #{updatename},
+	      	colorid = #{colorid},
+	      	specid = #{specid}
+		 where
+			sku = #{sku}
+	</update>
+
+	<!-- 批量新增表 -->
+	<insert id="saveProRules" parameterType="java.util.List" useGeneratedKeys="true" keyColumn="sku" keyProperty="sku">
+		insert into p_pro_rules
+			(
+				pid, stocks, weight, marketprice, price, number,
+				lasttime, updatename, colorid, specid,activitytype
+			)
+		values
+			<foreach collection="list" item="item" separator=",">
+			    (
+					#{item.pid},#{item.stocks},#{item.weight},#{item.marketprice},#{item.price},#{item.number},
+					now(),#{item.updatename},#{item.colorid},#{item.specid},0
+				)
+			</foreach>
+	</insert>
+  
+	<!-- 新增表 -->
+	<insert id="saveProRule" parameterType="com.shifeng.entity.product.ProRules" useGeneratedKeys="true" keyColumn="sku" keyProperty="sku">
+		insert into p_pro_rules
+			(
+				pid, stocks, weight, marketprice, price, number,
+				lasttime, updatename, colorid, specid,activitytype
+			)
+		values
+			(
+				#{pid},#{stocks},#{weight},#{marketprice},#{price},#{number},
+				now(),#{updatename},#{colorid},#{specid},0
+			)
+	</insert>
+	
+	
+	<!-- 修改库存 -->
+	<update id="updateProRulesStocks" parameterType="java.util.Map">
+	    <foreach collection="sku" index="index" item="item" separator=";">
+	        update 
+				p_pro_rules ppr
+			set
+		      	stocks = #{stocks[${index}]},
+		      	lasttime = now(),
+		      	updatename = #{updatename}
+			 where
+				sku = #{item} and (select count(0) from p_product pp where pp.id = ppr.pid and pp.shopid = #{shopid})>0
+	    </foreach>
+	</update>
+	
+	<select id="isHasProRules" parameterType="java.util.Map" resultType="String">
+		select count(0)
+		from p_pro_rules ppr
+		left join p_product pp on pp.id = ppr.pid
+		where pp.shopid = #{shopid} and ppr.sku = #{sku}
+	</select>
+	
+	<!-- 删除 -->
+	<delete id="deleteProRules" parameterType="java.util.Map">
+		delete from p_pro_rules
+		where sku not in (${id}) and pid = #{pid}
+	</delete>
+	
+	<!-- 修改产品最后修改时间 -->
+	<update id="updateSkuLasttime" parameterType="String">
+	    update p_pro_rules set
+	    	lasttime = now()
+	    where pid = #{id}
+	</update>
+	
+</mapper>

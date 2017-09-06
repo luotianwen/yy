@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/js/layer/skin/layer.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/shop_car.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/order/car.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'购物车'}){}%>
+<% include("/detailnav.btl"){}%>
+
+<%if(isEmpty(carts)){%>
+<!--购物车为空的时候-->
+<div class="boxw no_msg"  >
+    <div class="nm_hint">
+        <div class="nm_logo">
+        </div>
+        <div class="nm_matter">
+            <span>购物车空空的哦~，去看看心仪的宝贝吧~</span>
+            <a href="/">去购物<i></i></a>
+        </div>
+    </div>
+</div>
+<%}else{%>
+<div class="boxw shop_msg" >
+    <div class="sm_title_1">
+        <ul class="control_1">
+            <li class="st1_item_1"><input type="checkbox"  id="all" />全选</li>
+            <li class="st1_item_2">商品信息</li>
+            <li class="st1_item_3">单价</li>
+            <li class="st1_item_4">数量</li>
+            <li class="st1_item_5">小计</li>
+            <li class="st1_item_6">操作</li>
+        </ul>
+    </div>
+    <form id="cartform" >
+        <input hidden name="skucheck" id="skus" >
+        <input hidden name="goodsNumberInput" id="nums" >
+        <input hidden name="cart" id="carts" >
+    </form>
+    <% for(shop in carts){%>
+
+    <div class="buy_msg">
+        <div class="b_title">
+            <input type="checkbox" name="shopcheck" onclick="checkAllShop(this,${shop.shopid})" />${shop.shopName}
+        </div>
+        <%for(cart in shop.wareList ){%>
+        <table class="bm_news">
+            <tr class="bn_menu">
+                <td class="bn_item_1">
+                	<input type="checkbox" name="skucheck"  value="${cart.sku}" shopid="${shop.shopid}" price="${cart.price}" />
+                	<input type="hidden" id="cartid${cart.sku}" value="${cart.id}"/>
+                </td>
+                <td class="bn_item_2"><img src="${cart.colorPic}" /></li></td>
+                <td class="bn_item_3"><a href="/detail/${cart.sku}.html" target="_blank">${cart.pName}</a></td>
+                <td class="bn_item_4"><span class="color">颜色：<i>${cart.colorName}</i></span><span class="size">尺码：<i>${cart.specName}</i></span></td>
+                <td class="bn_item_5" >￥${cart.price}</td>
+                <td class="bn_item_6">
+                    <div class="q_con">
+                        <!--点击数量为一或者达到数量限制时，按钮变色无法继续点击class名limit-->
+                        <a  class="lessBtn" sku="${cart.sku}" price="${cart.price}"id="lessBtn${cart.sku}">-</a>
+                        <input class="l" id="goodsNumberInput${cart.sku}" readonly name="goodsNumberInput" type="text" value="${cart.number}">
+                        <a  class="addBtn" sku="${cart.sku}" price="${cart.price}" id="addBtn${cart.sku}">+</a>
+                    </div>
+                </td>
+                <td class="bn_item_7" id="price${cart.sku}">￥${parseDouble(cart.price)*cart.number}</td>
+                <td class="bn_item_8">
+                    <span class="joincart" sku="${cart.sku}">移入我的收藏</span>
+                   <!-- <span class="">加到我的关注</span>-->
+                    <span class="deletecart"  sku="${cart.sku}">删除</span>
+                </td>
+            </tr>
+
+        </table>
+        <%}%>
+    </div>
+    <%}%>
+
+    <div class="sm_title_2">
+        <ul class="control_2">
+            <li class="st2_item_1"><input type="checkbox" id="all2" />全选</li>
+            <li class="st2_item_2">
+                <span id="deleteskus">删除所选商品</span>
+                <span id="joinskus">移入我的收藏</span>
+               <!-- <span>清除失败商品</span>-->
+            </li>
+            <li class="st2_item_4_disable" id="st2_item_4">去结算</li>
+            <li class="st2_item_3">
+                <span class="s_span_1">已选<i id="count">0</i>商品</span>
+                <span class="s_span_2">总计：<i id="money">￥0.00</i></span>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<%}%>
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+
+</body>
+
+</html>

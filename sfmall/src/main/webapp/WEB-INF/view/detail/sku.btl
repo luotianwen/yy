@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>${detail.pName}</title>
+    <meta name="keywords" content="${detail.pName}" />
+    <meta name="description" content="${detail.goods_subtitle}" />
+    <meta name="Robots" content="all">
+    <meta name="author" content="世峰户外商城">
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/detail.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/jquery.lazyload.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/detail/pages.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/detail/sku.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/jquery.qrcode.min.js"></script>
+</head>
+<body>
+<% include("/top_header.btl"){}%>
+<div class="seek">
+    <div class="boxw" style="height: 100%;">
+        <a href="/index.html" class="logo">
+            <img src="/static/img/logo.png"/>
+        </a>
+        <span class="cutting_line"></span>
+        <div class="store_msg">
+            <span class="s_name">${detail.shopName}</span>
+            <div class="s_grade">
+                <span>综合评分</span>
+                <div class="atar_Show">
+                    <p tip="5"></p>
+                </div>
+            </div>
+        </div>
+        <div class="shop_search">
+            <ul id="shelper" style="display: none;"></ul>
+            <div class="form">
+                <input type="text" name="keyword" id="keyword" value="" placeholder="冲锋衣"/>
+                <a href=""><i></i></a>
+            </div>
+            <div class="search_btn">
+                <a class="global">搜全站</a><a data_id="${detail.shopid}" class="home_office">搜本店</a>
+            </div>
+            <ul class="links">
+                <!-- <li><a href="">世峰户外</a></li>
+                <li><a href="">世峰户外</a></li>
+                <li><a href="">世峰户外</a></li>
+                <li><a href="">世峰户外</a></li>
+                <li><a href="">世峰户外</a></li>
+                <li><a href="">世峰户外</a></li> -->
+            </ul>
+        </div>
+        <a class="shop_cart">
+            <i></i>
+            我的购物车
+        </a>
+    </div>
+</div>
+<% include("/detailnav.btl"){}%>
+<div class="description">
+    <div class="boxw" style="position: relative;">
+        <div class="sh-goods-gallery">
+            <div id="preview" class="preview">
+                <img style="width:400px; height:400px;" src="${detail.logo}" alt="${detail.pName}">
+                <i class="lens"><a href="${detail.logo}" target="_blank"></a></i>
+                <div class="jqZoomPup" id="jqZoomPup" style="display: none; left: 70.5px; top: 200px;">&nbsp;</div>
+            </div>
+            <div class="jqzoom-scroll clearfix" id="jqzoom-scroll">
+                <a class="buttons prev disableds"></a>
+                <a class="buttons next"></a>
+                <div class="items">
+                    <ul style="left: 0px; width: 99999px;" class="G_tab">
+                        <%
+                        if(!isEmpty(detail.imgs))
+                        for( img in detail.imgs){
+
+                        %>
+                        <!--class="active"-->
+                        <li ><img src="${img}"></li>
+                        <%
+                        }
+                        %>
+                    </ul>
+                </div>
+            </div>
+            <div class="sh-goods-share clearfix">
+                <div class="no">商品货号:${detail.number}</div>
+                <!--点击收藏商品添加class名active -->
+                <div class="enshrine">
+                    <i></i>收藏商品
+                </div>
+                <!--<div class="share">
+                    <i></i>分享
+                </div>
+                <div class="report">举报</div>-->
+            </div>
+        </div>
+        <div id="pre-right" class="pre-right">
+            <img src="${detail.logo}" id="bigImg">
+        </div>
+        <div class="merchandise_news">
+            <h1 class="news_title">${detail.pName}</h1>
+            <p class="feature">${detail.goods_subtitle}</p>
+            <div class="preciprice">
+                <div class="price">
+                    <span class="sfp">世峰价</span>
+                    <span class="vip_price"><i>￥</i>${detail.price}</span>
+                    <span class="original_price">￥${detail.marketprice}</span>
+                </div>
+                <div class="activity">
+                    <!--<span class="a_title">活动</span>
+                    <span class="a_content"> <a href="">满399.00减30.00，满599.00减50.00，满899.00减100.00</a><i></i></span>
+                    <span class="discount">先领券在购物 GO>></span>-->
+                    <!--点击箭头多条显示数据-->
+                    <!--<div class="all_pre">
+                        <span class="a_content"><a href="">满399.00减30.00，满599.00减50.00，满899.00减100.00</a><i></i></span>
+                        <span class="a_content"><a href="">满399.00减30.00，满599.00减50.00，满899.00减100.00</a></span>
+                        <span class="a_content"> <a href="">满399.00减30.00，满599.00减50.00，满899.00减100.00</a></span>
+                        <span class="a_content"> <a href="">满399.00减30.00，满599.00减50.00，满899.00减100.00</a></span>
+                        <span class="a_content"> <a href="">满399.00减30.00，满599.00减50.00，满899.00减100.00</a></span>
+                        <span class="a_content"><a href="">满399.00减30.00，满599.00减50.00，满899.00减100.00</a></span>
+                        <span class="a_content"><a href="">满399.00减30.00，满599.00减50.00，满899.00减100.00</a></span>
+                    </div>-->
+
+                </div>
+                <div class="accumulative">
+                    <span>累计评价</span><i id="ljpj">20+</i>
+                </div>
+            </div>
+            <div class="site">
+                <span class="title">配送至</span>
+                <!--点击选中样式 class名pitch-->
+                <div class="s_menu">
+                    <div>
+                        <span class="origin">${detail.originName}</span>至<span class="end"><i >${provinceName}</i><em class="s_pull_down"></em></span></div>
+
+                    <div class="s_item">
+                        <div class="s_item_1">
+                            <ul >
+                                <%for( province in provinces){%>
+                                   <li onclick="checkProvince(${province.id},'${province.name}')">${province.name}</li>
+                                 <%}%>
+                            </ul>
+                        </div>
+                        <!--<div class="s_item_2">
+                            <ul>
+                                <li>朝阳区</li>
+
+                            </ul>
+                            <div class="last_step">
+                                <span></span>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="service">
+                <span class="title">服务</span><span class="service_con">由<i><a href="/shop/${detail.shopid}.html">${detail.shopName}</a></i>发货并提供售后服务</span>
+            </div>
+            <div class="freight">
+                <span class="title">运费</span><span class="freight_con">${freight}</span>
+            </div>
+            
+            <%if(!isEmpty(colors)){%>
+            <div class="colour">
+                <span class="title">颜色</span>
+                <ul class="c_menu">
+                   <%
+                    for( color in colors){
+                    if(isEmpty(color.img))
+                        continue;
+                    %>
+                    <li style="cursor: pointer" <%if(color.check==1){%> class="active" <%}else{ if(color.status==0){%> class="c_item no" <%}else{%> class="c_item" <%}}%>  title="${color.name}" <%if(color.status==1&&color.id!=detail.sku ){%> onclick="check('${color.id}')" <%}%>>
+                        <img src="${color.img}"/>
+                        <span>${color.name}</span>
+                    </li>
+                    <%}%>
+                </ul>
+            </div>
+            <%}%>
+            
+            <%if(!isEmpty(specs)){%>
+            <div class="standard">
+                <span class="title">规格</span>
+                <ul class="stand_menu">
+					<%
+                    	for( spec in specs){
+                    %>
+                       <li style="cursor: pointer" <%if(spec.check==1){%> class="active" <%}else{ if(spec.status==0){%> class="no" <%}}%> <%if(spec.status==1&&spec.id!=detail.sku){%> onclick="check('${spec.id}')" <%}%>  >${spec.name}</li>
+                    <%
+                    	}
+                    %>
+                </ul>
+            </div>
+            <%}%>
+            
+            <div class="quantity">
+                <span class="title">数量</span>
+                <div class="q_con">
+                    <!--点击数量为一或者达到数量限制时，按钮变色无法继续点击class名limit-->
+                    <a id="lessBtn" class="lessBtn" num="${detail.stocks}">-</a>
+                    <input class="l" id="goodsNumberInput" type="text" value="1" num="${detail.stocks}">
+                    <a id="addBtn" class="addBtn" num="${detail.stocks}">+</a>
+                </div>
+                <span class="err-info" id="errNum" style="display: none"><i></i><em id="errMsg">限购6件</em></span>
+                <span class="inventory">库存<i>${detail.stocks}</i>件</span>
+            </div>
+            <div class="operate_btn">
+            	<form id="buy_form">
+            		<input type="hidden" id="skucheck" name="skucheck"/>
+            		<input type="hidden" id="buy_num" name="goodsNumberInput"/>
+            	</form>
+                <button class="buy_now">立即购买</button>
+                <button class="join_car"><i></i><span >加入购物车</span></button>
+                <div class="shop_code">
+                    <span><i></i>二维码购买</span>
+                    <div class="s_code" >
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="shop_recommend" style="display:none;">
+            <div class="title">
+                <span>大家都在买</span>
+            </div>
+            <div class="shop_show ">
+
+                <ul id="everybodybuy" cid="${detail.cid}" pcid="${detail.pcid}" pid="${detail.pid}" sku="${detail.sku}">
+
+                </ul>
+            </div>
+            <div class="cut_btn">
+                <a class="top_btn"></a>
+                <a class="down_btn"></a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--猜你喜欢-->
+<div class="related" style="display:none;">
+    <div class="boxw">
+        <div class="title">
+            <p>猜你喜欢<span><i>GUESS</i>YOU LIKE</span></p>
+        </div>
+        <div class="r_menu">
+            <a class="left_btn"></a>
+            <a class="right_btn"></a>
+            <div class="r_show_shop">
+                <ul id="guessyoulike">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="Shop_details">
+    <div class="boxw" style="position: relative;">
+        <div class="evaluate">
+            <div class="total_points">
+                <h3>${detail.shopName}<a href="/shop/${detail.shopid}.html"></a></h3>
+                <div class="t_info">
+                    <div class="t_item t_shop">
+                        <span class="title">商品</span>
+                        <div class="percent">
+                            <span></span>
+                        </div>
+                        <i class="grade">5.0</i>
+                    </div>
+                    <div class="t_item t_serve">
+                        <span class="title">服务</span>
+                        <div class="percent">
+                            <span></span>
+                        </div>
+                        <i class="grade">5.0</i>
+                    </div>
+                    <div class="t_item t_logistics">
+                        <span class="title">物流</span>
+                        <div class="percent">
+                            <span></span>
+                        </div>
+                        <i class="grade">5.0</i>
+                    </div>
+                    <span class="b_boder"></span>
+                    <div class="store_btn">
+                        <a data_type="no" href="javascript:void(0)" id="bookmark" shopid="${detail.shopid}" style="margin-right: 9px;">收藏店铺</a>
+                        <a href="/shop/${detail.shopid}.html">进入店铺</a>
+                    </div>
+                </div>
+            </div>
+            <div class="store_search">
+                <h3>店内搜索<i></i></h3>
+                <div class="ss_content">
+                    <div class="keyword">
+                        <span>关键字：</span><input type="text" />
+                    </div>
+                    <div class="price">
+                        <span>价格：</span>
+                        <div class="data">
+                            <input type="text" /><i>~</i><input type="text" />
+                        </div>
+                    </div>
+                    <div class="search_btn">
+                        <a href="">搜索</a>
+                    </div>
+                </div>
+            </div>
+            <div class="ranking_list" style="display:none;">
+                <div class="list_name">
+                    <span class="r_collect active"><i></i>销量榜</span>
+                    <span class="sales_num"><i></i>收藏榜</span>
+                </div>
+                <div class="list_content">
+                    <ul>
+                        <!--<li>
+                            <div class="item_msg">
+                                <img src="/static/img/TB2AZv4uXXXXXXLXXXXXXXXXXXX_!!2186362266@2x.png" />
+                                <span>极星户外男士功能长裤 夏季吸汗快干裤子户极星户外男士功能长裤 夏季吸汗快干裤子户星户外男士功能长裤 夏季吸汗快干裤子户星户外男士功能长裤 夏季吸汗快干裤子户</span>
+                            </div>
+                            <div class="item_price">
+                                <span class="ranking">NO.1</span><span class="price_num">￥199.00</span>
+                            </div>
+                        </li>-->
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="commodity_data">
+            <!--当tab滑到顶部添加class名fixed-bar-->
+            <div class="cd_nav">
+                <div class="store_name">
+                    <h3>${detail.shopName}<a href="/shop/${detail.shopid}.html"></a></h3>
+                </div>
+                <div class="function_content">
+                    <div class="main_function">
+                        <ul>
+                            <li class="active">
+                                <span>商品详情</span>
+                                <i></i>
+                            </li>
+                            <li>
+                                <span>商品评价<em id="sppj"> </em></span>
+                                <i></i>
+                            </li>
+                            <li>
+                                <span>售后保障</span>
+                                <i></i>
+                            </li>
+                            <li>
+                                <span>商品问答</span>
+                                <i></i>
+                            </li>
+                        </ul>
+                        <div class="shop_code">
+                            <span><i></i>二维码购买</span>
+                            <div class="s_code">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a class="join_car">
+                    加入购物车
+                </a>
+            </div>
+            <div class="cd_content">
+                <div class="cd_item product b_show">
+                    <div class="product_standard">
+                        <ul>
+                            <li title=""><i class="title">品牌：</i><i class="name">${detail.brandName}</i></li>
+                            <li title=""><i class="title">商品编号：</i><i class="name"></i>${detail.number}</li>
+                            <li title=""><i class="title">店铺：</i><i class="name"></i>${detail.shopName}</li>
+                            <li title=""><i class="title">商品毛重：</i><i class="name">${detail.weight}KG</i></li>
+
+                        </ul>
+                    </div>
+                    <div class="img_msg">
+                        ${detail.description}
+                    </div>
+                    <!-- <div class="brand_story">
+                        <div class="title">品牌故事<span><i>BRAND</i>STORY</span></div>
+                        
+                        <div class="bs_content" id="bs_content"   brandid="${detail.brandid}">
+
+                        </div>
+                    </div> -->
+                    <div class="user_evaluation">
+                        <div class="title">
+                            商品评价
+                        </div>
+                        <div class="comment_msg">
+                            <div class="comment_percent">
+                                <strong class="percent_tit">好评度</strong>
+                                <div class="percent_con">100<span>%</span> </div>
+                            </div>
+                           <!-- <div class="percent_info">
+                                <div class="tag_list">
+                                    <span class="good">性价比高(67)</span>
+                                    <span class="good">性能不错(57)</span>
+                                    <span class="good">外观漂亮(55)</span>
+                                    <span class="good">东西不错(46)</span>
+                                </div>-->
+                                <!--没有评论时-->
+                                <!--<div class="notag"><img src="/static/img/no_discuss.png"/></div>-->
+                          <!--  </div>-->
+                        </div>
+                        <div class="comments_list">
+                            <div class="tab_main">
+                                <ul class="filter-list">
+                                   <!-- <li class="active">
+                                        <a href="#">全部评价</a>
+                                        <i></i>
+                                    </li>
+                                    <li>
+                                        <a href="#">追评</a>
+                                        <i></i>
+                                    </li>
+                                    <li>
+                                        <a href="#">好评</a>
+                                        <i></i>
+                                    </li>
+                                    <li>
+                                        <a href="#">中评</a>
+                                        <i></i>
+                                    </li>
+                                    <li>
+                                        <a href="#">差评</a>
+                                        <i></i>
+                                    </li>
+                                    <li>
+                                        <a href="#">有图</a>
+                                        <i></i>
+                                    </li>-->
+                                </ul>
+                                <div class="extra">
+                                    <div class="sort_select">
+                                        <div class="current"><span>推荐排序</span><i></i></div>
+                                        <div class="others">
+                                            <div class="curr"><span>推荐排序</span><i></i></div>
+                                            <ul>
+                                                <li>推荐排序</li>
+                                                <li>时间排序</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab_con">
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cd_item reviews">
+                    <div class="user_evaluation">
+                        <div class="title">
+                            商品评价
+                        </div>
+                        <div class="comment_msg">
+                            <div class="comment_percent">
+                                <strong class="percent_tit">好评度</strong>
+                                <div class="percent_con">100<span>%</span> </div>
+                            </div>
+                            <div class="percent_info">
+                                <!--<div class="tag_list">
+                                    <span class="good">性价比高(67)</span>
+                                    <span class="good">性能不错(57)</span>
+                                    <span class="good">外观漂亮(55)</span>
+                                    <span class="good">东西不错(46)</span>
+                                </div>-->
+                                <!--没有评论时-->
+                                 <div class="notag"><img src="/static/img/no_discuss.png"/></div>
+                            </div>
+                        </div>
+                        <div class="comments_list">
+                            <div class="tab_main">
+                                <ul class="filter-list">
+                                    <li class="active">
+                                        <a href="#">全部评价</a>
+                                        <i></i>
+                                    </li>
+                                    <li>
+                                        <a href="#">追评</a>
+                                        <i></i>
+                                    </li>
+                                    <li>
+                                        <a href="#">好评</a>
+                                        <i></i>
+                                    </li>
+                                    <li>
+                                        <a href="#">中评</a>
+                                        <i></i>
+                                    </li>
+                                    <li>
+                                        <a href="#">差评</a>
+                                        <i></i>
+                                    </li>
+                                    <li>
+                                        <a href="#">有图</a>
+                                        <i></i>
+                                    </li>
+                                </ul>
+                                <div class="extra">
+                                    <div class="sort_select">
+                                        <div class="current"><span>推荐排序</span><i></i></div>
+                                        <div class="others">
+                                            <div class="curr"><span>推荐排序</span><i></i></div>
+                                            <ul>
+                                                <li>推荐排序</li>
+                                                <li>时间排序</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab_con">
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cd_item guarantee b_show">
+                    <img src="/static/img/guarantee_img.jpg"/>
+                </div>
+
+                <div class="cd_item commodity">
+                    商品问答
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+<script type="text/javascript">
+	var userId = "";
+	<%
+		if(isNotEmpty(session.MALL_SESSION_USER)){
+	%>
+		userId = "${session.MALL_SESSION_USER.uId}";
+	<%
+		}
+	%>
+</script>
+<script type="text/javascript" src="/static/js/search.js"></script>
+
+</body>
+</html>

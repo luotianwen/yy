@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rolesMapper">
+	<sql id="Base_Column_List">
+    rId ,rName ,rOrder ,rUpUser ,rUpTime ,aId
+    </sql>
+
+    <resultMap type="com.shifeng.op.entity.authority.Roles" id="RolesReturnMap">
+      <id column="rId" property="rId"/>
+      <result column="rName" property="rName"/>
+      <result column="rOrder" property="rOrder"/>
+      <result column="rUpUser" property="rUpUser"/>
+      <result column="rUpTime" property="rUpTime"/>
+      <result column="aId" property="aId"/>
+   </resultMap>
+   
+   <!-- 分组关联查询 -->
+   <select id="getRolesByAId" parameterType="String" resultMap="RolesReturnMap" >
+   SELECT r.rId ,rName ,rOrder ,u.uName rUpUser ,rUpTime ,aId
+   FROM op_roles r
+   LEFT JOIN op_users u ON r.rUpUser = u.U_ID
+   WHERE aId=#{aId}
+   ORDER BY rOrder
+   </select>
+   
+   <!-- findRoleByRId 根据角色ID查询该角色 -->
+   <select id="findRoleByRId" parameterType="String" resultMap="RolesReturnMap" >
+   select <include refid="Base_Column_List"/>
+   from op_roles
+   where rId = #{rId}
+   </select>
+   
+   <!-- 查询该分组对应的角色ID集合（删除角色对应的权限） -->
+   <select id="selectRoleIdByAId" parameterType="String" resultType="String">
+   select rId from op_roles WHERE aId=#{aId}
+   </select>
+   
+   <!-- 根据分组ID删除该分组角色 -->
+   <delete id="deleteRoleByAid" parameterType="String">
+   DELETE FROM op_roles WHERE aId=#{aId}
+   </delete>
+	
+	<!-- 添加 -->
+	<insert id="addRole" parameterType="com.shifeng.op.entity.authority.Roles" >
+	INSERT INTO op_roles
+	(
+		rName ,rOrder ,rUpUser ,rUpTime ,aId
+	)
+	VALUES(#{rName},#{rOrder} ,#{rUpUser},#{rUpTime} ,#{aId}  )
+	</insert>
+	
+	<!-- 根据角色ID删除角色 -->
+	<delete id="deleteRoleByRId" parameterType="String">
+	DELETE FROM op_roles WHERE rId=#{rId}
+	</delete>
+	
+	<!-- 更新角色信息 -->
+	<update id="updateRoleByRId" parameterType="com.shifeng.op.entity.authority.Roles">
+	UPDATE op_roles SET rName=#{rName},rOrder=#{rOrder},rUpUser=#{rUpUser},rUpTime=#{rUpTime}
+	WHERE rId=#{rId}
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 根据分组Id获取分组下的所有角色-->
+   <select id="getSysUserRoleByaId" parameterType="String" resultType="java.util.HashMap" >
+	   SELECT r.RID ,RNAME 
+	   FROM op_roles r
+	   WHERE aId=#{aId}
+	   ORDER BY rOrder
+   </select>
+	
+	
+	
+	
+</mapper>

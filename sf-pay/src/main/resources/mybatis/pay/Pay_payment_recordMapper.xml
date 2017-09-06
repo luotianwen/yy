@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 支付信息对账表(pay_payment_record)Mapper -->
+<mapper namespace="payPaymentRecordMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    serial_number,order_id ,subject ,trade_no ,total_fee ,trade_status ,payment_time ,return_time ,return_fee ,order_type ,payment_type ,payment_type_name ,lasttime ,updatename ,remark 
+    </sql>
+
+    <resultMap type="com.shifeng.pay.entity.pay.PayPaymentRecord" id="PayPaymentRecordReturnMap">
+		<!-- 流水号 -->
+      <id column="serial_number" property="serial_number"/>
+		<!-- 支付交易订单号 -->
+      <result column="order_id" property="order_id"/>
+		<!-- 订单名称 -->
+      <result column="subject" property="subject"/>
+		<!-- 支付交易号 -->
+      <result column="trade_no" property="trade_no"/>
+		<!-- 交易金额 -->
+      <result column="total_fee" property="total_fee"/>
+		<!-- 支付状态（0：成功；1：失败；2：全额退款；3：非全额退款） -->
+      <result column="trade_status" property="trade_status"/>
+		<!-- 交易付款时间 -->
+      <result column="payment_time" property="payment_time"/>
+		<!-- 交易退款时间 -->
+      <result column="return_time" property="return_time"/>
+		<!-- 退款金额 -->
+      <result column="return_fee" property="return_fee"/>
+		<!-- 订单类型 -->
+      <result column="order_type" property="order_type"/>
+		<!-- 支付类型 -->
+      <result column="payment_type" property="payment_type"/>
+		<!-- 支付类型名称 -->
+      <result column="payment_type_name" property="payment_type_name"/>
+		<!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+		<!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+		<!-- 备注 -->
+      <result column="remark" property="remark"/>
+   </resultMap>
+   
+   
+   	<!-- 新增 -->
+	<insert id="savePayPaymentRecord" parameterType="com.shifeng.pay.entity.pay.PayPaymentRecord">
+		insert into pay_payment_record
+			(
+		      serial_number,order_id,subject,trade_no,total_fee,trade_status,payment_time,return_time,return_fee,order_type,payment_type,payment_type_name,lasttime,updatename,remark
+			)
+		values
+			(
+		      #{serial_number},
+		      #{order_id},
+		      #{subject},
+		      #{trade_no},
+		      #{total_fee},
+		      #{trade_status},
+		      #{payment_time},
+		      #{return_time},
+		      #{return_fee},
+		      #{order_type},
+		      #{payment_type},
+		      #{payment_type_name},
+		      #{lasttime},
+		      #{updatename},
+		      #{remark}
+			)
+	</insert>
+	
+	<!-- 获取订单支付信息 -->
+	<select id="getPayOrderInfo" parameterType="java.util.Map" resultType="com.shifeng.pay.entity.order.OrderPayInfo">
+		select
+			order_id,total_fee,order_type,trade_status
+		from 
+			pay_payment_record
+		where
+				order_id = #{order_id}
+		   and
+		        order_type = #{order_type}
+	</select>
+   
+  
+	
+</mapper>

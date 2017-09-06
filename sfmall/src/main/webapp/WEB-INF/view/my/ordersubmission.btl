@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/order_success.css" />
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+    
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'结算页'}){}%>
+<% include("/detailnav.btl"){}%>
+<div class="boxw indent_submit_successfully">
+	<input type="hidden" id="type" name="type" value="${type}"/>
+    <div class="su_title">
+        <i class="tick"></i>
+        <div class="tick_msg">
+            <span class="tm_item_1"><img src="/static/img/success_msg_img.png"/></span>
+            <span class="tm_item_2">请您于<i id="down"><b>0</b>时<b>0</b>分<b>0</b>秒</i>内完成支付 (逾期将被取消)</span>
+        </div>
+    </div>
+    	
+    <div class="related">
+    	<input type="hidden" id="orderId" value="${orderId}"/>
+        <div class="title">
+            <p>支付方式</p>
+        </div>
+        <div class="r_menu">
+            <ul class="clearfix" id="paymethod">
+                <!--点击选中状态active-->
+                <li data_type="1" class="active">
+                    <span class="li_item_1"><img src="/static/img/wx_img.png"/></span>
+                    <span class="li_item_2">微信支付</span>
+                    <i></i>
+                </li>
+                <li data_type="2">
+                    <span class="li_item_1"><img src="/static/img/zfb_img.png"/></span>
+                    <span class="li_item_2">支付宝支付</span>
+                    <i></i>
+                </li>
+            </ul>
+            <button id="pay">确认支付</button>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <div class="title">温馨提示：</div>
+        <ul>
+            <li>1. 订单发票由商城卖家为您开具，不同库房发出的订单，开具的发票无法合并；</li>
+            <li>2. 发票是有效交易的重要凭据，可作为单位报销凭证，请在提交订单信息时向卖家申请开具发票，否则商城卖家将无法为您补开订单发票；</li>
+            <li>3. 运费无法提供发票，如您需要运费发票作为报销凭证，请您向快递公司配送员索取；</li>
+            <li>4. 卖家默认开具普通发票，如您是企业单位，需要增值税发票，请您在提交订单前先向商城卖家确认是否可开具增值税发票；</li>
+            <li>5. 发票抬头将自动打印到发票上，请不要填写与发票抬头无关的信息；</li>
+            <li>6. 部分卖家商品发票将会在商品签收后再按收货地址向您寄出；</li>
+            <li>7. 了解更多关于发票事宜请点击查看<a href="#">发票制度</a>；</li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+	var the_s = ${time};
+</script>
+<script src="/static/js/order/ordersubmission.js" type="text/javascript" charset="utf-8"></script>
+
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+</body>
+
+</html>

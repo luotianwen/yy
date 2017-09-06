@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 店铺负责人员(s_store_supervisor)Mapper -->
+<mapper namespace="storesupervisorMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	s_merchants_id,name ,phone ,landline ,email ,qq ,type 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.StoreSupervisor" id="StoreSupervisorReturnMap">
+	  <!-- 入驻id -->
+      <id column="s_merchants_id" property="s_merchants_id"/>
+	  <!-- 负责人姓名 -->
+      <result column="name" property="name"/>
+	  <!-- 负责人手机号 -->
+      <result column="phone" property="phone"/>
+	  <!-- 负责人座 机 -->
+      <result column="landline" property="landline"/>
+	  <!-- 负责人电子邮箱 -->
+      <result column="email" property="email"/>
+	  <!-- 负责人QQ号码 -->
+      <result column="qq" property="qq"/>
+	  <!-- 类型 -->
+      <result column="type" property="type"/>
+   </resultMap>
+   
+	<!-- 修改表 -->
+	<update id="updateStoreSupervisor" parameterType="com.shifeng.mall.settled.dto.ShopDTO">
+		<foreach collection="storeSupervisors" item="item" separator=";">
+		    update s_store_supervisor set
+		      	name = #{item.name},
+		      	phone = #{item.phone},
+		      	landline = #{item.landline},
+		      	email = #{item.email},
+		      	qq = #{item.qq}
+			where
+				s_merchants_id = #{s_merchants_id} and type = #{item.type}
+		</foreach>
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveStoreSupervisor" parameterType="com.shifeng.mall.settled.dto.ShopDTO">
+		insert into s_store_supervisor
+			(
+		      s_merchants_id, name, phone, landline, email, qq, type 
+			)
+		values
+			<foreach collection="storeSupervisors" item="item" separator=",">
+			    (
+			      #{s_merchants_id},
+			      #{item.name},
+			      #{item.phone},
+			      #{item.landline},
+			      #{item.email},
+			      #{item.qq},
+			      #{item.type}
+				)
+			</foreach>
+	</insert>
+	
+	<!-- 查询负责人数量 -->
+	<select id="findStoresupervisorCount" parameterType="String" resultType="Integer">
+	    select count(0) from s_store_supervisor where s_merchants_id = #{s_merchants_id}
+	</select>
+	
+	<!-- 查询该店铺负责人 -->
+	<select id="findAllStoreSupervisor" parameterType="String" resultMap="StoreSupervisorReturnMap">
+	    select name ,phone ,landline ,email ,qq ,type from s_store_supervisor
+	    where s_merchants_id = #{s_merchants_id}
+	</select>
+	
+</mapper>

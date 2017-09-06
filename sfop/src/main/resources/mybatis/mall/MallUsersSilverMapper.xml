@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 我的银币(mall_users_silver)Mapper -->
+<mapper namespace="malluserssilverMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+    <sql id="Base_Column_List">
+    	uid,silver ,lastsilver ,lasttime ,allsilver 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.mall.MallUsersSilver" id="MallUsersSilverReturnMap">
+        <!-- uid -->
+        <id column="uid" property="uid"/>
+        <!-- 已兑换银币 -->
+        <result column="silver" property="silver"/>
+        <!-- 剩余银币 -->
+        <result column="lastsilver" property="lastsilver"/>
+        <!-- 最后更新时间 -->
+        <result column="lasttime" property="lasttime"/>
+        <!-- 所有银币 -->
+        <result column="allsilver" property="allsilver"/>
+    </resultMap>
+
+    <!-- 查询所有表 -->
+    <select id="findAllMallUsersSilverPage" parameterType="Page" resultMap="MallUsersSilverReturnMap">
+        select
+        f.uid,f.silver ,f.lastsilver ,f.lasttime ,f.allsilver,
+        u.uname as name
+        from
+        mall_users_silver f,
+        mall_users u
+        where u.id=f.uid
+        <if test="t.uid!=null and t.uid!=''">
+            and f.uid = #{t.uid}
+        </if>
+        <if test="t.name!=null and t.name!=''">
+            and u.uname = #{t.name}
+        </if>
+
+    </select>
+
+    <!-- 根据ID查询表 -->
+    <select id="findMallUsersSilverById" parameterType="String" resultMap="MallUsersSilverReturnMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        mall_users_silver
+        where
+        uid = #{uid}
+    </select>
+
+    <!-- 修改表 -->
+    <update id="updateMallUsersSilver" parameterType="com.shifeng.entity.mall.MallUsersSilver">
+		update 
+			mall_users_silver 
+		set
+	      	silver = #{silver},
+	      	lastsilver = #{lastsilver},
+	      	lasttime = #{lasttime},
+	      	allsilver = #{allsilver}
+		 where
+			uid = #{uid}
+	</update>
+
+    <!-- 新增表
+    <insert id="saveMallUsersSilver" parameterType="com.shifeng.entity.mall.MallUsersSilver">
+		insert into mall_users_silver
+			(
+		      silver, lastsilver, lasttime, allsilver 
+			)
+		values
+			(
+		      #{silver},
+		      #{lastsilver},
+		      #{lasttime},
+		      #{allsilver}
+			)
+	</insert>
+-->
+    <!-- 删除 -->
+    <delete id="deleteMallUsersSilver" parameterType="String">
+  		delete from mall_users_silver
+  		where uid = #{uid}
+  	</delete>
+
+</mapper>

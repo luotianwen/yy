@@ -1,0 +1,11 @@
+<%if(!isEmpty(datas)){for( data in datas){%>
+<div class="item <%if(data.first==1){%> current<%}%>" id="${data.id}" <%if(dataLP.index>4){%> style="display: none" <%}%>>
+    <i class="icon-selected"></i>
+    <h3 class="name">${data.contacts}</h3>
+    <p>${data.provinceName+data.cityName+data.areaName+data.address}</p>
+    <p>${data.phone}</p>
+</div>
+<%}}else{%>
+
+<%}%>
+<script src="/static/js/order/cartshopaddress.js" type="text/javascript" charset="utf-8"></script>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 运费模板管理(o_freight)Mapper -->
+<mapper namespace="freightMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,shopid ,FfreightName ,isFree ,ruleType ,defaultFirstUnit ,defaultFirstMoney ,defaultLastUnit ,defaultLastMoney ,createTime ,lasttime ,updatename
+    </sql>
+
+    <resultMap type="com.shifeng.entity.freight.Freight" id="FreightReturnMap">
+	  <!-- 模板id -->
+      <id column="id" property="id"/>
+	  <!-- 店铺id -->
+      <result column="shopid" property="shopid"/>
+	  <!-- 模板名称 -->
+      <result column="FfreightName" property="ffreightName"/>
+	  <!-- 是否包邮1是2否 -->
+      <result column="isFree" property="isFree"/>
+	  <!-- 计费规则(1按件数;2按重量) -->
+      <result column="ruleType" property="ruleType"/>
+	  <!-- 默认首重 -->
+      <result column="defaultFirstUnit" property="defaultFirstUnit"/>
+	  <!-- 首重金额 -->
+      <result column="defaultFirstMoney" property="defaultFirstMoney"/>
+	  <!-- 每增加重量 -->
+      <result column="defaultLastUnit" property="defaultLastUnit"/>
+	  <!-- 每增加重量金额 -->
+      <result column="defaultLastMoney" property="defaultLastMoney"/>
+	  <!-- 创建时间 -->
+      <result column="createTime" property="createTime"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+ 
+   </resultMap>
+	<resultMap type="com.shifeng.entity.freight.FreightDetail" id="FreightDetailReturnMap">
+		<!-- 主键 -->
+		<id column="id" property="id"/>
+		<!-- 模板编号 -->
+		<result column="fid" property="fid"/>
+		<!-- 省份编号集合 -->
+		<result column="pid" property="pid"/>
+		<!-- 城市编号集合 -->
+		<result column="cid" property="cid"/>
+		<!-- 运费 -->
+		<result column="freights" property="freights"/>
+		<!-- 除外运费 -->
+		<result column="beyondFreight" property="beyondFreight"/>
+		<!-- 运费类型(1按件数；2按重量) -->
+		<result column="ruleType" property="ruleType"/>
+		<!-- 最后修改时间 -->
+		<result column="lasttime" property="lasttime"/>
+		<!-- 最后修改人 -->
+		<result column="updatename" property="updatename"/>
+		<result column="cityname" property="cityName"/>
+	</resultMap>
+
+ 
+ 	<!-- 获取商品运费 -->
+	<select id="getWareFreights" parameterType="java.util.Map" resultType="com.shifeng.dto.mall.freight.MallWareFreight">
+	
+		SELECT
+		   p.id, pr.sku,p.shopId,<!-- SUM( -->pr.weight<!-- ) weight -->,isFree,ruleType,defaultFirstUnit,defaultFirstMoney,defaultLastUnit,defaultLastMoney
+		   ,f.id freight_id,fd.id freight_detail_id ,firstunit,firstfee,addunit,addfee
+		FROM
+		  p_pro_rules pr
+		LEFT JOIN p_product p ON pr.pid = p.id	
+		LEFT JOIN s_freight f ON p.freight_master = f.id
+		LEFT JOIN s_freight_detail fd ON f.id = fd.fid AND FIND_IN_SET(#{cityId}, fd.city)
+		WHERE
+		  sku IN 
+			<foreach collection="wareList" item="item" index="index" separator="," open="(" close=")">
+				 #{item.sku}
+			</foreach> 
+		<!-- GROUP BY p.shopid,p.freight_master		 -->
+		
+		ORDER BY p.shopid
+	
+	
+	</select>  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+</mapper>

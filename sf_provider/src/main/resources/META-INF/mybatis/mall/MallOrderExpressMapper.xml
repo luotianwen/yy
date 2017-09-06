@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 订单快递Mapper -->
+<mapper namespace="mallOrderExpressMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+ 
+  	
+  	<!-- 获取订单快递列表 -->
+  	<select id="getOrderExpress" parameterType="String" resultType="com.shifeng.dto.mall.order.OrderExpressDTO">
+		select
+		  expressNumber,expressId,ec.name expressName,ec.code expressCode,ec.phone expressPhone
+		from  o_express_order eo
+		left join o_expressconfig ec on eo.expressId = ec.id
+		WHERE 
+			orderId = #{orderId}
+  	</select>
+ 
+  	
+  	<!-- 获取订单快递列表 -->
+  	<select id="getOrderExpressList" parameterType="java.util.Map" resultType="com.shifeng.dto.mall.order.OrderExpressDetailDTO">
+		SELECT
+		  expressNumber,expressId,ec.name expressName,ec.code expressCode,ec.phone expressPhone
+		FROM  o_express_order eo
+		LEFT JOIN o_expressconfig ec ON eo.expressId = ec.id
+		LEFT JOIN o_orderInfo o ON eo.orderId = o.orderId
+		WHERE
+			o.orderId = #{order_id} AND o.userId = #{user_id}
+  	</select>
+  	
+  	
+  	
+  	
+  	
+   	
+</mapper>

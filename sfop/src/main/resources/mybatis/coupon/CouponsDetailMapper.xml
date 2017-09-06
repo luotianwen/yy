@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 优惠券明细表(c_couponsDetail)Mapper -->
+<mapper namespace="couponsDetailMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,couponsId ,user_id ,passwords ,money ,useMoney ,startDate ,endDate ,state 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.coupon.CouponsDetail" id="CouponsDetailReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 优惠券id -->
+      <result column="couponsId" property="couponsId"/>
+	  <!-- 用户id -->
+      <result column="user_id" property="user_id"/>
+	  <!-- 密钥 -->
+      <result column="passwords" property="passwords"/>
+	  <!-- 面值 -->
+      <result column="money" property="money"/>
+	  <!-- 使用面值 -->
+      <result column="useMoney" property="useMoney"/>
+	  <!-- 优惠券有效期 -->
+      <result column="startDate" property="startDate"/>
+	  <!-- 优惠券有效期结束 -->
+      <result column="endDate" property="endDate"/>
+	  <!-- 状态（1：待绑定；2：未使用（已绑定）；3：已使用；4：已作废；5：已过期） -->
+      <result column="state" property="state"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllCouponsDetailPage" parameterType="Page" resultMap="CouponsDetailReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			c_couponsDetail
+		where 1=1
+			<if test="t.couponsId!=null and t.couponsId!=''">
+				and couponsId = #{t.couponsId}
+			</if>
+			<if test="t.user_id!=null and t.user_id!=''">
+				and user_id = #{t.user_id}
+			</if>
+			<if test="t.passwords!=null and t.passwords!=''">
+				and passwords = #{t.passwords}
+			</if>
+			<if test="t.money!=null and t.money!=''">
+				and money = #{t.money}
+			</if>
+			<if test="t.useMoney!=null and t.useMoney!=''">
+				and useMoney = #{t.useMoney}
+			</if>
+			<if test="t.startDate!=null and t.startDate!=''">
+				and startDate = #{t.startDate}
+			</if>
+			<if test="t.endDate!=null and t.endDate!=''">
+				and endDate = #{t.endDate}
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and state = #{t.state}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findCouponsDetailById" parameterType="String" resultMap="CouponsDetailReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			c_couponsDetail
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateCouponsDetail" parameterType="com.shifeng.entity.coupon.CouponsDetail">
+		update 
+			c_couponsDetail 
+		set
+	      	couponsId = #{couponsId},
+	      	user_id = #{user_id},
+	      	passwords = #{passwords},
+	      	money = #{money},
+	      	useMoney = #{useMoney},
+	      	startDate = #{startDate},
+	      	endDate = #{endDate},
+	      	state = #{state}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveCouponsDetail" parameterType="com.shifeng.entity.coupon.CouponsDetail">
+		insert into c_couponsDetail
+			(
+		      couponsId, passwords, money, useMoney, startDate, endDate, state 
+			)
+		values
+			<foreach collection="passwords" item="item" separator=",">
+			(
+				#{coupons.id},
+				#{item},
+				#{coupons.full},
+				#{coupons.minus},
+				#{coupons.startDate},
+				#{coupons.endDate},
+				1
+			)
+			</foreach>
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteCouponsDetail" parameterType="String">
+  		delete from c_couponsDetail
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 店铺退货地址(s_return_address)Mapper -->
+<mapper namespace="returnaddressMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,province ,city ,region ,provinceName ,cityName ,regionName ,address ,zipcode ,phone ,shipper ,shopid 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.ReturnAddress" id="ReturnAddressReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 省份 -->
+      <result column="province" property="province"/>
+	  <!-- 城市 -->
+      <result column="city" property="city"/>
+	  <!-- 区 -->
+      <result column="region" property="region"/>
+      <!-- 省份名称 -->
+      <result column="provinceName" property="provinceName"/>
+	  <!-- 城市名称 -->
+      <result column="cityName" property="cityName"/>
+	  <!-- 区名称 -->
+      <result column="regionName" property="regionName"/>
+	  <!-- 详细地址 -->
+      <result column="address" property="address"/>
+	  <!-- 邮编 -->
+      <result column="zipcode" property="zipcode"/>
+	  <!-- 联系电话 -->
+      <result column="phone" property="phone"/>
+	  <!-- 联系人 -->
+      <result column="shipper" property="shipper"/>
+	  <!-- 店铺id -->
+      <result column="shopid" property="shopid"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllReturnAddressPage" parameterType="Page" resultMap="ReturnAddressReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_return_address
+		where shopid = #{t}
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findReturnAddressById" parameterType="String" resultMap="ReturnAddressReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_return_address
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateReturnAddress" parameterType="com.shifeng.entity.shop.ReturnAddress">
+		update 
+			s_return_address 
+		set
+	      	province = #{province},
+	      	city = #{city},
+	      	region = #{region},
+	      	provinceName = #{provinceName},
+	      	cityName = #{cityName},
+	      	regionName = #{regionName},
+	      	address = #{address},
+	      	zipcode = #{zipcode},
+	      	phone = #{phone},
+	      	shipper = #{shipper},
+	      	shopid = #{shopid}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveReturnAddress" parameterType="com.shifeng.entity.shop.ReturnAddress">
+		insert into s_return_address
+			(
+		      province, city, region, provinceName, cityName, regionName, address, zipcode, phone, shipper, shopid 
+			)
+		values
+			(
+		      #{province},
+		      #{city},
+		      #{region},
+		      #{provinceName},
+		      #{cityName},
+		      #{regionName},
+		      #{address},
+		      #{zipcode},
+		      #{phone},
+		      #{shipper},
+		      #{shopid}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteReturnAddress" parameterType="String">
+  		delete from s_return_address
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

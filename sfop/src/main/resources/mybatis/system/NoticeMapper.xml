@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 商城公告(s_notice)Mapper -->
+<mapper namespace="noticeMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,publisher ,title ,content ,pv ,state ,submitTime ,releaseDate ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.system.Notice" id="NoticeReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 发布者 -->
+      <result column="publisher" property="publisher"/>
+	  <!-- 标题 -->
+      <result column="title" property="title"/>
+	  <!-- 内容 -->
+      <result column="content" property="content"/>
+	  <!-- 浏览量 -->
+      <result column="pv" property="pv"/>
+	  <!-- 发布状态 -->
+      <result column="state" property="state"/>
+	  <!-- 发布时间 -->
+      <result column="submitTime" property="submitTime"/>
+	  <!-- 发布日期 -->
+      <result column="releaseDate" property="releaseDate"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllNoticePage" parameterType="Page" resultMap="NoticeReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_notice
+		where 1=1
+		<if test="t.title != null and t.title != ''">
+			AND title LIKE CONCAT(CONCAT('%', #{t.title}),'%')
+		</if>
+
+		<if test=" t.state!=0 ">
+			AND state= #{t.state}
+		</if>
+		<if test="t.lasttime!=null and t.lasttime!='' ">
+			<![CDATA[
+			AND date(releaseDate) <= #{t.lasttime}
+			]]>
+		</if>
+		<if test="t.releaseDate!=null and t.releaseDate!='' ">
+			<![CDATA[
+			AND date(releaseDate) >= #{t.releaseDate}
+			]]>
+		</if>
+		order by lasttime desc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findNoticeById" parameterType="String" resultMap="NoticeReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_notice
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateNotice" parameterType="com.shifeng.entity.system.Notice">
+		update 
+			s_notice 
+		set
+	      	publisher = #{publisher},
+	      	title = #{title},
+	      	content = #{content},
+	      	pv = #{pv},
+	      	state = #{state},
+	      	releaseDate = #{releaseDate},
+	      	lasttime = now(),
+	      	updatename = #{updatename}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveNotice" parameterType="com.shifeng.entity.system.Notice">
+		insert into s_notice
+			(
+		      publisher, title, content, pv, state, submitTime, releaseDate, lasttime, updatename 
+			)
+		values
+			(
+		      #{publisher},
+		      #{title},
+		      #{content},
+		      #{pv},
+		      #{state},
+		      now(),
+		      #{releaseDate},
+		      now(),
+		      #{updatename}
+			)
+	</insert>
+	<delete id="deleteNotice"  parameterType="com.shifeng.entity.system.Notice">
+		delete from s_notice where id = #{id}
+	</delete>
+
+	
+</mapper>

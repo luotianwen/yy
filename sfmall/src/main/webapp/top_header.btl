@@ -1,0 +1,42 @@
+<div class="top_header">
+    <div class="boxw">
+        <div class="greet_sb">Hi,欢迎来到世峰户外</div>
+        <div class="user_login">
+            <% if(isEmpty(session.MALL_SESSION_USER)){ %>
+            <a href="/login" >登录</a>
+            <a href="/register" target="_blank">注册</a>
+            <%} else{%>
+            <a href="/my/index.html">${session.MALL_SESSION_USER.uName}</a>
+            <a href="/logout">退出登录</a>
+            <%}  %>
+        </div>
+        <div class="rest_function">
+            <ul class="r_function">
+                <li class="f_item f_indent">
+                    <a href="/my/order.html"><i></i>我的订单</a>|
+                </li>
+                <li class="f_item f_brand">
+                    <a href="/my/shopcollect.html"><i></i>我关注的品牌</a>|
+                </li>
+                <li class="f_item f_collect">
+                    <a href="/my/goodscollect.html"><i></i>我的收藏</a>|
+                </li>
+                <li class="f_item f_code">
+                    <a>
+                        <i></i>
+                        二维码
+                    </a>
+                    <div class="code">
+                        <em class="triangle"></em>
+                        <ul class="menu">
+                            <li><img src="/static/img/android.jpg" /><span>APP下载</span></li>
+                            <li><img src="/static/img/gzh.jpg" /><span>服务号</span></li>
+                            <li><img src="/static/img/dyh.jpg" /><span>订阅号</span></li>
+                        </ul>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,109 @@
+.mod-main .mc {
+  margin-top: 10px;
+  padding-left: 33px;
+  padding-top: 45px;
+  -moz-box-shadow: 0 0 5px #969696;
+  -webkit-box-shadow: 0 0 5px #969696;
+  box-shadow: 0 0 5px #969696;
+}
+.mod-main .mc div label {
+  display: inline-block;
+  font-size: 14px;
+  color: #505050;
+  width: 70px;
+  text-align: right;
+}
+.mod-main .mc .nickname {
+  margin-bottom: 33px;
+}
+.mod-main .mc .nickname input {
+  width: 258px;
+  height: 30px;
+  border: 1px solid #c8c8c8;
+}
+.mod-main .mc .head_portrait {
+  width: 100%;
+  margin-bottom: 31px;
+}
+.mod-main .mc .head_portrait label {
+  float: left;
+  height: 74px;
+  line-height: 74px;
+}
+.mod-main .mc .head_portrait span {
+  float: left;
+  display: inline-block;
+  width: 74px;
+  height: 74px;
+  border: 1px solid #c8c8c8;
+  border-radius: 50%;
+  position: relative;
+}
+.mod-main .mc .head_portrait span img{
+	width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+.mod-main .mc .head_portrait span img.mo{
+	width: 44px;
+    height: 37px;
+    border-radius: 0;
+    margin-left: 14.5px;
+    margin-top: 18px;
+}
+.mod-main .mc .head_portrait span i {
+  position: absolute;
+  display: inline-block;
+  width: 44px;
+  height: 37px;
+  top: 50%;
+  left: 50%;
+  margin-left: -22px;
+  margin-top: -18.5px;
+}
+.mod-main .mc .gender {
+  margin-bottom: 41px;
+}
+.mod-main .mc .gender span {
+  margin-right: 19px;
+}
+.mod-main .mc .birthday,
+.mod-main .mc .site {
+  margin-bottom: 33px;
+}
+.mod-main .mc .birthday select,
+.mod-main .mc .site select {
+  width: 120px;
+  height: 30px;
+}
+.mod-main .mc .particular input {
+  width: 378px;
+  height: 30px;
+  border: 1px solid #c8c8c8;
+}
+.mod-main .mc .btn {
+  cursor: pointer;
+  width: 120px;
+  height: 34px;
+  background-color: #06B639;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #FFFFFF;
+  text-align: center;
+  line-height: 34px;
+  margin-top: 50px;
+  margin-left: 74px;
+  font-weight: bold;
+  margin-bottom: 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+}
+.mod-main .mc .btn:hover {
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  text-shadow: none;
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <% include("/basecss.btl"){}%>
+    <link rel="stylesheet" type="text/css" href="/static/css/check_in.css" />
+</head>
+<body>
+<% include("/header.btl"){}%>
+<div class="h_container h_feature_1">
+    <div class="boxw">
+        <div class="h_function">
+            <div class="logo_1 fl">
+                <a href="http://www.seebong.com/" target="_blank"><img src="/static/img/all/logo.jpg" /></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="CheckNav">
+    <div class="boxw">
+        <ul class="CheckList">
+            <li class="check_active">招商首页</li>
+            <li>申请进度</li>
+            <li>招商标准</li>
+            <li>资费标准</li>
+        </ul>
+    </div>
+</div>
+<div class="enter_banner clearfix">
+    <img src="/static/img/check_in/enter_img_7.jpg"/>
+    <a id="btnJoin" href="/settled/check_in" class="button"></a>
+</div>
+<div class="boxw clearfix">
+    <div class="enter_process">
+        <h1></h1>
+        <div class="e_img">
+            <p style="margin-top: 43px;"><img src="/static/img/check_in/enter_img_2.jpg"/></p>
+            <p style="float: right;margin: 27px 134px 24px 0;"><img src="/static/img/check_in/enter_img_3.jpg"/></p>
+            <p><img src="/static/img/check_in/enter_img_4.jpg"/></p>
+        </div>
+    </div>
+    <div class="business_cooperation">
+        <h1></h1>
+        <ul style="margin-top: 77px;" class="clearfix">
+            <li>
+                <p class="bc_img"><img src="/static/img/check_in/c_img_1.jpg"/></p>
+                <p class="bc_msg">专业户外装备及休闲运动用品、体育用品及健身器械、汽车装备及装饰类生产厂家、 品牌商、运营商、国内总代、省级代理等</p>
+            </li>
+            <li>
+                <p class="bc_img"><img src="/static/img/check_in/c_img_5.jpg"/></p>
+                <p class="bc_msg">体育场，训练营，滑雪场，潜水基地，赛车场，赛马场等单位的门票销售及宣传活动</p>
+            </li>
+            <li>
+                <p class="bc_img"><img src="/static/img/check_in/c_img_2.jpg"/></p>
+                <p class="bc_msg">各地俱乐部及俱乐部联盟团体的活动策划，组织，实施，报道及装备采购等</p>
+            </li>
+            <li>
+                <p class="bc_img"><img src="/static/img/check_in/c_img_6.jpg"/></p>
+                <p class="bc_msg">各地快捷酒店，宾馆，招待所，农家乐，扎营地，房车码头等可供住宿，露营的在线预订及宣传</p>
+            </li>
+            <li>
+                <p class="bc_img"><img src="/static/img/check_in/c_img_3.jpg"/></p>
+                <p class="bc_msg">已开发营地，待开发营地，活动路线等各类活动场地的合作开发及活动合作</p>
+            </li>
+            <li>
+                <p class="bc_img"><img src="/static/img/check_in/c_img_7.jpg"/></p>
+                <p class="bc_msg">人身险，财险，意外险，车辆险等可提供短期，中长期险种的各类商业保险单位的业务合作</p>
+            </li>
+            <li>
+                <p class="bc_img"><img src="/static/img/check_in/c_img_4.jpg"/></p>
+                <p class="bc_msg">电视，网络，杂志等媒体的活动报道，业内行情，品牌资讯，数据咨询，数据统计，数据分析等</p>
+            </li>
+            <li>
+                <p class="bc_img"><img src="/static/img/check_in/c_img_8.jpg"/></p>
+                <p class="bc_msg">论坛，俱乐部，资讯，旅行社等愿与世峰户外商城友情链接的产业内外各类友情链接合作</p>
+            </li>
+        </ul>
+    </div>
+    <div class="contact_way clearfix">
+        <h1></h1>
+        <p>随着商城发展需求，现诚邀商家及企业单位与世峰户外商城联盟合作，如您有合作意向，欢迎拨打全国客服热线</p>
+        <p style="color: #038A2A;"><span style="font-size: 22px;">400-0928-400</span>（AM9:00～PM18:00）</p>
+        <p>商城客服人员将竭诚为您服务</p>
+    </div>
+</div>
+<% include("/footer.btl"){}%>
+<% include("/basejs.btl"){}%>
+<script type="text/javascript" src="/static/js/settled/settled.js"></script>
+</body>
+</html>
+

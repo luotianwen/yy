@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 店铺评价(p_shop_evaluate)Mapper -->
+<mapper namespace="shopevaluateMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,userId ,receiveName ,orderid ,shopid ,describe_score ,lservice ,sservice ,state ,cdate 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.ShopEvaluate" id="ShopEvaluateReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 用户编号 -->
+      <result column="userId" property="userId"/>
+	  <!-- 买家姓名 -->
+      <result column="receiveName" property="receiveName"/>
+	  <!-- 订单id -->
+      <result column="orderid" property="orderid"/>
+	  <!-- 店铺编号 -->
+      <result column="shopid" property="shopid"/>
+      <!-- 商品描述评分 -->
+      <result column="describe_score" property="describe_score"/>
+	  <!-- 物流服务 -->
+      <result column="lservice" property="lservice"/>
+	  <!-- 店铺服务 -->
+      <result column="sservice" property="sservice"/>
+	  <!-- 审核状态（1：未审核；2：审核成功；3：审核失败） -->
+      <result column="state" property="state"/>
+	  <!-- 创建时间 -->
+      <result column="cdate" property="cdate"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllShopEvaluatePage" parameterType="Page" resultMap="ShopEvaluateReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_shop_evaluate
+		where 1=1
+			<if test="t.userId!=null and t.userId!=''">
+				and userId = #{t.userId}
+			</if>
+			<if test="t.receiveName!=null and t.receiveName!=''">
+				and receiveName = #{t.receiveName}
+			</if>
+			<if test="t.orderid!=null and t.orderid!=''">
+				and orderid = #{t.orderid}
+			</if>
+			<if test="t.shopid!=null and t.shopid!=''">
+				and shopid = #{t.shopid}
+			</if>
+			<if test="t.lservice!=null and t.lservice!=''">
+				and lservice = #{t.lservice}
+			</if>
+			<if test="t.sservice!=null and t.sservice!=''">
+				and sservice = #{t.sservice}
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and state = #{t.state}
+			</if>
+			<if test="t.cdate!=null and t.cdate!=''">
+				and cdate = #{t.cdate}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findShopEvaluateById" parameterType="String" resultMap="ShopEvaluateReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_shop_evaluate
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateShopEvaluate" parameterType="com.shifeng.entity.shop.ShopEvaluate">
+		update 
+			p_shop_evaluate 
+		set
+	      	userId = #{userId},
+	      	receiveName = #{receiveName},
+	      	orderid = #{orderid},
+	      	shopid = #{shopid},
+	      	describe_score = #{describe_score},
+	      	lservice = #{lservice},
+	      	sservice = #{sservice},
+	      	state = #{state},
+	      	cdate = #{cdate}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveShopEvaluate" parameterType="com.shifeng.entity.shop.ShopEvaluate">
+		insert into p_shop_evaluate
+			(
+		      userId, receiveName, orderid, shopid,describe_score ,lservice, sservice, state, cdate 
+			)
+		values
+			(
+		      #{userId},
+		      #{receiveName},
+		      #{orderid},
+		      #{shopid},
+		      #{describe_score},
+		      #{lservice},
+		      #{sservice},
+		      #{state},
+		      #{cdate}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteShopEvaluate" parameterType="String">
+  		delete from p_shop_evaluate
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

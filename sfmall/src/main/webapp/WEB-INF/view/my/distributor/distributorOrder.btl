@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/css/leftbar.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/distribution.css" />	
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'分销订单'}){}%>
+<% include("/detailnav.btl"){}%>
+<div class="boxw clearfix">
+	<% include("../my-left.btl",{type:'分销订单'}){}%>
+	<div class="fr content clearfix">
+		<div class="top-tit"><i></i>分销订单</div>
+		<div class="drm-total clearfix">
+			<ul>
+				<li class="item"><span class="s1"><i class="order-num"></i>订单数量</span><span class="s2">${data.total_order}</span></li>
+				<li class="item"><span class="s1"><i class="order-money"></i>总订单金额</span><span class="s2">${data.total_amount}</span></li>
+				<li><span class="s1"><i class="order-money-take"></i>可提现金额</span><span class="s2">${data.total_exchange}</span></li>
+			</ul>
+		</div>
+		<div class="nav-box clearfix">
+			<ul class="navbar">
+				<li data="0" class="active">
+					<a>全部订单</a>
+				</li>
+				<li data="1">
+					<a>今日订单</a>
+				</li>
+				<li data="3">
+					<a>本周订单</a>
+				</li>
+				<li data="4">
+					<a>本月订单</a>
+				</li>
+			</ul>
+		</div>
+		<div id="orderList"></div>
+		<div id="page" style="text-align: center;"></div>
+	</div>
+</div>
+	<script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/js/layer/laypage/laypage.js"></script>
+	<script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$(function(){
+			orderList();
+
+			$(".navbar").on("click","li",function(){
+				var _this = $(this);
+				$(".navbar").find("li").removeClass("active");
+				_this.addClass("active");
+				var day = _this.attr("data");alert(_this.attr("data"))
+				orderList(day);
+			})
+		})
+		
+		function orderList(day){
+			var str = "";
+			if(day!=undefined){
+				str = "?day="+day;
+			}
+			$.post("/my/distributorOrderList.json"+str,function(data){
+				$("#orderList").html(data);
+			})
+		}
+		
+	</script>
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+</body>
+</html>

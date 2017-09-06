@@ -1,0 +1,176 @@
+.mod-main .mc {
+  margin-top: 20px;
+  -moz-box-shadow: 0 0 5px #969696;
+  -webkit-box-shadow: 0 0 5px #969696;
+  box-shadow: 0 0 5px #969696;
+}
+.mod-main .mc .fp_nav {
+  width: 660px;
+  padding-top: 65px;
+  margin-left: 155px;
+  border-bottom: 1px solid #c8c8c8;
+}
+.mod-main .mc .fp_nav ul {
+  width: 100%;
+}
+.mod-main .mc .fp_nav ul li {
+  bottom: -2px;
+  position: relative;
+  font-size: 30px;
+  float: left;
+  width: 130px;
+  margin: 0 45px;
+  font-weight: 500;
+  border-bottom: 3px solid transparent;
+  color: #969696;
+  text-align: center;
+}
+.mod-main .mc .fp_nav ul li i {
+  font-size: 16px;
+}
+.mod-main .mc .fp_nav ul li.active {
+  border-bottom: 3px solid #06b639;
+  color: #06b639;
+}
+.mod-main .mc .ap_item {
+  margin-left: 277px;
+}
+.mod-main .mc .ap_item .title {
+  width: 150px;
+  float: left;
+  text-align: right;
+  color: #999999;
+}
+.mod-main .mc .phone{
+	margin-top: 80px;
+	margin-left: 291px;
+}
+.mod-main .mc .phone .title{
+  width: 150px;
+  float: left;
+  text-align: right;
+  color: #999999;
+}
+.mod-main .mc .phone_1 {
+  margin-top: 80px;
+}
+.mod-main .mc .phone_2 {
+  margin-top: 30px;
+}
+.mod-main .mc .phone_1,
+.mod-main .mc .phone_2 {
+  margin-left: 291px;
+}
+.mod-main .mc .phone_1 .title,
+.mod-main .mc .phone_2 .title {
+  line-height: 32px;
+}
+.mod-main .mc .phone_1 .send,
+.mod-main .mc .phone_2 .send {
+  float: left;
+  width: 150px;
+  height: 30px;
+  border: 1px solid #c8c8c8;
+}
+.mod-main .mc .phone_1 .send input,
+.mod-main .mc .phone_2 .send input {
+  height: 30px;
+  width: 130px;
+  padding: 0 5px;
+}
+.mod-main .mc .phone_1 .send_btn,
+.mod-main .mc .phone_2 .send_btn {
+  cursor:pointer;
+  display: inline-block;
+  width: 120px;
+  height: 30px;
+  border: 1px solid #06b639;
+  background-color: #06b639;
+  color: #fff;
+  border-radius: 5px;
+  line-height: 30px;
+  text-align: center;
+  margin-left: 10px;
+}
+.mod-main .mc .phone_1 .send_btn_no,
+.mod-main .mc .phone_2 .send_btn_no {
+  cursor:pointer;
+  display: inline-block;
+  width: 120px;
+  height: 30px;
+  border: 1px solid #06b639;
+  background-color: #f2f2f2;
+  color: #06b639;
+  border-radius: 5px;
+  line-height: 30px;
+  text-align: center;
+  margin-left: 10px;
+}
+.mod-main .mc .error {
+  display: none;
+  color: #FF5B29;
+  margin-left: 20px;
+  line-height: 32px;
+  float: left;
+}
+.mod-main .mc .error i {
+  float: left;
+  margin-top: 8px;
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background: url(../img/warning.png) no-repeat;
+}
+.mod-main .mc button {
+  width: 150px;
+  height: 44px;
+  border-radius: 4px;
+  border: 0;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #06B639;
+  margin-top: 72px;
+  margin-left: 375px;
+  margin-bottom: 60px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+}
+.mod-main .mc button:active {
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  text-shadow: none;
+}
+.mod-main .mc .step_3 {
+	margin-bottom: 106px;
+}
+.mod-main .mc .step_3 .succeed {
+  width: 900px;
+  margin: 0 auto;
+}
+.mod-main .mc .step_3 .succeed p {
+  padding: 94px 0 0 292px;
+  font-size: 20px;
+  color: #2d2d2d;
+}
+.mod-main .mc .step_3 .succeed p i {
+  display: inline-block;
+  float: left;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  margin-right: 10px;
+  background: url(../img/succeed_img.png) no-repeat;
+}
+.mod-main .mc .step_3 .succeed span {
+  display: inline-block;
+  margin-left: 322px;
+  margin-top: 10px;
+  color: #505050;
+}
+
+

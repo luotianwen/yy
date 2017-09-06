@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 用户世峰卡消费(c_user_card_order)Mapper -->
+<mapper namespace="usercardorderMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	userid,orderid ,ordertime ,note ,money ,cardnumber ,before_money ,after_money 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.card.UserCardOrder" id="UserCardOrderReturnMap">
+	  <!-- 用户id -->
+      <id column="userid" property="userid"/>
+	  <!-- 订单id -->
+      <result column="orderid" property="orderid"/>
+	  <!-- 消费时间 -->
+      <result column="ordertime" property="ordertime"/>
+	  <!-- 备注 -->
+      <result column="note" property="note"/>
+	  <!-- 金额 -->
+      <result column="money" property="money"/>
+	  <!-- 世峰卡号 -->
+      <result column="cardnumber" property="cardnumber"/>
+	  <!-- 消费前金额 -->
+      <result column="before_money" property="before_money"/>
+	  <!-- 消费后金额 -->
+      <result column="after_money" property="after_money"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllUserCardOrderPage" parameterType="Page" resultMap="UserCardOrderReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			c_user_card_order
+		where 1=1
+			<if test="t.userid!=null and t.userid!=''">
+			    and userid = #{t.userid}
+			</if>
+			<if test="t.orderid!=null and t.orderid!=''">
+			    and orderid = #{t.orderid}
+			</if>
+			<if test="t.cardnumber!=null and t.cardnumber!=''">
+			    and cardnumber = #{t.cardnumber}
+			</if>
+			<if test="t.sdate!=null and t.sdate!=''">
+			    and date(ordertime) >= #{t.sdate}
+			</if>
+			<if test="t.edate!=null and t.edate!=''">
+			    and date(ordertime) <![CDATA[ <= ]]> #{t.edate}
+			</if>
+		order by ordertime desc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findUserCardOrderById" parameterType="String" resultMap="UserCardOrderReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			c_user_card_order
+		where 
+			userid = #{userid}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateUserCardOrder" parameterType="com.shifeng.entity.card.UserCardOrder">
+		update 
+			c_user_card_order 
+		set
+	      	orderid = #{orderid},
+	      	ordertime = #{ordertime},
+	      	note = #{note},
+	      	money = #{money},
+	      	cardnumber = #{cardnumber},
+	      	before_money = #{before_money},
+	      	after_money = #{after_money}
+		 where
+			id = #{userid}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveUserCardOrder" parameterType="com.shifeng.entity.card.UserCardOrder">
+		insert into c_user_card_order
+			(
+		      orderid, ordertime, note, money, cardnumber, before_money, after_money 
+			)
+		values
+			(
+		      #{orderid},
+		      #{ordertime},
+		      #{note},
+		      #{money},
+		      #{cardnumber},
+		      #{before_money},
+		      #{after_money}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteUserCardOrder" parameterType="String">
+  		delete from c_user_card_order
+  		where id = #{userid}
+  	</delete>
+	
+</mapper>

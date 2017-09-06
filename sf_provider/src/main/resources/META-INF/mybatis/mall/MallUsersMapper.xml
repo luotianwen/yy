@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 前台用户表(mall_users)Mapper -->
+<mapper namespace="mallusersMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,lasttime ,grade ,state 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.user.MallUsers" id="MallUsersReturnMap">
+	  <!-- id id -->
+      <id column="id" property="id"/>
+	  <!-- 用户昵称  -->
+      <result column="uname" property="uname"/>
+	  <!-- 最后更新时间  -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 等级  -->
+      <result column="grade" property="grade"/>
+	  <!-- 状态 1正常2冻结3禁用 -->
+      <result column="state" property="state"/>
+   </resultMap>
+   
+
+	<!-- 新增表 -->
+	<insert id="addMallUser" parameterType="String">
+		insert into mall_users
+			(
+		      id,uname,lasttime,state 
+			)
+		values
+			(
+		      #{array[0]},#{array[1]},NOW(),1
+			)
+	</insert>
+	
+	<!-- 根据id修改昵称 -->
+	<update id="updateName" parameterType="String">
+		update 
+			mall_users
+		set
+			uname = #{array[1]}	
+		where
+			id = #{array[0]}
+	</update>
+  
+	
+</mapper>

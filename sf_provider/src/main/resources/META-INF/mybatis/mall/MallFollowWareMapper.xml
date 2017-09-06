@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 关注的商品(mall_followWare)Mapper -->
+<mapper namespace="mallfollowWareMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	fid,user_id ,pid ,sku ,price ,follow_time 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.mall.MallFollowWare" id="MallFollowWareReturnMap">
+	  <!-- 关注ID  -->
+      <id column="fid" property="fid"/>
+	  <!-- 用户ID  -->
+      <result column="user_id" property="userId"/>
+	  <!-- 商品ID  -->
+      <result column="pid" property="pid"/>
+	  <!-- 商品sku  -->
+      <result column="sku" property="sku"/>
+	  <!-- 关注时商品价格  -->
+      <result column="price" property="price"/>
+	  <!-- 关注时间  -->
+      <result column="follow_time" property="followTime"/>
+   </resultMap>
+   
+   	<!-- 根据用户ID获取用户关注商品列表 -->
+	<select id="getFollowWareListPage" parameterType="Page" resultType="com.shifeng.dto.mall.MallFollowWareDTO">
+		SELECT
+			fid,fw.sku ,fw.price AS followPrice,p.name AS wareName,pr.price,si.ipath AS wareImg,follow_time AS followTime
+			,p.state AS pState
+		FROM 
+			mall_followWare fw
+		LEFT JOIN p_pro_rules pr ON fw.sku = pr.sku
+		LEFT JOIN p_product p ON fw.pid = p.id
+		LEFT JOIN p_sku_images si ON fw.pid = si.pid AND pr.colorid = si.colorid AND si.ismain = 1
+		WHERE 
+			fw.user_id = #{t}	
+		ORDER BY follow_time DESC	
+	</select>
+
+	 
+	<!-- 添加关注商品  -->
+	<insert id="addFollowWare" parameterType="String">
+		INSERT INTO mall_followWare
+			(
+		      user_id,sku,pid, price, follow_time 
+			)
+		SELECT 
+		 #{array[0]},sku,pid,price,NOW()
+		FROM 
+		  p_pro_rules
+		WHERE
+		 sku = #{array[1]}
+	</insert>
+	
+	<!-- 根据用户ID sku查询是否已关注商品 -->
+	<select id="isFollowWare" parameterType="String" resultType="int">
+		SELECT
+			count(1)
+		FROM 
+			mall_followWare 
+		WHERE 
+			user_id = #{array[0]}
+			and sku = #{array[1]}
+	</select>
+	
+	<!-- 根据用户ID sku删除关注商品 -->
+	<delete id="deleteFollowWare" parameterType="java.util.Map">
+		DELETE
+		FROM mall_followware
+		WHERE
+			user_id = 	#{user_id}
+		AND 
+		 sku in  
+		<foreach collection="skus" item="item" index="index" separator="," open="(" close=")">
+			 #{item}
+		</foreach> 
+	</delete>
+	
+	
+	
+	<!-- 统计关注商品 -->
+	<select id="getFollowWareStatistic" parameterType="String" resultType="int" >
+		SELECT
+		  COUNT(1) num
+		FROM  mall_followware
+		WHERE 
+			user_id = #{user_id}
+	</select>
+  
+	
+</mapper>

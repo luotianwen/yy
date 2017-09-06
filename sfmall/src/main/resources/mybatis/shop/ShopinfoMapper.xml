@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 店铺表(s_shopinfo)Mapper -->
+<mapper namespace="shopinfoMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	s_merchants_id,uid ,account ,password ,grade ,name ,fax ,email ,postcode ,qq ,rtime ,sstate ,rstate ,endtime ,state ,lasttime ,updatename ,remark ,fstate 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.Shopinfo" id="ShopinfoReturnMap">
+	  <!-- 入驻id -->
+      <id column="s_merchants_id" property="s_merchants_id"/>
+	  <!-- 用户id -->
+      <result column="uid" property="uid"/>
+	  <!-- 登录帐号 -->
+      <result column="account" property="account"/>
+	  <!-- 登录密码 -->
+      <result column="password" property="password"/>
+	  <!-- 店铺类型 -->
+      <result column="grade" property="grade"/>
+	  <!-- 店铺名称 -->
+      <result column="name" property="name"/>
+	  <!-- 客服电话 -->
+      <result column="fax" property="fax"/>
+	  <!-- 邮箱 -->
+      <result column="email" property="email"/>
+	  <!-- 邮编 -->
+      <result column="postcode" property="postcode"/>
+	  <!-- 在线客服 -->
+      <result column="qq" property="qq"/>
+	  <!-- 注册日期 -->
+      <result column="rtime" property="rtime"/>
+	  <!-- 状态 -->
+      <result column="sstate" property="sstate"/>
+	  <!-- 推荐状态 -->
+      <result column="rstate" property="rstate"/>
+	  <!-- 结束时间 -->
+      <result column="endtime" property="endtime"/>
+	  <!-- 销售状态 -->
+      <result column="state" property="state"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 复审状态 -->
+      <result column="fstate" property="fstate"/>
+   </resultMap>
+   
+	<!-- 修改表 -->
+	<update id="updateShopinfo" parameterType="com.shifeng.mall.settled.dto.ShopDTO">
+		update 
+			s_shopinfo 
+		set
+	      	grade = #{grade},
+	      	name = #{name},
+	      	fax = #{fax},
+	      	email = #{email},
+	      	postcode = #{postcode},
+	      	qq = #{qq},
+	      	rtime = #{rtime},
+	      	sstate = #{sstate},
+	      	lasttime = now(),
+	      	updatename = #{userName},
+	      	remark = #{remark}
+		 where
+			s_merchants_id = #{s_merchants_id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveShopinfo" parameterType="com.shifeng.mall.settled.dto.ShopDTO">
+		insert into s_shopinfo
+			(
+		      s_merchants_id, uid, account, password, grade, name, fax, email, postcode, qq, rtime, sstate, state, lasttime, updatename, remark ,fstate
+			)
+		values
+			(
+			  #{s_merchants_id},
+		      #{userId},
+		      #{account},
+		      #{password},
+		      #{grade},
+		      #{name},
+		      #{fax},
+		      #{email},
+		      #{postcode},
+		      #{qq},
+		      now(),
+		      #{sstate},
+		      #{state},
+		      now(),
+		      #{userName},
+		      #{remark},
+		      3
+			)
+	</insert>
+  
+	<!-- 用户是否新增店铺信息 -->
+	<select id="findShopInfoCount" parameterType="String" resultType="Integer">
+	    select count(0) from s_shopinfo where uid = #{userId}
+	</select>
+	
+	
+</mapper>

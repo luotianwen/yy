@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 字典词库(Dictionary)Mapper -->
+<mapper namespace="DictionaryMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    id,word ,jp ,qp ,dic_type ,related_count ,search_count ,weight ,is_enable ,update_time 
+    </sql>
+
+    <resultMap type="com.shifeng.op.dictionary.entity.Dictionary" id="DictionaryReturnMap">
+		<!-- id -->
+      <id column="id" property="id"/>
+		<!-- 词 -->
+      <result column="word" property="word"/>
+		<!-- 词简拼 -->
+      <result column="jp" property="jp"/>
+		<!-- 词全拼 -->
+      <result column="qp" property="qp"/>
+		<!-- 词类型（1：基本词、2：停止词） -->
+      <result column="dic_type" property="dic_type"/>
+		<!-- 相关结果 -->
+      <result column="related_count" property="related_count"/>
+		<!-- 搜索指数 -->
+      <result column="search_count" property="search_count"/>
+		<!-- 权重 -->
+      <result column="weight" property="weight"/>
+		<!-- 是否启用（0：是；1：否） -->
+      <result column="is_enable" property="is_enable"/>
+		<!-- 添加/更新时间 -->
+      <result column="update_time" property="update_time"/>
+   </resultMap>
+   
+  	<!-- 获取词典列表 -->
+   <select id="getDictionaryListPage" parameterType="page" resultType="com.shifeng.op.dictionary.entity.Dictionary">
+   		select
+   			<include refid="Base_Column_List"></include>
+   		from
+   			dic_dictionary
+   		where
+   			1 = 1  
+		    <if test="t.word != null and t.word !='' ">  
+		        AND word  LIKE CONCAT(CONCAT('%', #{t.word}),'%')
+		    </if>  
+   		order by id desc	
+   </select>
+  
+  <!-- 检查词是否存在 -->
+  <select id="checkWord" parameterType="String" resultType="int">
+  		select
+  			count(1)
+  		from
+   			dic_dictionary
+   		where
+   			word = #{word}	
+  </select>
+  <select id="checkWords" parameterType="java.util.Map" resultType="int">
+  		select
+  			count(1)
+  		from
+   			dic_dictionary
+   		where
+   			word = #{word}
+   		and
+   			id != #{id}		
+  </select>
+  
+  <!-- 保存词 -->
+  <insert id="saveWord" parameterType="com.shifeng.op.dictionary.entity.Dictionary">
+  		insert into
+  		dic_dictionary (word ,jp ,qp ,dic_type ,related_count ,search_count ,weight ,is_enable ,update_time )
+  		values
+  		(#{word},#{jp},#{qp},#{dic_type},#{related_count},#{search_count},#{weight},#{is_enable},#{update_time} )
+  </insert>
+  
+  	<!-- 根据id查询词 -->
+   <select id="selectWordById" parameterType="int" resultType="com.shifeng.op.dictionary.entity.Dictionary">
+   		select
+   			<include refid="Base_Column_List"></include>
+   		from
+   			dic_dictionary
+   		where
+   		 	id = #{id}
+   </select>
+   
+     <!-- 保存词 -->
+  <update id="updateWord" parameterType="com.shifeng.op.dictionary.entity.Dictionary">
+  		update 
+  			dic_dictionary  
+  		set
+  			 word = #{word},jp = #{jp},qp = #{qp},dic_type = #{dic_type},related_count = #{related_count}
+  			 ,search_count = #{search_count},weight = #{weight},is_enable =#{is_enable},update_time = #{update_time}
+  		where
+  			id = #{id}	
+  </update>
+   	
+</mapper>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 产品表(p_product)Mapper -->
+<mapper namespace="productMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,shopid ,brandid ,pcid ,cid ,name ,recommend ,listing ,submit_time ,parameter ,
+    	state ,after_service ,rank ,freight_master ,goods_subtitle ,logo ,length ,width ,
+    	highly ,is_seven_return ,upshelf_time ,downshelf_time ,keywords ,
+    	description ,phone_describe ,lasttime ,updatename ,remark ,origin,upc
+    </sql>
+
+    <resultMap type="com.shifeng.entity.product.Product" id="ProductReturnMap">
+	  <!-- 商品编号 -->
+      <id column="id" property="id"/>
+	  <!-- 店铺编号 -->
+      <result column="shopid" property="shopid"/>
+	  <!-- 品牌编号 -->
+      <result column="brandid" property="brandid"/>
+	  <!-- 父分类属性编号 -->
+      <result column="pcid" property="pcid"/>
+	  <!-- 分类属性编号 -->
+      <result column="cid" property="cid"/>
+	  <!-- 商品名称 -->
+      <result column="name" property="name"/>
+	  <!-- 店内推荐(1正常 2冻结) -->
+      <result column="recommend" property="recommend"/>
+	  <!-- 包装清单 -->
+      <result column="listing" property="listing"/>
+	  <!-- 提交时间 -->
+      <result column="submit_time" property="submit_time"/>
+	  <!-- 商品参数 -->
+      <result column="parameter" property="parameter"/>
+	  <!-- 商品状态(1在售2下架3删除) -->
+      <result column="state" property="state"/>
+	  <!-- 售后服务 -->
+      <result column="after_service" property="after_service"/>
+	  <!-- 排序 -->
+      <result column="rank" property="rank"/>
+	  <!-- 运费模板 -->
+      <result column="freight_master" property="freight_master"/>
+	  <!-- 副标题 -->
+      <result column="goods_subtitle" property="goods_subtitle"/>
+	  <!-- 商品主图 -->
+      <result column="logo" property="logo"/>
+	  <!-- 商品长度 -->
+      <result column="length" property="length"/>
+	  <!-- 商品宽度 -->
+      <result column="width" property="width"/>
+	  <!-- 商品高度 -->
+      <result column="highly" property="highly"/>
+	  <!-- 是否支持7天退换货 -->
+      <result column="is_seven_return" property="is_seven_return"/>
+	  <!-- 上架时间 -->
+      <result column="upshelf_time" property="upshelf_time"/>
+	  <!-- 下架时间 -->
+      <result column="downshelf_time" property="downshelf_time"/>
+	  <!-- 关键字 -->
+      <result column="keywords" property="keywords"/>
+	  <!-- 电脑描述 -->
+      <result column="description" property="description"/>
+	  <!-- 手机版描述 -->
+      <result column="phone_describe" property="phone_describe"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+      <!-- 产地 -->
+      <result column="origin" property="origin"/>
+      <!-- upc编码 -->
+      <result column="upc" property="upc"/>
+   </resultMap>
+   
+    <resultMap type="com.shifeng.seller.product.dto.ProductDTO" id="ProductDTOReturnMap">
+        <id property="id" column="id"/>
+        
+        <!-- 查询SKU -->
+		<collection property="prorules" ofType="com.shifeng.seller.product.dto.ProRulesDTO" column="id" select="prorulesMapper.findAllProRulesByPid"></collection>
+        
+		<!-- SKU图片 -->
+		<collection property="skuimages" ofType="com.shifeng.entity.product.SkuImages" column="id" select="skuimagesMapper.findAllSkuImages"></collection>
+		
+		<!-- 商品图片 -->
+		<collection property="images" ofType="com.shifeng.entity.product.Images" column="id" select="imagesMapper.findAllImages"></collection>
+		
+		<!-- 商品属性 -->
+		<collection property="productPropertys" ofType="com.shifeng.entity.product.ProductProperty" column="id" select="productpropertyMapper.findAllProductProperty"></collection>
+		
+		<!-- 查询SKU颜色 -->
+		<collection property="skucolors" ofType="com.shifeng.entity.product.SkuImages" column="id" select="skuimagesMapper.findAllColorId"></collection>
+		
+		<!-- 产品颜色 -->
+		<collection property="pcolors" ofType="com.shifeng.entity.product.Color" column="id" select="colorMapper.findAllColor"></collection>
+		
+		<!-- 产品规格 -->
+		<collection property="pspecs" ofType="com.shifeng.entity.product.Spec" column="id" select="specMapper.findAllSpec"></collection>
+        
+    </resultMap>
+    
+	<!-- 根据ID查询表 -->
+	<select id="findProductById" parameterType="java.util.Map" resultMap="ProductDTOReturnMap">
+		select
+			<include refid="Base_Column_List"/>
+		from 
+			p_product
+		where 
+			id = #{id} and shopid = #{shopId}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateProduct" parameterType="com.shifeng.entity.product.Product">
+		update 
+			p_product 
+		set
+			state = 2,
+	      	brandid = #{brandid},
+	      	name = #{name},
+	      	goods_subtitle = #{goods_subtitle},
+	      	keywords = #{keywords},
+	      	length = #{length},
+	      	width = #{width},
+	      	highly = #{highly},
+	      	is_seven_return = #{is_seven_return},
+	      	update_time = now(),
+	      	after_service = #{after_service},
+	      	freight_master = #{freight_master},
+	      	description = #{description},
+	      	phone_describe = #{phone_describe},
+	      	lasttime = now(),
+	      	updatename = #{updatename},
+	      	origin = #{origin}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveProduct" parameterType="com.shifeng.entity.product.Product" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into p_product
+			(
+				shopid ,brandid ,pcid ,cid ,name ,recommend ,listing ,submit_time ,parameter ,
+    			state ,after_service ,rank ,freight_master ,goods_subtitle ,logo ,length ,width ,
+    			highly ,is_seven_return ,keywords ,description ,phone_describe ,lasttime ,
+    			updatename ,remark ,origin,upc
+			)
+		values
+			(
+				#{shopid},#{brandid},#{pcid},#{cid},#{name},1,#{listing},now(),#{parameter},
+    			2,#{after_service},0,#{freight_master},#{goods_subtitle},#{logo},#{length},#{width},
+    			#{highly},#{is_seven_return},#{keywords},#{description},#{phone_describe},now(),
+    			#{updatename},#{remark},#{origin},#{upc}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteProduct" parameterType="String">
+  		delete from p_product
+  		where id = #{id}
+  	</delete>
+	
+    <!-- 查询所有 -->
+    <select id="findAllProductPage" parameterType="Page" resultType="com.shifeng.seller.product.dto.ProductListDTO">
+        select
+        	p.id,c.descript cName,c.parentname pcName,p.name,p.submit_time,p.logo,MAX(ppr.price) price,SUM(ppr.stocks) stocks,COUNT(odi.id) salecount
+        from p_product p
+        left join c_category c on c.id = p.cid
+        left join p_pro_rules ppr on ppr.pid = p.id
+        left join o_orderDetailInfo odi on odi.pid = p.id 
+        where p.shopid = #{t.shopId} and p.state = #{t.state}
+        GROUP BY p.id
+        ORDER BY p.lasttime DESC , p.submit_time DESC
+    </select>
+  	
+    <!-- 修改产品状态 -->
+	<update id="updateProductState" parameterType="java.util.Map">
+		update p_product set
+			state = #{state},
+			lasttime = now(),
+			updatename = #{updatename}
+		where id in (${id}) and shopid = #{shopid}
+    </update>
+    
+  	
+</mapper>

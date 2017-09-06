@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 第三方平台账号联合登录(jointLogin)Mapper -->
+<mapper namespace="jointLoginMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	openid,login_type ,user_id ,access_token ,refresh_token ,expires_in ,scope ,create_time ,update_time,unionid
+    </sql>
+
+    <resultMap type="com.shifeng.entity.user.JointLogin" id="JointLoginReturnMap">
+	  <!-- 第三方平台授权用户身份唯一标识 -->
+      <result column="openid" property="openid"/>
+	  <!-- 平台类型（QQ；weixin） -->
+      <result column="login_type" property="loginType"/>
+	  <!-- 系统用户id -->
+      <result column="user_id" property="userId"/>
+	  <!-- 第三方平台授权码 -->
+      <result column="access_token" property="accessToken"/>
+	  <!-- 刷新access_token授权码 -->
+      <result column="refresh_token" property="refreshToken"/>
+	  <!-- 授权码到期时间（单位：秒） -->
+      <result column="expires_in" property="expiresIn"/>
+	  <!-- 授权的作用域，使用逗号（,）分隔 -->
+      <result column="scope" property="scope"/>
+	  <!-- 授权创建时间 -->
+      <result column="create_time" property="createTime"/>
+	  <!-- 授权刷新时间 -->
+      <result column="update_time" property="updateTime"/>
+	  <!-- unionid(多个应用同一用户unionid相同) -->
+      <result column="unionid" property="unionid"/>
+   </resultMap>
+   
+ 
+
+	<!-- 根据ID查询表 -->
+	<select id="findJointLoginById" parameterType="com.shifeng.entity.user.JointLogin" resultMap="JointLoginReturnMap">
+		select
+			openid,login_type ,user_id ,access_token ,refresh_token ,expires_in ,scope ,create_time ,update_time,unionid
+		from 
+			jointLogin
+		where 
+			( openid = #{openid} or unionid = #{unionid} )  and login_type = #{loginType}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateJointLogin" parameterType="com.shifeng.entity.user.JointLogin">
+		update 
+			jointLogin 
+		set
+	      	login_type = #{loginType},
+	      	access_token = #{accessToken},
+	      	refresh_token = #{refreshToken},
+	      	expires_in = #{expiresIn},
+	      	scope = #{scope},
+	      	update_time = NOW()
+		 where
+			openid = #{openid} and login_type = #{loginType}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveJointLogin" parameterType="com.shifeng.entity.user.JointLogin">
+		insert into jointLogin
+			(
+		      openid,login_type, user_id, access_token, refresh_token, expires_in, scope, create_time,unionid
+			)
+		values
+			(
+			  #{openid},
+		      #{loginType},
+		      #{userId},
+		      #{accessToken},
+		      #{refreshToken},
+		      #{expiresIn},
+		      #{scope},
+		      NOW(),
+		      #{unionid}
+			)
+	</insert>
+  
+	
+</mapper>

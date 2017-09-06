@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 入驻基本信息填写(s_merchants_settled)Mapper -->
+<mapper namespace="merchantssettledMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	website,onlinestore ,channel ,head_name ,head_phone ,head_email ,id ,userId ,type ,cooperation ,
+    	isEntrust ,phone ,legalRepresentative ,legalPersonPhone ,id_number ,name ,companyArea ,companyAddress ,
+    	companyPhone ,erptype ,corporate_front_card ,corporate_back_card ,bank_image ,isThree ,threeInOneImage ,
+    	organizationImage ,taxImage ,licenseImage ,bankName ,bankNum ,bankBranchName ,locationBankbranch ,
+    	taxpayerType ,taxpayerCoding ,state 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.MerchantsSettled" id="MerchantsSettledReturnMap">
+	  <!-- 公司官网地址 -->
+      <id column="website" property="website"/>
+	  <!-- 三方平台店铺网址 -->
+      <result column="onlinestore" property="onlinestore"/>
+	  <!-- 通过哪种渠道知道世峰户外商城 -->
+      <result column="channel" property="channel"/>
+	  <!-- 负责人姓名 -->
+      <result column="head_name" property="head_name"/>
+	  <!-- 负责人手机号 -->
+      <result column="head_phone" property="head_phone"/>
+	  <!-- 负责人邮箱 -->
+      <result column="head_email" property="head_email"/>
+	  <!-- id -->
+      <result column="id" property="id"/>
+	  <!-- 用户id -->
+      <result column="userId" property="userId"/>
+	  <!-- 公司类型 -->
+      <result column="type" property="type"/>
+	  <!-- 合作模式 -->
+      <result column="cooperation" property="cooperation"/>
+	  <!-- 是否委托 -->
+      <result column="isEntrust" property="isEntrust"/>
+	  <!-- 授权手机号 -->
+      <result column="phone" property="phone"/>
+	  <!-- 法定代表人姓名 -->
+      <result column="legalRepresentative" property="legalRepresentative"/>
+	  <!-- 法定代表人手机号 -->
+      <result column="legalPersonPhone" property="legalPersonPhone"/>
+	  <!-- 身份证号 -->
+      <result column="id_number" property="id_number"/>
+	  <!-- 公司名称 -->
+      <result column="name" property="name"/>
+	  <!-- 公司所在地 -->
+      <result column="companyArea" property="companyArea"/>
+	  <!-- 公司详细地址 -->
+      <result column="companyAddress" property="companyAddress"/>
+	  <!-- 公司电话号 -->
+      <result column="companyPhone" property="companyPhone"/>
+	  <!-- ERP类型 -->
+      <result column="erptype" property="erptype"/>
+	  <!-- 法人身份证(正面)电子版 -->
+      <result column="corporate_front_card" property="corporate_front_card"/>
+	  <!-- 法人身份证(反面)电子版 -->
+      <result column="corporate_back_card" property="corporate_back_card"/>
+	  <!-- 银行开户许可证 -->
+      <result column="bank_image" property="bank_image"/>
+	  <!-- 三证合一 -->
+      <result column="isThree" property="isThree"/>
+	  <!-- 三证合一电子版 -->
+      <result column="threeInOneImage" property="threeInOneImage"/>
+	  <!-- 组织机构代码证电子版 -->
+      <result column="organizationImage" property="organizationImage"/>
+	  <!-- 纳税登记证电子版 -->
+      <result column="taxImage" property="taxImage"/>
+	  <!-- 营业执照副本电子版 -->
+      <result column="licenseImage" property="licenseImage"/>
+	  <!-- 银行开户名 -->
+      <result column="bankName" property="bankName"/>
+	  <!-- 公司银行账号 -->
+      <result column="bankNum" property="bankNum"/>
+	  <!-- 开户银行支行名称 -->
+      <result column="bankBranchName" property="bankBranchName"/>
+	  <!-- 开户银行支行所在地 -->
+      <result column="locationBankbranch" property="locationBankbranch"/>
+	  <!-- 纳税人类型 -->
+      <result column="taxpayerType" property="taxpayerType"/>
+	  <!-- 纳税类型税码 -->
+      <result column="taxpayerCoding" property="taxpayerCoding"/>
+	  <!-- 初审状态 -->
+      <result column="state" property="state"/>
+   </resultMap>
+   
+	<!-- 根据ID查询表 -->
+	<select id="findMerchantsSettledByShopId" parameterType="String" resultMap="MerchantsSettledReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_merchants_settled
+		where 
+			id = #{shopId}
+	</select>
+	
+</mapper>

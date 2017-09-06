@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 优惠券套餐(c_couponPackage)Mapper -->
+<mapper namespace="couponPackageMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,name ,number ,money ,startdate ,enddate ,note ,c_coupons ,state ,lasttime ,updatename ,remark ,url 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.coupon.CouponPackage" id="CouponPackageReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 名称 -->
+      <result column="name" property="name"/>
+	  <!-- 发券数量 -->
+      <result column="number" property="number"/>
+	  <!-- 发行金额 -->
+      <result column="money" property="money"/>
+	  <!-- 优惠券有效期 -->
+      <result column="startdate" property="startdate"/>
+	  <!-- 优惠券有效期结束 -->
+      <result column="enddate" property="enddate"/>
+	  <!-- 优惠券说明 -->
+      <result column="note" property="note"/>
+	  <!-- 优惠券id(多选) -->
+      <result column="c_coupons" property="c_coupons"/>
+	  <!-- 状态(1正常2过期) -->
+      <result column="state" property="state"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 领取地址 -->
+      <result column="url" property="url"/>
+   </resultMap>
+   
+    <resultMap type="com.shifeng.entity.coupon.CouponPackage" id="AllCouponPackageReturnMap">
+        <id property="id" column="id"/>
+        <!-- 优惠券id(多选) -->
+      	<result column="c_coupons" property="c_coupons"/>
+        <!-- 优惠券集合 -->
+      <collection property="coupons" ofType="CouponPackageReturnMap" column="c_coupons" select="couponsMapper.findCouponsByPackage"></collection>
+    </resultMap>
+    
+   	<!-- 查询所有表 -->
+	<select id="findAllCouponPackagePage" parameterType="Page" resultMap="AllCouponPackageReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			c_couponPackage
+		where 1=1
+			<if test="t.name!=null and t.name!=''">
+				and name = #{t.name}
+			</if>
+			<if test="t.number!=null and t.number!=''">
+				and number = #{t.number}
+			</if>
+			<if test="t.money!=null and t.money!=''">
+				and money = #{t.money}
+			</if>
+			<if test="t.startdate!=null and t.startdate!=''">
+				and startdate = #{t.startdate}
+			</if>
+			<if test="t.enddate!=null and t.enddate!=''">
+				and enddate = #{t.enddate}
+			</if>
+			<if test="t.note!=null and t.note!=''">
+				and note = #{t.note}
+			</if>
+			<if test="t.c_coupons!=null and t.c_coupons!=''">
+				and c_coupons = #{t.c_coupons}
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and state = #{t.state}
+			</if>
+			<if test="t.lasttime!=null and t.lasttime!=''">
+				and lasttime = #{t.lasttime}
+			</if>
+			<if test="t.updatename!=null and t.updatename!=''">
+				and updatename = #{t.updatename}
+			</if>
+			<if test="t.remark!=null and t.remark!=''">
+				and remark = #{t.remark}
+			</if>
+			<if test="t.url!=null and t.url!=''">
+				and url = #{t.url}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findCouponPackageById" parameterType="String" resultMap="CouponPackageReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			c_couponPackage
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateCouponPackage" parameterType="com.shifeng.entity.coupon.CouponPackage">
+		update 
+			c_couponPackage 
+		set
+	      	name = #{name},
+	      	number = #{number},
+	      	money = #{money},
+	      	startdate = #{startdate},
+	      	enddate = #{enddate},
+	      	note = #{note},
+	      	c_coupons = #{c_coupons},
+	      	state = #{state},
+	      	lasttime = #{lasttime},
+	      	updatename = #{updatename},
+	      	remark = #{remark},
+	      	url = #{url}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveCouponPackage" parameterType="com.shifeng.entity.coupon.CouponPackage">
+		insert into c_couponPackage
+			(
+		      name, number, money, startdate, enddate, note, c_coupons, state, lasttime, updatename, remark, url 
+			)
+		values
+			(
+		      #{name},
+		      #{number},
+		      #{money},
+		      #{startdate},
+		      #{enddate},
+		      #{note},
+		      #{c_coupons},
+		      #{state},
+		      now(),
+		      #{updatename},
+		      #{remark},
+		      #{url}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteCouponPackage" parameterType="String">
+  		delete from c_couponPackage
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 财付通支付流水信息(tenpay_payment_record)Mapper -->
+<mapper namespace="tenpayPaymentRecordMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    serial_number,trade_mode ,trade_state ,pay_info ,partner ,bank_type ,bank_billno ,total_fee ,fee_type ,notify_id ,transaction_id ,out_trade_no ,attach ,time_end ,transport_fee ,product_fee ,discount ,buyer_alias 
+    </sql>
+
+    <resultMap type="com.shifeng.pay.entity.pay.TenpayPaymentRecord" id="TenpayPaymentRecordReturnMap">
+		<!-- 流水号 -->
+      <id column="serial_number" property="serial_number"/>
+		<!-- 交易模式 -->
+      <result column="trade_mode" property="trade_mode"/>
+		<!-- 交易状态 -->
+      <result column="trade_state" property="trade_state"/>
+		<!-- 支付结果信息 -->
+      <result column="pay_info" property="pay_info"/>
+		<!-- 商户号 -->
+      <result column="partner" property="partner"/>
+		<!-- 付款银行 -->
+      <result column="bank_type" property="bank_type"/>
+		<!-- 银行订单号 -->
+      <result column="bank_billno" property="bank_billno"/>
+		<!-- 支付金额，单位为分 -->
+      <result column="total_fee" property="total_fee"/>
+		<!-- 币种 -->
+      <result column="fee_type" property="fee_type"/>
+		<!-- 通知ID -->
+      <result column="notify_id" property="notify_id"/>
+		<!-- 财付通订单号 -->
+      <result column="transaction_id" property="transaction_id"/>
+		<!-- 商户订单号 -->
+      <result column="out_trade_no" property="out_trade_no"/>
+		<!-- 商家数据包 -->
+      <result column="attach" property="attach"/>
+		<!-- 支付完成时间 -->
+      <result column="time_end" property="time_end"/>
+		<!-- 物流费用 -->
+      <result column="transport_fee" property="transport_fee"/>
+		<!-- 物品费用 -->
+      <result column="product_fee" property="product_fee"/>
+		<!-- 折扣价格 -->
+      <result column="discount" property="discount"/>
+		<!-- 买家别名 -->
+      <result column="buyer_alias" property="buyer_alias"/>
+   </resultMap>
+   
+   
+   
+   
+   	<!-- 新增 -->
+	<insert id="savePaymentRecord"  parameterType="com.shifeng.pay.entity.pay.TenpayPaymentRecord">
+		insert into pay_tenpay_payment_record
+			(
+		      serial_number,trade_mode,trade_state,pay_info,partner,bank_type,bank_billno,total_fee,fee_type,notify_id,transaction_id,out_trade_no,attach,time_end,transport_fee,product_fee,discount,buyer_alias
+			)
+		values
+			(
+		      #{serial_number},
+		      #{trade_mode},
+		      #{trade_state},
+		      #{pay_info},
+		      #{partner},
+		      #{bank_type},
+		      #{bank_billno},
+		      #{total_fee},
+		      #{fee_type},
+		      #{notify_id},
+		      #{transaction_id},
+		      #{out_trade_no},
+		      #{attach},
+		      #{time_end},
+		      #{transport_fee},
+		      #{product_fee},
+		      #{discount},
+		      #{buyer_alias}
+			)
+	</insert>
+  
+	
+</mapper>

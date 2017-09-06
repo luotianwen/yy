@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 同义词字典表(synonym)Mapper -->
+<mapper namespace="synonymMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    id,synonym ,escape ,word ,update_time ,is_enable 
+    </sql>
+
+    <resultMap type="com.shifeng.op.dictionary.entity.Synonym" id="SynonymReturnMap">
+		<!-- id -->
+      <id column="id" property="id"/>
+		<!-- 同义词 -->
+      <result column="synonym" property="synonym"/>
+		<!-- 转义词 -->
+      <result column="escape" property="escape"/>
+		<!-- 词 -->
+      <result column="word" property="word"/>
+		<!-- 添加/更新时间 -->
+      <result column="update_time" property="update_time"/>
+		<!-- 是否启用（0：是；1：否） -->
+      <result column="is_enable" property="is_enable"/>
+   </resultMap>
+   
+  
+   <!-- 获取同义词 词典列表 -->
+   <select id="getSynonymListPage" parameterType="page" resultType="com.shifeng.op.dictionary.entity.Synonym">
+   		select
+   			id,synonym ,escape ,word ,update_time ,is_enable 
+   		from
+   			dic_synonym
+   		where
+   			1 = 1  
+		    <if test="t.word != null and t.word !='' ">  
+		        AND word  LIKE CONCAT(CONCAT('%', #{t.word}),'%')
+		    </if>  
+   		order by id desc	
+   </select>
+   
+     <!-- 保存同义词  -->
+  <insert id="saveWord" parameterType="com.shifeng.op.dictionary.entity.Synonym">
+  		insert into
+  		dic_synonym (synonym ,escape ,word ,update_time ,is_enable  )
+  		values
+  		(#{synonym},#{escape},#{word},#{update_time},#{is_enable} )
+  </insert>
+       <!-- 保存同义词  -->
+  <update id="updateWord" parameterType="com.shifeng.op.dictionary.entity.Synonym">
+  		update 
+  			dic_synonym  
+  		set
+  			 synonym = #{synonym},escape = #{escape},word = #{word},is_enable =#{is_enable},update_time = #{update_time}
+  		where
+  			id = #{id}	
+  </update> 
+     	<!-- 根据id查询同义词 -->
+   <select id="selectWordById" parameterType="int" resultType="com.shifeng.op.dictionary.entity.Synonym">
+   		select
+   			id,synonym ,escape ,word ,update_time ,is_enable 
+   		from
+   			dic_synonym
+   		where
+   		 	id = #{id}
+   </select>
+  
+  <!-- 检查同义词是否存在 -->
+  <select id="checkWord" parameterType="String" resultType="int">
+  		select
+  			count(1)
+  		from
+   			dic_synonym
+   		where
+   			word = #{word}	
+  </select>
+  <select id="checkWords" parameterType="java.util.Map" resultType="int">
+  		select
+  			count(1)
+  		from
+   			dic_synonym
+   		where
+   			word = #{word}
+   		and
+   			id != #{id}		
+  </select>
+	
+</mapper>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 用户世峰e卡(c_user_card)Mapper -->
+<mapper namespace="usercardMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	userid,cardnumber ,money ,lasttime ,sdate ,edate ,status ,bindingtime 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.card.UserCard" id="UserCardReturnMap">
+	  <!-- 用户id -->
+      <id column="userid" property="userid"/>
+	  <!-- 世峰卡号 -->
+      <result column="cardnumber" property="cardnumber"/>
+	  <!-- 余额 -->
+      <result column="money" property="money"/>
+	  <!-- 最后更新时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 开始时间 -->
+      <result column="sdate" property="sdate"/>
+	  <!-- 结束时间 -->
+      <result column="edate" property="edate"/>
+	  <!-- 状态（1未绑定2未使用3部分使用4已用完5已作废6已过期） -->
+      <result column="status" property="status"/>
+	  <!-- 用户绑定e卡时间 -->
+      <result column="bindingtime" property="bindingtime"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllUserCardPage" parameterType="Page" resultMap="UserCardReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			c_user_card
+		where 1=1
+			<if test="t.userid!=null and t.userid!=''">
+			    and userid = #{t.userid}
+			</if>
+			<if test="t.status!=null and t.status>0">
+			    and status = #{t.status}
+			</if>
+			<if test="t.cardnumber!=null and t.cardnumber!=''">
+			    and cardnumber = #{t.cardnumber}
+			</if>
+			<if test="t.sdate!=null and t.sdate!=''">
+			    and date(lasttime) >= #{t.sdate}
+			</if>
+			<if test="t.edate!=null and t.edate!=''">
+			    and date(lasttime) <![CDATA[ <= ]]> #{t.edate}
+			</if>
+		order by lasttime desc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findUserCardById" parameterType="String" resultMap="UserCardReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			c_user_card
+		where 
+			userid = #{userid}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateUserCard" parameterType="com.shifeng.entity.card.UserCard">
+		update 
+			c_user_card 
+		set
+	      	cardnumber = #{cardnumber},
+	      	money = #{money},
+	      	lasttime = #{lasttime},
+	      	sdate = #{sdate},
+	      	edate = #{edate},
+	      	status = #{status},
+	      	bindingtime = #{bindingtime}
+		 where
+			id = #{userid}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveUserCard" parameterType="com.shifeng.entity.card.UserCard">
+		insert into c_user_card
+			(
+		      cardnumber, money, lasttime, sdate, edate, status, bindingtime 
+			)
+		values
+			(
+		      #{cardnumber},
+		      #{money},
+		      #{lasttime},
+		      #{sdate},
+		      #{edate},
+		      #{status},
+		      #{bindingtime}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteUserCard" parameterType="String">
+  		delete from c_user_card
+  		where id = #{userid}
+  	</delete>
+	
+  	<!-- 查询用户是否绑定e卡 -->
+	<select id="findUserCardByCid" resultType="Integer">
+	    select count(0)
+	    from c_user_card
+	    where cardnumber = #{id}
+	    and status!=1 and status!=5 and status!=6
+	</select>
+  	
+</mapper>

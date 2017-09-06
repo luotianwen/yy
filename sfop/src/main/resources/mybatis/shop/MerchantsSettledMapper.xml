@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 入驻基本信息填写(s_merchants_settled)Mapper -->
+<mapper namespace="merchantssettledMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	website,onlinestore ,channel ,head_name ,head_phone ,head_email ,id ,userId ,type ,cooperation ,
+    	isEntrust ,phone ,legalRepresentative ,legalPersonPhone ,id_number ,name ,companyArea ,companyAddress ,
+    	companyPhone ,erptype ,corporate_front_card ,corporate_back_card ,bank_image ,isThree ,threeInOneImage ,
+    	organizationImage ,taxImage ,licenseImage ,bankName ,bankNum ,bankBranchName ,locationBankbranch ,
+    	taxpayerType ,taxpayerCoding ,state 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.MerchantsSettled" id="MerchantsSettledReturnMap">
+	  <!-- 公司官网地址 -->
+      <id column="website" property="website"/>
+	  <!-- 三方平台店铺网址 -->
+      <result column="onlinestore" property="onlinestore"/>
+	  <!-- 通过哪种渠道知道世峰户外商城 -->
+      <result column="channel" property="channel"/>
+	  <!-- 负责人姓名 -->
+      <result column="head_name" property="head_name"/>
+	  <!-- 负责人手机号 -->
+      <result column="head_phone" property="head_phone"/>
+	  <!-- 负责人邮箱 -->
+      <result column="head_email" property="head_email"/>
+	  <!-- id -->
+      <result column="id" property="id"/>
+	  <!-- 用户id -->
+      <result column="userId" property="userId"/>
+	  <!-- 公司类型 -->
+      <result column="type" property="type"/>
+	  <!-- 合作模式 -->
+      <result column="cooperation" property="cooperation"/>
+	  <!-- 是否委托 -->
+      <result column="isEntrust" property="isEntrust"/>
+	  <!-- 授权手机号 -->
+      <result column="phone" property="phone"/>
+	  <!-- 法定代表人姓名 -->
+      <result column="legalRepresentative" property="legalRepresentative"/>
+	  <!-- 法定代表人手机号 -->
+      <result column="legalPersonPhone" property="legalPersonPhone"/>
+	  <!-- 身份证号 -->
+      <result column="id_number" property="id_number"/>
+	  <!-- 公司名称 -->
+      <result column="name" property="name"/>
+	  <!-- 公司所在地 -->
+      <result column="companyArea" property="companyArea"/>
+	  <!-- 公司详细地址 -->
+      <result column="companyAddress" property="companyAddress"/>
+	  <!-- 公司电话号 -->
+      <result column="companyPhone" property="companyPhone"/>
+	  <!-- ERP类型 -->
+      <result column="erptype" property="erptype"/>
+	  <!-- 法人身份证(正面)电子版 -->
+      <result column="corporate_front_card" property="corporate_front_card"/>
+	  <!-- 法人身份证(反面)电子版 -->
+      <result column="corporate_back_card" property="corporate_back_card"/>
+	  <!-- 银行开户许可证 -->
+      <result column="bank_image" property="bank_image"/>
+	  <!-- 三证合一 -->
+      <result column="isThree" property="isThree"/>
+	  <!-- 三证合一电子版 -->
+      <result column="threeInOneImage" property="threeInOneImage"/>
+	  <!-- 组织机构代码证电子版 -->
+      <result column="organizationImage" property="organizationImage"/>
+	  <!-- 纳税登记证电子版 -->
+      <result column="taxImage" property="taxImage"/>
+	  <!-- 营业执照副本电子版 -->
+      <result column="licenseImage" property="licenseImage"/>
+	  <!-- 银行开户名 -->
+      <result column="bankName" property="bankName"/>
+	  <!-- 公司银行账号 -->
+      <result column="bankNum" property="bankNum"/>
+	  <!-- 开户银行支行名称 -->
+      <result column="bankBranchName" property="bankBranchName"/>
+	  <!-- 开户银行支行所在地 -->
+      <result column="locationBankbranch" property="locationBankbranch"/>
+	  <!-- 纳税人类型 -->
+      <result column="taxpayerType" property="taxpayerType"/>
+	  <!-- 纳税类型税码 -->
+      <result column="taxpayerCoding" property="taxpayerCoding"/>
+	  <!-- 初审状态 -->
+      <result column="state" property="state"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllMerchantsSettledPage" parameterType="Page" resultMap="MerchantsSettledReturnMap">
+		select
+			<include refid="Base_Column_List"></include>,(select name from sys_user where id=userId)as userName
+		from 
+			s_merchants_settled
+		where 1=1
+			<if test="t.onlinestore!=null and t.onlinestore!=''">
+				and onlinestore = #{t.onlinestore}
+			</if>
+			<if test="t.channel!=null and t.channel!=''">
+				and channel = #{t.channel}
+			</if>
+			<if test="t.head_name!=null and t.head_name!=''">
+				and head_name = #{t.head_name}
+			</if>
+			<if test="t.head_phone!=null and t.head_phone!=''">
+				and head_phone = #{t.head_phone}
+			</if>
+			<if test="t.head_email!=null and t.head_email!=''">
+				and head_email = #{t.head_email}
+			</if>
+			<if test="t.id!=null and t.id!=''">
+				and id = #{t.id}
+			</if>
+			<if test="t.userId!=null and t.userId!=''">
+				and userId = #{t.userId}
+			</if>
+			<if test="t.type!=null and t.type!=''">
+				and type = #{t.type}
+			</if>
+			<if test="t.cooperation!=null and t.cooperation!=''">
+				and cooperation = #{t.cooperation}
+			</if>
+			<if test="t.isEntrust!=null and t.isEntrust!=''">
+				and isEntrust = #{t.isEntrust}
+			</if>
+			<if test="t.phone!=null and t.phone!=''">
+				and phone = #{t.phone}
+			</if>
+			<if test="t.legalRepresentative!=null and t.legalRepresentative!=''">
+				and legalRepresentative = #{t.legalRepresentative}
+			</if>
+			<if test="t.legalPersonPhone!=null and t.legalPersonPhone!=''">
+				and legalPersonPhone = #{t.legalPersonPhone}
+			</if>
+			<if test="t.id_number!=null and t.id_number!=''">
+				and id_number = #{t.id_number}
+			</if>
+			<if test="t.name!=null and t.name!=''">
+				and name = #{t.name}
+			</if>
+			<if test="t.companyArea!=null and t.companyArea!=''">
+				and companyArea = #{t.companyArea}
+			</if>
+			<if test="t.companyAddress!=null and t.companyAddress!=''">
+				and companyAddress = #{t.companyAddress}
+			</if>
+			<if test="t.companyPhone!=null and t.companyPhone!=''">
+				and companyPhone = #{t.companyPhone}
+			</if>
+			<if test="t.erptype!=null and t.erptype!=''">
+				and erptype = #{t.erptype}
+			</if>
+			<if test="t.corporate_front_card!=null and t.corporate_front_card!=''">
+				and corporate_front_card = #{t.corporate_front_card}
+			</if>
+			<if test="t.corporate_back_card!=null and t.corporate_back_card!=''">
+				and corporate_back_card = #{t.corporate_back_card}
+			</if>
+			<if test="t.bank_image!=null and t.bank_image!=''">
+				and bank_image = #{t.bank_image}
+			</if>
+			<if test="t.isThree!=null and t.isThree!=''">
+				and isThree = #{t.isThree}
+			</if>
+			<if test="t.threeInOneImage!=null and t.threeInOneImage!=''">
+				and threeInOneImage = #{t.threeInOneImage}
+			</if>
+			<if test="t.organizationImage!=null and t.organizationImage!=''">
+				and organizationImage = #{t.organizationImage}
+			</if>
+			<if test="t.taxImage!=null and t.taxImage!=''">
+				and taxImage = #{t.taxImage}
+			</if>
+			<if test="t.licenseImage!=null and t.licenseImage!=''">
+				and licenseImage = #{t.licenseImage}
+			</if>
+			<if test="t.bankName!=null and t.bankName!=''">
+				and bankName = #{t.bankName}
+			</if>
+			<if test="t.bankNum!=null and t.bankNum!=''">
+				and bankNum = #{t.bankNum}
+			</if>
+			<if test="t.bankBranchName!=null and t.bankBranchName!=''">
+				and bankBranchName = #{t.bankBranchName}
+			</if>
+			<if test="t.locationBankbranch!=null and t.locationBankbranch!=''">
+				and locationBankbranch = #{t.locationBankbranch}
+			</if>
+			<if test="t.taxpayerType!=null and t.taxpayerType!=''">
+				and taxpayerType = #{t.taxpayerType}
+			</if>
+			<if test="t.taxpayerCoding!=null and t.taxpayerCoding!=''">
+				and taxpayerCoding = #{t.taxpayerCoding}
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and state = #{t.state}
+			</if>
+		order by id desc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findMerchantsSettledById" parameterType="String" resultMap="MerchantsSettledReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_merchants_settled
+		where 
+			id = #{id}
+	</select>
+	<!-- 修改表 -->
+	<update id="updateMerchantsSettledState" parameterType="map">
+		update
+			s_merchants_settled
+		set	state = #{state}
+		 where
+			id = #{id}
+	</update>
+	<!-- 修改表 -->
+	<update id="updateMerchantsSettled" parameterType="com.shifeng.entity.shop.MerchantsSettled">
+		update 
+			s_merchants_settled 
+		set
+	      	onlinestore = #{onlinestore},
+	      	channel = #{channel},
+	      	head_name = #{head_name},
+	      	head_phone = #{head_phone},
+	      	head_email = #{head_email},
+	      	id = #{id},
+	      	userId = #{userId},
+	      	type = #{type},
+	      	cooperation = #{cooperation},
+	      	isEntrust = #{isEntrust},
+	      	phone = #{phone},
+	      	legalRepresentative = #{legalRepresentative},
+	      	legalPersonPhone = #{legalPersonPhone},
+	      	id_number = #{id_number},
+	      	name = #{name},
+	      	companyArea = #{companyArea},
+	      	companyAddress = #{companyAddress},
+	      	companyPhone = #{companyPhone},
+	      	erptype = #{erptype},
+	      	corporate_front_card = #{corporate_front_card},
+	      	corporate_back_card = #{corporate_back_card},
+	      	bank_image = #{bank_image},
+	      	isThree = #{isThree},
+	      	threeInOneImage = #{threeInOneImage},
+	      	organizationImage = #{organizationImage},
+	      	taxImage = #{taxImage},
+	      	licenseImage = #{licenseImage},
+	      	bankName = #{bankName},
+	      	bankNum = #{bankNum},
+	      	bankBranchName = #{bankBranchName},
+	      	locationBankbranch = #{locationBankbranch},
+	      	taxpayerType = #{taxpayerType},
+	      	taxpayerCoding = #{taxpayerCoding},
+	      	state = #{state}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveMerchantsSettled" parameterType="com.shifeng.entity.shop.MerchantsSettled">
+		insert into s_merchants_settled
+			(
+		      onlinestore, channel, head_name, head_phone, head_email, id, userId, type, cooperation, isEntrust, phone, legalRepresentative, legalPersonPhone, id_number, name, companyArea, companyAddress, companyPhone, erptype, corporate_front_card, corporate_back_card, bank_image, isThree, threeInOneImage, organizationImage, taxImage, licenseImage, bankName, bankNum, bankBranchName, locationBankbranch, taxpayerType, taxpayerCoding, state 
+			)
+		values
+			(
+		      #{onlinestore},
+		      #{channel},
+		      #{head_name},
+		      #{head_phone},
+		      #{head_email},
+		      #{id},
+		      #{userId},
+		      #{type},
+		      #{cooperation},
+		      #{isEntrust},
+		      #{phone},
+		      #{legalRepresentative},
+		      #{legalPersonPhone},
+		      #{id_number},
+		      #{name},
+		      #{companyArea},
+		      #{companyAddress},
+		      #{companyPhone},
+		      #{erptype},
+		      #{corporate_front_card},
+		      #{corporate_back_card},
+		      #{bank_image},
+		      #{isThree},
+		      #{threeInOneImage},
+		      #{organizationImage},
+		      #{taxImage},
+		      #{licenseImage},
+		      #{bankName},
+		      #{bankNum},
+		      #{bankBranchName},
+		      #{locationBankbranch},
+		      #{taxpayerType},
+		      #{taxpayerCoding},
+		      #{state}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteMerchantsSettled" parameterType="String">
+  		delete from s_merchants_settled
+  		where id = #{id}
+  	</delete>
+	
+  	<update id="updateNext" parameterType="java.util.Map">
+  	    update s_merchants_settled set
+  	    next = #{next}
+  	    where id = #{s_merchants_id}
+  	</update>
+  	
+</mapper>

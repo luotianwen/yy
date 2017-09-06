@@ -1,0 +1,21 @@
+@charset "utf-8";
+/* 政策 */
+.sidenav{width:200px;box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);overflow:hidden;margin-top:20px;margin-bottom:20px;}
+.sidenav dl{overflow:hidden;line-height:40px;}
+.sidenav dt{font-size:16px;color:#06b639;padding-left:48px;box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);background:#fff;margin:5px 0;}
+.sidenav dt.one{margin-top:0;}
+.sidenav dd{padding-left:73px;font-size:14px;color:#505050;background:#fff;}
+.sidenav dd a{font-size:14px;color:#505050;}
+.sidenav dd.current{background:#76cf8f;}
+.sidenav dd.current a{font-size:16px;color:#fff;font-weight:bold;}
+.t1,.t2,.t3,.t4,.t5,.t6{width:16px;height:16px;background:url(/ststic/img/icons-p.png) no-repeat;margin-right:9px; vertical-align:-3px;}
+.sidenav .t1{background-position:-104px -14px;display:inline-block;}
+.sidenav .t2{background-position:-74px -14px;display:inline-block;}
+.sidenav .t3{background-position:-44px -14px;display:inline-block;}
+.sidenav .t4{background-position:-14px -14px;display:inline-block;}
+.sidenav .t5{background-position:-136px -14px;display:inline-block;}
+.sidenav .t6{background-position:-168px -14px;display:inline-block;}
+.txt-main{width:970px;margin-top:20px;margin-bottom:20px;}
+.txt-main .mt{border-bottom:1px solid #c8c8c8;font-size:16px;color:#505050;font-weight:bold;height:40px;line-height:40px;}
+.txt-main .mc{padding:20px 0;}
+

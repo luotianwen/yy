@@ -1,0 +1,100 @@
+.indent_submit_successfully .su_title {
+  margin-top: 64px;
+  margin-bottom: 53px;
+}
+.indent_submit_successfully .su_title .tick {
+  float: left;
+  display: inline-block;
+  width: 58px;
+  height: 58px;
+  background: url(/static/img/tick_img.png) no-repeat;
+  margin-right: 14px;
+}
+.indent_submit_successfully .su_title .tick_msg span {
+  display: block;
+}
+.indent_submit_successfully .su_title .tick_msg span.tm_item_2 {
+  color: #505050;
+  font-size: 14px;
+  margin-top: 10px;
+}
+.indent_submit_successfully .su_title .tick_msg span.tm_item_2 i {
+  color: #FF5B29;
+  padding: 0 2px;
+}
+.indent_submit_successfully .related {
+  width: 100%;
+}
+.indent_submit_successfully .related .title {
+  padding-bottom: 7px;
+}
+.indent_submit_successfully .related .title p {
+  height: 18px;
+  border-left: 4px solid #06b639;
+  font-size: 16px;
+  color: #2d2d2d;
+  line-height: 18px;
+  padding: 0 6px;
+  font-weight: 600;
+}
+.indent_submit_successfully .related .r_menu {
+  margin-top: 22px;
+}
+.indent_submit_successfully .related .r_menu ul li {
+  float: left;
+  width: 200px;
+  height: 120px;
+  border: 1px solid #969696;
+  border-radius: 5px;
+  margin-right: 41px;
+  position: relative;
+}
+.indent_submit_successfully .related .r_menu ul li span {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+.indent_submit_successfully .related .r_menu ul li span img {
+  margin-top: 20px;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 10px;
+}
+
+.indent_submit_successfully .related .r_menu ul li:hover {
+  border: 1px solid #06B438;
+}
+.indent_submit_successfully .related .r_menu ul li.active {
+  border: 1px solid #06B438;
+}
+.indent_submit_successfully .related .r_menu ul li.active i{width:40px;height:40px;background:url(/static/img/icons.png) no-repeat -59px -32px;display:inline-block;position:absolute;bottom:0;right:-1px; }
+
+.indent_submit_successfully .related .r_menu button {
+  display: block;
+  width: 120px;
+  height: 40px;
+  border-radius: 5px;
+  border: 0;
+  margin-top: 45px;
+  font-size: 16px;
+  color: #FFFFFF;
+  background-color: #FF5B29;
+}
+.instructions {
+  margin-top: 56px;
+  font-size: 14px;
+}
+.instructions .title {
+  color: #FF5B29;
+}
+.instructions ul {
+  margin-top: 16px;
+  padding-left: 12px;
+  color: #969696;
+}
+.instructions ul li {
+  margin-bottom: 10px;
+}
+.instructions ul li a {
+  color: #06B639;
+}

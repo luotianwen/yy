@@ -1,0 +1,72 @@
+<%
+	for(data in page.resultData){
+%>
+	<ul class="drm-order-list clearfix">
+		<li class="drm-order-item clearfix">
+			<div class="drm-order-info-1">
+				<span class="order-num">订单号：${data.orderid}</span>
+				<span class="order-date">下单时间：${data.order_time,"yyyy-MM-dd HH:mm:ss"}</span>
+			</div>
+			<ul class="drm-order-info-2 clearfix">
+				<li class="clearfix">
+					<div class="order-price fl">
+						<p>分销佣金：<span class="fred">${data.commission}元</span></p>
+						<p>订单状态：
+							<span class="fgray">
+								 <%
+								 	if(data.state==1){
+								 %>
+								 	待结算
+								 <%
+								 	}else if(data.state==2){
+								 %>
+								 	已结算
+								 <%
+								 	}else if(data.state==3){
+								 %>
+								 	3：订单失效
+								 <%
+								 	}
+								 %>
+							</span>
+						</p>
+					</div>
+					<div class="order-price fl">
+						<p>订单总额：<span class="fgray">${data.order_amount}元</span></p>
+						<p>我的分销商：<span class="fgray">${data.recommended_userid}${data.recommended_userName}</span></p>
+					</div>
+				</li>
+			</ul>
+		</li>
+	</ul>
+<%
+	}
+%>
+
+<script type="text/javascript">
+	$(function(){
+		page("${page.totalPage}","${page.currentPage}");
+	})
+	
+	function page(allpage,curr){
+		laypage({
+			cont: "page",
+			pages: allpage,
+			curr: curr,
+			skip: true, //是否开启跳页
+	        groups: 5, //连续显示分页数
+	        skin: '#76cf8f',
+	        first: 1,
+	        prev:"<",
+	        next:">",
+	        last: allpage, //在尾页追加总页数。
+			jump: function(obj, first){
+				if(!first){
+					$.post("/my/distributorOrderList.json?day=${day}&userId=${userId}&currentPage="+obj.curr,function(data){
+						$("#orderList").html(data);
+					})
+				}
+			}
+		});
+	}
+</script>

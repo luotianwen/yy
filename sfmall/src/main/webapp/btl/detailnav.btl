@@ -1,0 +1,75 @@
+<div class="nav">
+    <div class="boxw" style="position: relative;">
+
+<div class="dorpdown" id="categorys-2014">
+    <div class="dt">
+        <a>商品分类</a><i></i>
+    </div>
+    <div class="dd">
+        <div class="dd-inner">
+            <% for(nav in navs){%>
+            <div class="item">
+                <h3>${nav.name}</h3>
+            </div>
+            <%}%>
+        </div>
+        <div style="display: none;" class="dorpdown-layer" id="index_menus_sub">
+            <% for(nav in navs){%>
+
+            <div class="item-sub" style="display: none;">
+                <div   class="subitems">
+                    <% for(category in nav.child){%>
+                    <dl>
+                        <dt>
+                            <% if(category.url!=null&&category.url!=""){%>
+                                <a target="_blank" href="http://${category.url}">
+                           <%}else{%>
+                                <a target="_blank" href="/product/searchWare.html?c=${category.id}">
+                            <%}%>
+                                ${category.descript}
+                                <i>
+                                    &gt;
+                                </i>
+                            </a>
+                        </dt>
+                        <dd>
+                            <% for(detail in category.child){%>
+                            <% if(detail.url!=null&&detail.url!=""){%>
+                            <a target="_blank" href="http://${detail.url}">
+                            <%}else{%>
+                            <a target="_blank" href="/product/searchWare.html?c=${detail.id}">
+                                <%}%>
+                                ${detail.descript}
+                            </a>
+                            <%}%>
+                        </dd>
+                    </dl>
+                    <%}%>
+                </div>
+            </div>
+            <%}%>
+
+
+
+        </div>
+    </div>
+</div>
+        <ol class="h_nav">
+            <li class="nav_active">
+                <a href="/"  >首页</a>
+            </li>
+           <!-- <li>
+                <a href="http://www.seebong.com/Special/tg01.html" target="_blank">品牌团</a>
+            </li>-->
+           <!-- <li>
+                <a href="http://www.seebong.com/brand" target="_blank">品牌馆</a>
+            </li>-->
+            <!--<li>
+                <a href="http://www.seebong.com/Special/65.html" target="_blank">新品购</a>
+            </li>
+            <li>
+                <a href="http://www.seebong.com/Seckill" target="_blank">限时购</a>
+            </li>-->
+        </ol>
+    </div>
+</div>

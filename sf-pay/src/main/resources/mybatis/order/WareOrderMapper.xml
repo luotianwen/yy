@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 商品订单Mapper -->
+<mapper namespace="wareOrderMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+ 
+
+	<!-- 根据订单号获取未支付的商品订单(父订单)信息 -->
+	<select id="getParentUnpaidWaresOrderById" parameterType="String" resultType="com.shifeng.pay.entity.order.UnpaidOrderInfo">
+		select
+			perentId AS order_id,order_payment AS total_fee,orderStatus
+		from 
+			o_porderInfo
+		where
+			perentId = #{order_id}
+			 and orderStatus = 0 
+	</select>
+	
+	<!-- 根据订单号获取未支付的商品订单(子订单)信息 -->
+	<select id="getUnpaidWareOrderById" parameterType="String" resultType="com.shifeng.pay.entity.order.UnpaidOrderInfo">
+ 		SELECT
+			orderId AS order_id,order_payment AS total_fee,orderStatus
+		FROM 
+			o_orderInfo
+		WHERE
+			orderId = #{order_id}
+			AND orderStatus = 0
+	</select>
+	
+	<!-- 更新父订单支付状态 -->
+	<update id="updateParentOrderPayState" parameterType="java.util.Map">
+			update 
+				o_porderInfo set orderStatus = 1 , payment_confirm_time = NOW() ,pay_serial_number = #{pay_serial_number}
+			where 
+			   perentId = #{order_id} and orderStatus = 0 
+	</update>
+	<!-- 更新父订单下的子订单支付状态 -->
+	<update id="updateOrderPayStateByPerentId" parameterType="java.util.Map">
+			update o_orderInfo set orderStatus = 1 , payment_confirm_time = NOW(),pay_serial_number = #{pay_serial_number}
+			  where perentId = #{order_id} and orderStatus = 0
+	</update>
+	
+	
+	<!-- 更新子订单支付状态 -->
+	<update id="updateOrderPayState" parameterType="java.util.Map">
+			update o_orderInfo set orderStatus = 1 , payment_confirm_time = NOW(),pay_serial_number = #{pay_serial_number}
+			  where orderId = #{order_id} and orderStatus = 0
+	</update>
+
+	<!-- 根据父订单ID获取子订单ID列表 -->
+	<select id="getOrderIdListByParentOrderId" parameterType="String" resultType="String">
+		select
+			orderId
+		from 
+			o_orderInfo
+		where
+			perentId = #{perentId}
+	</select>
+	
+</mapper>

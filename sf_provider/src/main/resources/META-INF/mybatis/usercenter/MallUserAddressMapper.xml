@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 用户收货地址(mall_user_address)Mapper -->
+<mapper namespace="malluseraddressMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,uid ,contacts ,phone ,province ,city ,area ,address ,first ,state ,lasttime 
+    </sql>
+
+    <resultMap type="com.shifeng.dto.mall.MallUserAddressDTO" id="MallUserAddressDTOReturnMap">
+	  <!-- id  -->
+      <id column="id" property="id"/>
+	  <!-- 用户id  -->
+      <result column="uid" property="uid"/>
+	  <!-- 联系人  -->
+      <result column="contacts" property="contacts"/>
+	  <!-- 联系电话  -->
+      <result column="phone" property="phone"/>
+	  <!-- 省  -->
+      <result column="province" property="province"/>
+	  <!-- 市  -->
+      <result column="city" property="city"/>
+	  <!-- 区  -->
+      <result column="area" property="area"/>
+	  <!-- 省  -->
+      <result column="provinceName" property="provinceName"/>
+	  <!-- 市  -->
+      <result column="cityName" property="cityName"/>
+	  <!-- 区  -->
+      <result column="areaName" property="areaName"/>
+	  <!-- 详细地址  -->
+      <result column="address" property="address"/>
+	  <!-- 默认 1是2否 -->
+      <result column="first" property="first"/>
+	  <!-- 状态 1正常2删除 -->
+      <result column="state" property="state"/>
+	  <!-- 最后更新时间  -->
+      <result column="lasttime" property="lasttime"/>
+   </resultMap>
+   
+   	<!-- 根据用户ID获取收货地址列表 -->
+	<select id="getAddressByUserId" parameterType="String" resultType="com.shifeng.dto.mall.MallUserAddressDTO">
+		select
+			id,contacts ,phone ,province ,city ,area ,address ,first
+		from
+			mall_user_address
+		where
+			uid = #{uid} and state = 1
+			order by first asc,lasttime desc
+	</select> 
+
+	<!-- 根据地址ID获取地址详细信息 -->
+	<select id="getAddressById" parameterType="String" resultMap="MallUserAddressDTOReturnMap">
+		select
+			ua.id,ua.contacts ,ua.phone ,ua.province ,ua.city ,ua.area ,ua.address ,ua.first
+			,sa.name provinceName,sa1.name cityName,sa2.name areaName
+		FROM 
+			mall_user_address ua
+		 LEFT JOIN sys_address sa ON ua.province = sa.id
+		 LEFT JOIN sys_address sa1 ON ua.city = sa1.id
+		 LEFT JOIN sys_address sa2 ON ua.AREA = sa2.id
+		where 
+			ua.id = #{array[1]} and ua.uid = #{array[0]} and ua.state = 1
+	</select>
+	
+	
+	
+
+	<!-- 获取用户默认收货地址 -->
+	<select id="getDefaultAddress" parameterType="String" resultMap="MallUserAddressDTOReturnMap">
+		select
+			id,contacts ,phone ,province ,city ,area ,address ,first
+		from 
+			mall_user_address
+		where 
+			uid = #{uid} and first = 1
+	</select>
+
+	<!-- 修改用户收货地址 -->
+	<update id="updateMallUserAddress" parameterType="com.shifeng.dto.mall.MallUserAddressDTO">
+		update 
+			mall_user_address 
+		set
+	      	contacts = #{contacts},
+	      	phone = #{phone},
+	      	province = #{province},
+	      	city = #{city},
+	      	area = #{area},
+	      	address = #{address},
+	      	first = #{first},
+	      	lasttime = NOW()
+		 where
+			id = #{id} and uid = #{uid} 
+	</update>
+	
+	<!-- 设置默认收货地址 -->
+	<update id="updateAddressAllDefaultById" parameterType="String">
+	
+		update 
+			mall_user_address 
+		set
+	      	first = 1,
+	      	lasttime = NOW()
+		 where
+			id = #{array[1]} and uid = #{array[0]}
+	
+	</update>
+	
+	<!-- 取消用户默认收货地址 -->
+	<update id="updateAddressAllCancelDefaultById" parameterType="String">
+	
+		update 
+			mall_user_address 
+		set
+	      	first = 2,
+	      	lasttime = NOW()
+		 where
+			uid = #{uid} and first = 1
+	
+	</update>
+	
+
+	<!-- 新增表 -->
+	<insert id="saveMallUserAddress" parameterType="com.shifeng.dto.mall.MallUserAddressDTO" keyColumn="id"  keyProperty="id"  useGeneratedKeys="true">
+		insert into mall_user_address
+			(
+		      uid, contacts, phone, province, city, area, address, first, state, lasttime 
+			)
+		values
+			(
+		      #{uid},
+		      #{contacts},
+		      #{phone},
+		      #{province},
+		      #{city},
+		      #{area},
+		      #{address},
+		      #{first},
+		      1,
+		      NOW()
+			)
+	</insert>
+	
+	<!-- 删除收货地址 -->
+	<update id="deleteAddress" parameterType="String">
+	
+		update 
+			mall_user_address 
+		set
+	      	state = 2,
+	      	lasttime = NOW()
+		 where
+			id = #{array[1]} and uid = #{array[0]}
+	
+	</update>
+	<!-- <delete id="deleteAddress" parameterType="String">
+		delete from 
+			mall_user_address 
+		 where
+			id = #{array[1]} and uid = #{array[0]}
+	</delete> -->
+  	
+  	<!-- 获取用户收货地址数量 -->
+  	<select id="getAddressCount" parameterType="String" resultType="Integer">
+  	    select count(0) from mall_user_address
+  	    where uid = #{user_id}
+  	</select>
+  	
+	
+</mapper>

@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>${explain.title}</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/txt.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:''}){}%>
+<% include("/detailnav.btl"){}%>
+
+<div class="boxw clearfix">
+    <div class="fl sidenav">
+
+
+
+        <dl>
+            <dt><i class="t4"></i>售后服务</dt>
+            <%if(explain.name=='售后政策'){%> <dd  class="current" > 售后政策 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/customerservice.html?name=售后政策">售后政策</a></dd><%}%>
+            <%if(explain.name=='退换货说明'){%> <dd  class="current" > 退换货说明 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/customerservice.html?name=退换货说明">退换货说明</a></dd><%}%>
+            <%if(explain.name=='退换货流程'){%> <dd  class="current" > 退换货流程 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/customerservice.html?name=退换货流程">退换货流程</a></dd><%}%>
+            <%if(explain.name=='退款说明'){%> <dd  class="current" > 退款说明 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/customerservice.html?name=退款说明">退款说明</a></dd><%}%>
+            <%if(explain.name=='售后常见问题'){%> <dd  class="current" > 售后常见问题 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/customerservice.html?name=售后常见问题">售后常见问题</a></dd><%}%>
+
+        </dl>
+
+    </div>
+    <div class="fr txt-main clearfix">
+        <div class="mt">${explain.name}</div>
+        <div class="mc">${explain.content}</div>
+    </div>
+</div>
+
+<% include("/footer.btl"){}%>
+</body>
+</html>

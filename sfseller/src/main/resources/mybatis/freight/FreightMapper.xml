@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 运费模板管理(o_freight)Mapper -->
+<mapper namespace="freightMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,shopid ,FfreightName ,isFree ,ruleType ,defaultFirstUnit ,defaultFirstMoney ,defaultLastUnit ,defaultLastMoney ,createTime ,lasttime ,updatename
+    </sql>
+
+    <resultMap type="com.shifeng.entity.freight.Freight" id="FreightReturnMap">
+	  <!-- 模板id -->
+      <id column="id" property="id"/>
+	  <!-- 店铺id -->
+      <result column="shopid" property="shopid"/>
+	  <!-- 模板名称 -->
+      <result column="FfreightName" property="ffreightName"/>
+	  <!-- 是否包邮1是2否 -->
+      <result column="isFree" property="isFree"/>
+	  <!-- 计费规则(1按件数;2按重量) -->
+      <result column="ruleType" property="ruleType"/>
+	  <!-- 默认首重 -->
+      <result column="defaultFirstUnit" property="defaultFirstUnit"/>
+	  <!-- 首重金额 -->
+      <result column="defaultFirstMoney" property="defaultFirstMoney"/>
+	  <!-- 每增加重量 -->
+      <result column="defaultLastUnit" property="defaultLastUnit"/>
+	  <!-- 每增加重量金额 -->
+      <result column="defaultLastMoney" property="defaultLastMoney"/>
+	  <!-- 创建时间 -->
+      <result column="createTime" property="createTime"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+		<collection property="details"   ofType="com.shifeng.entity.freight.FreightDetail" column="id" select="freightMapper.findAllFreightDetailByFid">
+			<result column="cityname" property="cityName"/>
+		</collection>
+   </resultMap>
+	<resultMap type="com.shifeng.entity.freight.FreightDetail" id="FreightDetailReturnMap">
+		<!-- 主键 -->
+		<id column="id" property="id"/>
+		<!-- 模板编号 -->
+		<result column="fid" property="fid"/>
+		<!-- 省份编号集合 -->
+		<result column="pid" property="pid"/>
+		<!-- 城市编号集合 -->
+		<result column="cid" property="cid"/>
+		<!-- 运费 -->
+		<result column="freights" property="freights"/>
+		<!-- 除外运费 -->
+		<result column="beyondFreight" property="beyondFreight"/>
+		<!-- 运费类型(1按件数；2按重量) -->
+		<result column="ruleType" property="ruleType"/>
+		<!-- 最后修改时间 -->
+		<result column="lasttime" property="lasttime"/>
+		<!-- 最后修改人 -->
+		<result column="updatename" property="updatename"/>
+		<result column="cityname" property="cityName"/>
+	</resultMap>
+
+	<!-- 查询所有表 -->
+	<select id="findAllFreightDetailByFid" parameterType="String" resultMap="FreightDetailReturnMap">
+		select
+		*
+		from
+		s_freight_detail
+		where   fid = #{id}
+
+	</select>
+   	<!-- 根据店铺ID查询所有表 -->
+	<select id="findAllFreightByShopId" parameterType="String" resultType="com.shifeng.entity.freight.Freight">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_freight
+		where shopid = #{shopId}
+	</select>
+
+	<!-- 查询所有表 -->
+	<select id="findAllFreightPage" parameterType="Page" resultMap="FreightReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from
+		s_freight
+		where 1=1
+		<if test="t.shopid != null and t.shopid != '' ">
+			and shopid = #{t.shopid}
+		</if>
+	</select>
+	
+	<!-- 根据ID查询表 -->
+	<select id="findFreightById" parameterType="String" resultMap="FreightReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_freight
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateFreight" parameterType="com.shifeng.entity.freight.Freight">
+		update 
+			s_freight
+		set
+	      	FfreightName = #{ffreightName},
+	      	isFree = #{isFree},
+	      	ruleType = #{ruleType},
+	      	defaultFirstUnit = #{defaultFirstUnit},
+	      	defaultFirstMoney = #{defaultFirstMoney},
+	      	defaultLastUnit = #{defaultLastUnit},
+	      	defaultLastMoney = #{defaultLastMoney},
+	      	lasttime =now(),
+	      	updatename = #{updatename}
+		 where
+			id = #{id}
+	</update>
+	<!-- 批量新增表 -->
+	<insert id="saveFreightDetail" parameterType="java.util.Map">
+		insert into s_freight_detail
+		(
+		    fid, city, firstunit, firstfee, addunit ,addfee,cityname
+		)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(
+			#{fid},
+			#{item.city},
+			#{item.firstunit},
+			#{item.firstfee},
+			#{item.addunit},
+			#{item.addfee},
+			#{item.cityName}
+			)
+		</foreach>
+	</insert>
+	<!-- 新增表 -->
+	<insert id="saveFreight" parameterType="com.shifeng.entity.freight.Freight" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into s_freight
+			(
+		      shopid, FfreightName, isFree, ruleType, defaultFirstUnit, defaultFirstMoney, defaultLastUnit, defaultLastMoney, createTime, lasttime, updatename
+			)
+		values
+			(
+		      #{shopid},
+		      #{ffreightName},
+		      #{isFree},
+		      #{ruleType},
+		      #{defaultFirstUnit},
+		      #{defaultFirstMoney},
+		      #{defaultLastUnit},
+		      #{defaultLastMoney},
+		      now(),
+		      now(),
+		      #{updatename}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteFreight" parameterType="String">
+  		delete from s_freight
+  		where id = #{id}
+  	</delete>
+	<!-- 删除 -->
+	<delete id="deleteFreoghtDetailByFid" parameterType="String">
+		delete from s_freight_detail
+		where fid = #{id}
+	</delete>
+
+</mapper>

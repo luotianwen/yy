@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 商品评价图片(p_product_evaluate_img)Mapper -->
+<mapper namespace="mallProductevaluateimgMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,ppeid ,imgpath ,cdate 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.product.ProductEvaluateImg" id="ProductEvaluateImgReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 评价id -->
+      <result column="ppeid" property="ppeid"/>
+	  <!-- 图片地址 -->
+      <result column="imgpath" property="imgpath"/>
+	  <!-- 创建时间 -->
+      <result column="cdate" property="cdate"/>
+   </resultMap>
+   
+    
+	<!-- 保存商品评价图片 -->
+	<insert id="saveProductEvaluateImg" parameterType="com.shifeng.dto.mall.comments.OrderWareCommentDTO">
+		insert into p_product_evaluate_img
+			(
+		      ppeid, imgpath, cdate 
+			)
+		values
+		    <foreach collection="imgs" item="item" index="index" separator=","  >
+				(
+			      #{id},
+			      #{item.imgpath},
+			      NOW()
+				)
+			</foreach> 
+			
+	</insert>
+  
+   
+	
+</mapper>

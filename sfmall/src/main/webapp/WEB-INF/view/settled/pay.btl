@@ -1,0 +1,13 @@
+<% include("/basejs.btl"){}%>
+<form   id="payform" action="${payUrl}" method="post">
+    <input type="hidden"   name="payment_type" value="${payment_type}">
+    <input type="hidden"   name="payment_method" value="${payment_method}">
+    <input type="hidden"   name="order_type" value="${order_type}">
+    <input type="hidden"   name="order_id" value="${order_id}">
+    <input type="hidden"   name="sign" value="${sign}">
+</form>
+<script>
+    $(function () {
+        $("#payform").submit();
+    })
+</script>

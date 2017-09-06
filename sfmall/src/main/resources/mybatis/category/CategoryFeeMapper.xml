@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 分类费用(c_category_fee)Mapper -->
+<mapper namespace="categoryfeeMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	c_category_id,consignmentpoints ,deposit ,platformfee ,points ,lasttime,updatename
+    </sql>
+
+    <resultMap type="com.shifeng.entity.category.CategoryFee" id="CategoryFeeReturnMap">
+	  <!-- 分类id -->
+      <id column="c_category_id" property="c_category_id"/>
+	  <!-- 代销店铺扣点 -->
+      <result column="consignmentpoints" property="consignmentpoints"/>
+	  <!-- 类目保证金标准（元） -->
+      <result column="deposit" property="deposit"/>
+	  <!-- 平台使用费 -->
+      <result column="platformfee" property="platformfee"/>
+	  <!-- 扣点 -->
+      <result column="points" property="points"/>
+      <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+      <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+	<!-- 根据ID查询表 -->
+	<select id="findCategoryFeeById" parameterType="String" resultMap="CategoryFeeReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			c_category_fee
+		where 
+			c_category_id = #{c_category_id}
+	</select>
+
+</mapper>

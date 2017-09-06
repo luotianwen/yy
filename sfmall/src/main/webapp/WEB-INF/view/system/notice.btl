@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <title>${notice.title}</title>
+    <meta name="keywords" content="${notice.title}" />
+    <meta name="description" content="${notice.title}" />
+    <meta name="Robots" content="all">
+    <meta name="author" content="世峰户外商城">
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/bulletin_essay.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/laypage/laypage.js"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'商城公告'}){}%>
+<% include("/detailnav.btl"){}%>
+<div class="essay_msg">
+    <div class="title">
+        ${notice.title}
+    </div>
+    <div class="author">
+        <span class="time">时间：<i>${notice.releaseDate}</i></span>
+        <span class="ar">作者：<i>${notice.publisher}</i></span>
+        <span class="browse_num">浏览次数：<i>${notice.pv}</i></span>
+    </div>
+    <div class="essay_content">
+        ${notice.title}
+    </div>
+</div>
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+</body>
+</html>

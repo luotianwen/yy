@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 我的银币(mall_users_silver)Mapper -->
+<mapper namespace="malluserssilverMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	uid,silver ,lastsilver ,lasttime ,allsilver 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.mall.MallUsersSilver" id="MallUsersSilverReturnMap">
+	  <!-- uid -->
+      <id column="uid" property="uid"/>
+	  <!-- 已兑换银币 -->
+      <result column="silver" property="silver"/>
+	  <!-- 剩余银币 -->
+      <result column="lastsilver" property="lastsilver"/>
+	  <!-- 最后更新时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 所有银币 -->
+      <result column="allsilver" property="allsilver"/>
+   </resultMap>
+    
+	<!-- 获取我的银币  -->
+	<select id="findMallUsersSilverByUserId" parameterType="String" resultType="com.shifeng.entity.mall.MallUsersSilver">
+		select
+			uid,silver ,lastsilver ,lasttime ,allsilver 
+		from 
+			mall_users_silver
+		where 
+			uid = #{uid}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateMallUsersSilver" parameterType="com.shifeng.entity.mall.MallUsersSilver">
+		update 
+			mall_users_silver 
+		set
+	      	silver = #{silver},
+	      	lastsilver = #{lastsilver},
+	      	lasttime = #{lasttime},
+	      	allsilver = #{allsilver}
+		 where
+			uid = #{uid}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveMallUsersSilver" parameterType="com.shifeng.entity.mall.MallUsersSilver">
+		insert into mall_users_silver
+			(
+		      silver, lastsilver, lasttime, allsilver 
+			)
+		values
+			(
+		      #{silver},
+		      #{lastsilver},
+		      #{lasttime},
+		      #{allsilver}
+			)
+	</insert>
+	
+   
+
+	<!-- 更新银币余额（扣除银币） -->
+	<update id="updateSilverDeduction" parameterType="String">
+		update 
+			mall_users_silver 
+		set
+	      	silver = silver + #{array[1]},
+	      	lastsilver = lastsilver - #{array[1]},
+	      	lasttime = NOW()
+		 where
+			uid = #{array[0]}
+	</update>
+   
+
+	<!-- 更新银币余额（增加银币） -->
+	<update id="updateSilverAdd" parameterType="String">
+		update 
+			mall_users_silver 
+		set
+	      	allsilver = allsilver + #{array[1]},
+	      	lastsilver = lastsilver + #{array[1]},
+	      	lasttime = NOW()
+		 where
+			uid = #{array[0]}
+	</update>
+	
+</mapper>

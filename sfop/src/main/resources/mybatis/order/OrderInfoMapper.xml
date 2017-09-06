@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 订单表(o_orderInfo)Mapper -->
+<mapper namespace="orderInfoMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	orderId,subTime ,sellerId ,userId ,receiveName ,phoneNumber ,address ,zipCode ,giftPoints ,
+    	invoiceType ,invoiceNumber ,isSettlement ,settlementTime ,userConfirmTime ,orderStatus ,
+    	orderType ,remark ,lastModifiedTime ,defaultPayment ,sellerRemark ,ip ,pay_serial_number ,onlinepayfee ,
+    	perentId ,order_total_price ,seller_discount ,order_seller_price ,totalMoney ,order_payment ,
+    	freight_price ,payment_confirm_time ,refundMoney ,paidMoney ,unPaidMoney ,estatus ,sstatus ,reason 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.order.OrderInfo" id="OrderInfoReturnMap">
+	  <!-- 订单编号 -->
+      <id column="orderId" property="orderId"/>
+	  <!-- 提交时间 -->
+      <result column="subTime" property="subTime"/>
+	  <!-- 卖家编号 -->
+      <result column="sellerId" property="sellerId"/>
+	  <!-- 用户编号 -->
+      <result column="userId" property="userId"/>
+	  <!-- 买家姓名 -->
+      <result column="receiveName" property="receiveName"/>
+	  <!-- 电话 -->
+      <result column="phoneNumber" property="phoneNumber"/>
+	  <!-- 地址 -->
+      <result column="address" property="address"/>
+	  <!-- 邮编 -->
+      <result column="zipCode" property="zipCode"/>
+	  <!-- 积分 -->
+      <result column="giftPoints" property="giftPoints"/>
+	  <!-- 发票抬头 -->
+      <result column="invoiceType" property="invoiceType"/>
+	  <!-- 发票编号 -->
+      <result column="invoiceNumber" property="invoiceNumber"/>
+	  <!-- 是否结算(1：是；2：否) -->
+      <result column="isSettlement" property="isSettlement"/>
+	  <!-- 结算时间 -->
+      <result column="settlementTime" property="settlementTime"/>
+	  <!-- 用户确认收货时间 -->
+      <result column="userConfirmTime" property="userConfirmTime"/>
+	  <!-- 订单状态 -->
+      <result column="orderStatus" property="orderStatus"/>
+	  <!-- 订单类型 -->
+      <result column="orderType" property="orderType"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 最后修改时间 -->
+      <result column="lastModifiedTime" property="lastModifiedTime"/>
+	  <!-- 默认支付方式 -->
+      <result column="defaultPayment" property="defaultPayment"/>
+	  <!-- 卖家备注 -->
+      <result column="sellerRemark" property="sellerRemark"/>
+	  <!-- Ip -->
+      <result column="ip" property="ip"/>
+	  <!-- 支付码 -->
+      <result column="pay_serial_number" property="pay_serial_number"/>
+	  <!-- 在线支付金额 -->
+      <result column="onlinepayfee" property="onlinepayfee"/>
+	  <!-- 父订单号 -->
+      <result column="perentId" property="perentId"/>
+	  <!-- 订单总金额. -->
+      <result column="order_total_price" property="order_total_price"/>
+	  <!-- 商家优惠金额 -->
+      <result column="seller_discount" property="seller_discount"/>
+	  <!-- 订单货款金额（订单总金额-商家优惠金额） -->
+      <result column="order_seller_price" property="order_seller_price"/>
+	  <!-- 商品总金额 -->
+      <result column="totalMoney" property="totalMoney"/>
+	  <!-- 用户应付金额 -->
+      <result column="order_payment" property="order_payment"/>
+	  <!-- 商品的运费 -->
+      <result column="freight_price" property="freight_price"/>
+	  <!-- 付款确认时间 -->
+      <result column="payment_confirm_time" property="payment_confirm_time"/>
+	  <!-- 退款金额 -->
+      <result column="refundMoney" property="refundMoney"/>
+	  <!-- 支付金额 -->
+      <result column="paidMoney" property="paidMoney"/>
+	  <!-- 未支付金额 -->
+      <result column="unPaidMoney" property="unPaidMoney"/>
+       <!-- 评价状态 -->
+      <result column="estatus" property="estatus"/>
+	  <!-- 售后状态 -->
+      <result column="sstatus" property="sstatus"/>
+	  <!-- 取消原因(1：我不想买了；2：填写信息错误，重拍；3：卖家缺货；4：其他原因) -->
+      <result column="reason" property="reason"/>
+   </resultMap>
+   
+    <resultMap type="com.shifeng.op.dto.order.OrderInfoDTO" id="OrderInfoDTOReturnMap">
+		<!-- 订单编号 -->
+		<id column="perentId" property="perentId"/>
+		
+		<collection property="orderInfos" ofType="OrderInfocDTOReturnMap" column="perentId" select="orderInfoMapper.findAllOrderInfoByPid"></collection>
+		<collection property="porderInfodiscounts" ofType="com.shifeng.entity.order.PorderInfoDiscount" column="orderId" select="porderInfodiscountMapper.findPorderInfoDiscountById"></collection>
+    </resultMap>
+    
+   	<!-- 查询所有表 -->
+	<select id="findAllOrderInfoPage" parameterType="Page" resultMap="OrderInfoDTOReturnMap">
+		select
+			op.perentId,op.subTime ,op.sellerId ,op.userId ,op.receiveName ,op.phoneNumber ,op.address ,op.zipCode ,op.giftPoints ,
+	    	op.invoiceType ,op.invoiceNumber ,op.isSettlement ,op.settlementTime ,op.userConfirmTime ,op.orderStatus ,
+	    	op.orderType ,op.remark ,op.lastModifiedTime ,op.defaultPayment ,op.sellerRemark ,op.ip ,op.pay_serial_number ,op.onlinepayfee ,
+	    	op.order_total_price ,op.seller_discount ,op.order_seller_price ,op.totalMoney ,op.order_payment ,
+	    	op.freight_price ,op.payment_confirm_time ,op.refundMoney ,op.paidMoney ,op.unPaidMoney
+		from 
+			o_porderinfo op
+		<if test="t.expressNumber!=null and t.expressNumber!=''">
+		    left join o_orderInfo ooi ON op.orderId = oop.perentId
+		    left join o_express_order oeo on oop.orderId = oeo.orderId
+		</if>
+		where 1=1
+			<if test="t.orderId!=null and t.orderId!=''">
+				and op.perentId = #{t.orderId}
+			</if>
+			<if test="t.orderStatus>=0">
+			    and op.orderStatus = #{t.orderStatus}
+			</if>
+			<if test="t.subTime!=null and t.subTime!=''">
+			    and DATE(op.subTime) >= #{t.subTime}
+			</if>
+			<if test="t.expressNumber!=null and t.expressNumber!=''">
+			    and oeo.expressNumber = #{t.expressNumber}
+			</if>
+			
+		order by op.subTime desc
+	</select>
+
+	<resultMap type="com.shifeng.op.dto.order.OrderInfoDTO" id="OrderInfocDTOReturnMap">
+		<!-- 订单编号 -->
+		<id column="orderId" property="orderId"/>
+		
+		<collection property="orderDetailInfos" ofType="com.shifeng.entity.order.OrderDetailInfo" column="orderId" select="orderDetailInfoMapper.findAllOrderDetailInfo"></collection>
+    </resultMap>
+	
+	<!-- 查询子订单 -->
+	<select id="findAllOrderInfoByPidPage" parameterType="Page" resultMap="OrderInfocDTOReturnMap">
+		select
+			oi.orderId,oi.subTime ,oi.sellerId ,oi.userId ,oi.receiveName ,oi.phoneNumber ,oi.address ,oi.zipCode ,oi.giftPoints ,
+	    	oi.invoiceType ,oi.invoiceNumber ,oi.isSettlement ,oi.settlementTime ,oi.userConfirmTime ,oi.orderStatus ,
+	    	oi.orderType ,oi.remark ,oi.lastModifiedTime ,oi.defaultPayment ,oi.sellerRemark ,oi.ip ,oi.pay_serial_number ,oi.onlinepayfee ,
+	    	oi.perentId ,oi.order_total_price ,oi.seller_discount ,oi.order_seller_price ,oi.totalMoney ,oi.order_payment ,
+	    	oi.freight_price ,oi.payment_confirm_time ,oi.refundMoney ,oi.paidMoney ,oi.unPaidMoney,
+	    	oeo.expressNumber,oec.name as expressName
+		from 
+			o_orderInfo oi
+		left join o_express_order oeo on oi.orderId = oeo.orderId
+		left join o_expressconfig oec on oec.id = oeo.expressId
+		where 1=1
+			<if test="t.orderId!=null and t.orderId!=''">
+				and oi.perentId = #{t.orderId}
+			</if>
+			<if test="t.orderStatus>=0">
+			    and oi.orderStatus = #{t.orderStatus}
+			</if>
+			<if test="t.subTime!=null and t.subTime!=''">
+			    and DATE(oi.subTime) >= #{t.subTime}
+			</if>
+			<if test="t.expressNumber!=null and t.expressNumber!=''">
+			    and oeo.expressNumber = #{t.expressNumber}
+			</if>
+		order by op.subTime desc
+	</select>
+	
+	
+	<resultMap type="com.shifeng.op.dto.order.OrderInfoDetailDTO" id="OrderInfoDetailDTOReturnMap">
+		<!-- 订单编号 -->
+		<id column="orderId" property="orderId"/>
+		
+		<!-- 订单折扣 -->
+		<collection property="orderInfodiscounts" ofType="com.shifeng.entity.order.OrderInfoDiscount" column="orderId" select="orderInfodiscountMapper.findOrderInfoDiscountById"></collection>
+    	
+    	<!-- 订单明细 -->
+    	<collection property="orderDetailInfos" ofType="com.shifeng.entity.order.OrderDetailInfo" column="orderId" select="orderDetailInfoMapper.findAllOrderDetailInfo"></collection>
+    
+    	<!-- 快递信息 -->
+    	<collection property="expresss" ofType="com.shifeng.op.dto.order.ExpressDTO" column="orderId" select="expressorderMapper.findAllExpress"></collection>
+    	
+    </resultMap>
+	
+	<!-- 根据ID查询表 -->
+	<select id="findOrderInfoById" parameterType="String" resultMap="OrderInfoDetailDTOReturnMap">
+		select
+			oi.orderId,oi.subTime ,oi.sellerId ,oi.userId ,oi.receiveName ,oi.phoneNumber ,oi.address ,oi.zipCode ,oi.giftPoints ,
+	    	oi.invoiceType ,oi.invoiceNumber ,oi.isSettlement ,oi.settlementTime ,oi.userConfirmTime ,oi.orderStatus ,
+	    	oi.orderType ,oi.remark ,oi.lastModifiedTime ,oi.defaultPayment ,oi.sellerRemark ,oi.ip ,oi.pay_serial_number ,oi.onlinepayfee ,
+	    	oi.perentId ,oi.order_total_price ,oi.seller_discount ,oi.order_seller_price ,oi.totalMoney ,oi.order_payment ,
+	    	oi.freight_price ,oi.payment_confirm_time ,oi.refundMoney ,oi.paidMoney ,oi.unPaidMoney, oi.estatus ,oi.sstatus ,oi.reason 
+	    from 
+			o_orderInfo oi
+		left join o_express_order oeo on oi.orderId = oeo.orderId
+		left join o_expressconfig oec on oec.id = oeo.expressId
+		where oi.orderId = #{id}
+		group by oi.orderId
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateOrderInfo" parameterType="com.shifeng.entity.order.OrderInfo">
+		update 
+			o_orderInfo 
+		set
+	      	subTime = #{subTime},
+	      	sellerId = #{sellerId},
+	      	userId = #{userId},
+	      	receiveName = #{receiveName},
+	      	phoneNumber = #{phoneNumber},
+	      	address = #{address},
+	      	zipCode = #{zipCode},
+	      	giftPoints = #{giftPoints},
+	      	invoiceType = #{invoiceType},
+	      	invoiceNumber = #{invoiceNumber},
+	      	isSettlement = #{isSettlement},
+	      	settlementTime = #{settlementTime},
+	      	userConfirmTime = #{userConfirmTime},
+	      	orderStatus = #{orderStatus},
+	      	orderType = #{orderType},
+	      	remark = #{remark},
+	      	lastModifiedTime = #{lastModifiedTime},
+	      	defaultPayment = #{defaultPayment},
+	      	sellerRemark = #{sellerRemark},
+	      	ip = #{ip},
+	      	pay_serial_number = #{pay_serial_number},
+	      	onlinepayfee = #{onlinepayfee},
+	      	perentId = #{perentId},
+	      	order_total_price = #{order_total_price},
+	      	seller_discount = #{seller_discount},
+	      	order_seller_price = #{order_seller_price},
+	      	totalMoney = #{totalMoney},
+	      	order_payment = #{order_payment},
+	      	freight_price = #{freight_price},
+	      	payment_confirm_time = #{payment_confirm_time},
+	      	refundMoney = #{refundMoney},
+	      	paidMoney = #{paidMoney},
+	      	unPaidMoney = #{unPaidMoney}
+		 where
+			id = #{orderId}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveOrderInfo" parameterType="com.shifeng.entity.order.OrderInfo">
+		insert into o_orderInfo
+			(
+		      subTime, sellerId, userId, receiveName, phoneNumber, address, zipCode, giftPoints, invoiceType, invoiceNumber, isSettlement, settlementTime, userConfirmTime, orderStatus, orderType, remark, lastModifiedTime, defaultPayment, sellerRemark, ip, pay_serial_number, onlinepayfee, perentId, order_total_price, seller_discount, order_seller_price, totalMoney, order_payment, freight_price, payment_confirm_time, refundMoney, paidMoney, unPaidMoney 
+			)
+		values
+			(
+		      #{subTime},
+		      #{sellerId},
+		      #{userId},
+		      #{receiveName},
+		      #{phoneNumber},
+		      #{address},
+		      #{zipCode},
+		      #{giftPoints},
+		      #{invoiceType},
+		      #{invoiceNumber},
+		      #{isSettlement},
+		      #{settlementTime},
+		      #{userConfirmTime},
+		      #{orderStatus},
+		      #{orderType},
+		      #{remark},
+		      #{lastModifiedTime},
+		      #{defaultPayment},
+		      #{sellerRemark},
+		      #{ip},
+		      #{pay_serial_number},
+		      #{onlinepayfee},
+		      #{perentId},
+		      #{order_total_price},
+		      #{seller_discount},
+		      #{order_seller_price},
+		      #{totalMoney},
+		      #{order_payment},
+		      #{freight_price},
+		      #{payment_confirm_time},
+		      #{refundMoney},
+		      #{paidMoney},
+		      #{unPaidMoney}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteOrderInfo" parameterType="String">
+  		delete from o_orderInfo
+  		where id = #{orderId}
+  	</delete>
+	
+  	<!-- 修改退款成功状态 -->
+  	<update id="orderRefund" parameterType="java.util.Map">
+  	    update o_orderInfo set
+  	    	orderStatus = 5,
+  	    	refundMoney = paidMoney,
+  	    	lastModifiedTime = now()
+  	    where orderId = #{orderId}
+  	</update>
+  	
+</mapper>

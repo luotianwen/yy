@@ -1,0 +1,27 @@
+.bulletin_menu .title {
+  margin: 0 100px;
+  margin-top: 33px;
+  padding-bottom: 18px;
+  text-align: center;
+  border-bottom: 1px solid #c8c8c8;
+}
+.bulletin_menu .bulletin_msg {
+  margin: 0 100px;
+  padding-bottom: 66px;
+}
+.bulletin_menu .bulletin_msg ul li {
+  height: 71px;
+  font-size: 16px;
+  color: #686868;
+  border-bottom: 1px dotted #CCCCCC;
+}
+.bulletin_menu .bulletin_msg ul li .p_1 {
+  height: 100%;
+  line-height: 71px;
+  float: left;
+}
+.bulletin_menu .bulletin_msg ul li .p_2 {
+  height: 100%;
+  line-height: 71px;
+  float: right;
+}

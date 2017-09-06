@@ -1,0 +1,79 @@
+<div class="footer">
+	<div class="boxw">
+    <div class="footer_content_1 clearfix">
+        <div class="site_map">
+            <div class="f_item">
+                <p class="title">-购物指南-</p>
+                <ul>
+                    <li><a href="/footer/shop.html?name=注册协议">注册协议</a></li>
+                    <li><a href="/footer/shop.html?name=购物流程">购物流程</a></li>
+                    <li><a href="/footer/shop.html?name=会员介绍">会员介绍</a></li>
+                    <li><a href="/footer/shop.html?name=发票管理">发票管理</a></li>
+                </ul>
+            </div>
+            <div class="f_item">
+                <p class="title">-支付/配送-</p>
+                <ul>
+                    <li><a href="/footer/pay.html?name=支付方式">支付方式</a></li>
+                    <li><a href="/footer/pay.html?name=在线支付">在线支付</a></li>
+                    <li><a href="/footer/pay.html?name=银行转账"></a></li>
+                    <li><a href="/footer/pay.html?name=配送费用"></a></li>
+                </ul>
+            </div>
+            <div class="f_item">
+                <p class="title">-常见问题-</p>
+                <ul>
+                    <li><a href="/footer/problem.html?name=订单查询">订单查询</a></li>
+                    <li><a href="/footer/problem.html?name=找回密码">找回密码</a></li>
+                    <li><a href="/footer/problem.html?name=客户留言">客户留言</a></li>
+                    <li><a href="/footer/problem.html?name=取消订单">取消订单</a></li>
+                </ul>
+            </div>
+            <div class="f_item">
+                <p class="title">-售后服务-</p>
+                <ul>
+                    <li><a href="/footer/customerservice.html?name=退换货说明">退换货说明</a></li>
+                    <li><a href="/footer/customerservice.html?name=退换货流程">退换货流程</a></li>
+                    <li><a href="/footer/customerservice.html?name=退款说明">退款说明</a></li>
+                    <li><a href="/footer/customerservice.html?name=常见问题">常见问题</a></li>
+                </ul>
+            </div>
+            <div class="f_item">
+                <p class="title">-商务合作-</p>
+                <ul>
+                    <li><a href="/footer/businesscooperation.html?name=招商标准">招商标准</a></li>
+                    <li><a href="/footer/businesscooperation.html?name=入驻流程">入驻流程</a></li>
+                    <li><a href="/footer/businesscooperation.html?name=资费标准">资费标准</a></li>
+                    <li><a href="/footer/businesscooperation.html?name=招商热线">招商热线</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="contact_way">
+            <span class="cw_phone">400-0928-400</span>
+            <span class="cw_time">周一至周日 9:00-18:00</span>
+        </div>
+    </div>
+    <div class="footer_content_2">
+        <ul class="other_links clearfix">
+            <li><a href="/footer/about.html?name=关于世峰">关于世峰</a></li>
+            <li><a href="/settled/check.html">入驻商城</a></li>
+            <li><a href="/link/friendshipLink">友情链接</a></li>
+            <li><a href="/footer/about.html?name=加入世峰">加入世峰</a></li>
+            <li><a href="/footer/about.html?name=投诉建议">投诉建议</a></li>
+            <li><a href="/footer/about.html?name=联系我们">联系我们</a></li>
+            <li><a href="http://kefu.seebong.com/">客服中心</a></li>
+            <li><a href="/expertadvice/findAllExpertadvice.html">专家建议</a></li>
+            <li><a href="/notice/findAllNotice.html">商城公告</a></li>
+            <li class="last_item"><a href="http://shifeng.jd.com" target="_blank">京东世峰</a></li>
+        </ul>
+        <p>版权所有：2011-2017 北京慧斓美国际商贸有限公司　京公网安备11011202001763号　经营性网站许可证号：京ICP证150176号　京ICP备11036453号-1</p>
+        <p>世峰户外商城 办公地址：北京市通州区九棵树西路90号福乐阳光写字楼4层 联系电话：400-0928-400</p>
+        <ul class="credit clearfix">
+            <li><a href="/footer/shop.html?name="><img src="/static/img/download_2.jpg"/></a></li>
+            <li><a href="/footer/shop.html?name="><img src="/static/img/download_3.jpg"/></a></li>
+            <li><a href="/footer/shop.html?name="><img src="/static/img/download_4.png"/></a></li>
+            <li><a href="/footer/shop.html?name="><img src="/static/img/download_5.png"/></a></li>
+        </ul>
+    </div>
+    </div>
+</div>

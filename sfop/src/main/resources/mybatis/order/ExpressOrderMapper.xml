@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 订单快递(o_express_order)Mapper -->
+<mapper namespace="expressorderMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	orderId,expressNumber ,expressId ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.order.ExpressOrder" id="ExpressOrderReturnMap">
+	  <!-- 订单编号 -->
+      <id column="orderId" property="orderId"/>
+	  <!-- 序号 -->
+      <result column="expressNumber" property="expressNumber"/>
+	  <!-- 快递id -->
+      <result column="expressId" property="expressId"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllExpressOrderPage" parameterType="Page" resultMap="ExpressOrderReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_express_order
+		where 1=1
+			<if test="t.expressNumber!=null and t.expressNumber!=''">
+				and expressNumber = #{t.expressNumber}
+			</if>
+			<if test="t.expressId!=null and t.expressId!=''">
+				and expressId = #{t.expressId}
+			</if>
+			<if test="t.lasttime!=null and t.lasttime!=''">
+				and lasttime = #{t.lasttime}
+			</if>
+			<if test="t.updatename!=null and t.updatename!=''">
+				and updatename = #{t.updatename}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findExpressOrderById" parameterType="String" resultMap="ExpressOrderReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_express_order
+		where 
+			orderId = #{orderId}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateExpressOrder" parameterType="com.shifeng.entity.order.ExpressOrder">
+		update 
+			o_express_order 
+		set
+	      	expressNumber = #{expressNumber},
+	      	expressId = #{expressId},
+	      	lasttime = #{lasttime},
+	      	updatename = #{updatename}
+		 where
+			id = #{orderId}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveExpressOrder" parameterType="com.shifeng.entity.order.ExpressOrder">
+		insert into o_express_order
+			(
+		      expressNumber, expressId, lasttime, updatename 
+			)
+		values
+			(
+		      #{expressNumber},
+		      #{expressId},
+		      #{lasttime},
+		      #{updatename}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteExpressOrder" parameterType="String">
+  		delete from o_express_order
+  		where id = #{orderId}
+  	</delete>
+	
+  	
+  	<!-- 查询快递信息 -->
+  	<select id="findAllExpress" parameterType="String" resultType="com.shifeng.op.dto.order.ExpressDTO">
+  	    select oeo.expressNumber,oec.name as expressName,oec.code as expressCode
+  	    from o_express_order oeo
+		left join o_expressconfig oec on oec.id = oeo.expressId
+  	    where oeo.orderId = #{orderId}
+  	</select>
+  	
+</mapper>

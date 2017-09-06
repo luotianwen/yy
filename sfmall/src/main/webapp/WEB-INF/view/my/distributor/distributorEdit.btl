@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/css/leftbar.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/dis-add.css" />	
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'分销商'}){}%>
+<% include("/detailnav.btl"){}%>
+<div class="boxw clearfix">
+	<% include("../my-left.btl",{type:'我的分销商'}){}%>
+	<div class="fr content clearfix">
+		<div class="top-tit"><i></i>新增分销商</div>
+		<form id="form">
+			<div class="drm-tx clearfix">
+				<input type="hidden" name="recommended_userid" value="${data.recommended_userid}"/>
+				<dl class="form-group clearfix">
+					<dt>姓名：</dt>
+					<dd>
+						<input class="input" id="name" name="name" type="text" placeholder="" value="${data.name}">
+					</dd>
+				</dl>
+				<%
+					if(isEmpty(data.recommended_userid)){
+				%>
+					<dl class="form-group clearfix">
+						<dt>联系方式：</dt>
+						<dd>
+							<input class="input" id="phone" name="phone" type="text" placeholder="">
+						</dd>
+					</dl>
+				<%
+					}
+				%>
+				<dl class="form-group clearfix">
+					<dt>备注：</dt>
+					<dd>
+						<textarea maxlength="100" name="remark" value="${data.remark}">${data.remark}</textarea>
+					</dd>
+				</dl>
+				<dl class="form-group clearfix">
+					<dt></dt>
+					<dd>
+						<a id="submit" class="btn-tx">保存</a>
+					</dd>
+				</dl>
+			</div>
+		</form>
+	</div>
+</div>
+	<script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript">
+		$(function(){
+			$("#submit").on("click",function(){
+				var url = "";
+				<%
+					if(isEmpty(data.recommended_userid)){
+				%>
+					url = "/my/saveDistributor.json";
+				<%
+					}else{
+				%>
+					url = "/my/updateDistributor.json";
+				<%
+					}
+				%>
+				if(isCheck()){
+					$.post(url,$("#form").serialize(),function(req){
+						if (req.code == '0') {
+							layer.msg('保存成功', {
+								icon : 1,
+								time : 1 * 1000
+							}, function() {
+								window.location.href = "/my/distributor.html";
+							});
+						} else {
+							layer.alert(req.msg, {
+								icon : 0
+							});
+						}
+					})
+				}
+			})
+		})
+		
+		function isCheck(){
+			<%
+				if(isEmpty(data.recommended_userid)){
+			%>
+				var mobile = /^0?(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$/;
+				var phone = $("#phone").val();
+				if(!mobile.test(phone)){
+					layer.tips('手机号格式不正确！', '#phone', {
+						tips : [ 1, '#019F95' ],
+						time : 1500
+					});
+					$('#phone').focus();
+					return false;
+				}
+			<%
+				}
+			%>
+			
+			var name = $("#name").val();
+			if(name.trim()==""){
+				layer.tips('请输入分销商姓名！', '#name', {
+					tips : [ 1, '#019F95' ],
+					time : 1500
+				});
+				$('#name').focus();
+				return false;
+			}
+			
+			return true;
+		}
+	</script>
+	
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+</body>
+</html>

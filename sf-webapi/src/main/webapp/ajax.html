@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Hello</title>
+</head>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.8.0/jquery.js"></script>
+<script type="text/javascript" src="http://www.gongjuji.net/Content/files/jquery.md5.js"></script>
+<body>
+Hello
+<div id="ticket">
+
+</div>
+<script type="text/javascript">
+$(function(){
+	sign = $.md5('d6febb02cbd34a98b486767146c963791.0.01')
+	$.post("http://192.168.1.177:7777/sf-webapi/getTicket",{secret:'d6febb02cbd34a98b486767146c96379',version:"1.0.0",type:1,sign:sign},function(result){
+	    $("#ticket").html(result.data);
+	  });
+	
+});
+</script>
+</body>
+</html>

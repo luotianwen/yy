@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="arraysMapper">
+	<sql id="Base_Column_List">
+    aId ,aName ,aOrder ,aCreateUser ,aUpUser ,aUpTime ,aType
+    </sql>
+
+    <resultMap type="com.shifeng.op.entity.authority.Arrays" id="ArraysReturnMap">
+      <id column="aId" property="aId"/>
+      <result column="aName" property="aName"/>
+      <result column="aOrder" property="aOrder"/>
+      <result column="aCreateUser" property="aCreateUser"/>
+      <result column="aUpUser" property="aUpUser"/>
+      <result column="aUpTime" property="aUpTime"/>
+      <result column="aType" property="aType"/>
+      
+      <!-- 分组之下的角色 -->
+      <collection property="roles" ofType="com.shifeng.op.entity.authority.Roles" column="aId" select="rolesMapper.getRolesByAId">
+      </collection>
+   </resultMap>
+   
+   <!-- 根据ID查询 -->
+   <select id="getArrayById" parameterType="String" resultType="com.shifeng.op.entity.authority.Arrays">
+	SELECT <include refid="Base_Column_List"></include>
+	FROM op_arrays
+	WHERE aId=#{aId}
+   </select>
+   
+   <!-- 查询该分组所关联角色是否包含用户 -->
+   <select id="findArrayRolesUsersNum" parameterType="String" resultType="Integer" >
+    SELECT COUNT(u.u_id) num FROM op_arrays ar
+	LEFT JOIN op_ROLES r ON ar.AID = r.AID
+	LEFT JOIN op_users u ON r.RID  = u.RID
+	WHERE ar.AID=#{aId}
+   </select>
+   
+   <!-- 查询创建分组 -->
+	<select id="getArrayList" parameterType="com.shifeng.op.entity.users.Users" resultMap="ArraysReturnMap" >
+	SELECT <include refid="Base_Column_List"></include>
+	FROM op_arrays
+	WHERE 1=1
+	<choose>
+		<!-- 系统分组默认对所有有权限查看的人开放 -->
+		<when test="uType == 4">
+			AND ATYPE = 1
+		</when>
+		<!-- 普通用户分组只允许该创建用户进行分配 -->
+		<otherwise>
+			AND aCreateUser=#{uId}
+		</otherwise>
+	</choose>
+	ORDER BY aOrder
+	</select>
+	
+	<!-- 添加分组 -->
+	<insert id="insertArray" parameterType="com.shifeng.op.entity.authority.Arrays">
+	INSERT INTO op_arrays (aName ,aOrder ,aCreateUser ,aUpUser ,aUpTime ,aType)
+	VALUES(#{aName} ,#{aOrder},#{aCreateUser},#{aUpUser} ,#{aUpTime}  ,#{aType})
+	</insert>
+	
+	<!-- delete -->
+	<delete id="deleteArray" parameterType="String" >
+	DELETE FROM op_arrays WHERE aId=#{aId}
+	</delete>
+	
+	<!-- updateArray -->
+	<update id="updateArray" parameterType="com.shifeng.op.entity.authority.Arrays">
+	UPDATE op_arrays SET aName=#{aName},aOrder=#{aOrder},aUpUser=#{aUpUser},aUpTime=#{aUpTime}
+	WHERE aId=#{aId}
+	</update>
+	
+	
+	
+	
+	
+	
+	   <!-- 查询系统管理分组 -->
+	<select id="getSysArrayList" resultType="java.util.HashMap" >
+		SELECT AID ,ANAME
+		FROM op_arrays
+		WHERE ATYPE = 1
+		ORDER BY aOrder
+	</select>
+	
+	
+</mapper>

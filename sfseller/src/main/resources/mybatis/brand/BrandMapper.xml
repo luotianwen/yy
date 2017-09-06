@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 品牌表(b_brand)Mapper -->
+<mapper namespace="brandMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,name ,logo ,descript ,recommended ,rand ,uploaddate ,state ,lasttime ,updatename ,remark ,letter ,type ,trademarktype ,businesstype 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.brand.Brand" id="BrandReturnMap">
+	  <!-- 编号 -->
+      <id column="id" property="id"/>
+	  <!-- 品牌名称 -->
+      <result column="name" property="name"/>
+	  <!-- 品牌logo -->
+      <result column="logo" property="logo"/>
+	  <!-- 品牌描述 -->
+      <result column="descript" property="descript"/>
+	  <!-- 推荐状态 -->
+      <result column="recommended" property="recommended"/>
+	  <!-- 排序 -->
+      <result column="rand" property="rand"/>
+	  <!-- 上传时间 -->
+      <result column="uploaddate" property="uploaddate"/>
+	  <!-- 品牌状态 -->
+      <result column="state" property="state"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 品牌首字母 -->
+      <result column="letter" property="letter"/>
+	  <!-- 品牌类型 -->
+      <result column="type" property="type"/>
+	  <!-- 商标注册人 -->
+      <result column="trademarktype" property="trademarktype"/>
+	  <!-- 经营类型 -->
+      <result column="businesstype" property="businesstype"/>
+   </resultMap>
+
+	<!-- 根据ID查询表 -->
+	<select id="findBrandById" parameterType="String" resultMap="BrandReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			b_brand
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 搜索品牌 -->
+	<select id="searchBrandPage" parameterType="Page" resultMap="BrandReturnMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from
+		b_brand
+		where 1=1
+		<if test="t!=null and t!=''">
+		    and name like CONCAT("%",#{t},"%")
+		</if>
+	</select>
+	
+</mapper>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 个人发票(mall_user_invoice)Mapper -->
+<mapper namespace="malluserinvoiceMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,paymentsUnit ,content ,type ,vat_companyName ,userId ,vat_code ,vat_address ,vat_phone ,vat_bankName ,vat_bankAccount ,lasttime 
+    </sql>
+
+    <resultMap type="com.shifeng.dto.mall.MallUserInvoiceDTO" id="MallUserInvoiceReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 发票抬头 -->
+      <result column="paymentsUnit" property="paymentsUnit"/>
+	  <!-- 发票内容 -->
+      <result column="content" property="content"/>
+	  <!-- 发票类型(1：普通发票；2：增值发票) -->
+      <result column="type" property="type"/>
+	  <!-- 单位名称 -->
+      <result column="vat_companyName" property="vat_companyName"/>
+	  <!-- 用户编号 -->
+      <result column="userId" property="userId"/>
+	  <!-- 纳税人识别码 -->
+      <result column="vat_code" property="vat_code"/>
+	  <!-- 注册地址 -->
+      <result column="vat_address" property="vat_address"/>
+	  <!-- 注册电话 -->
+      <result column="vat_phone" property="vat_phone"/>
+	  <!-- 开户银行 -->
+      <result column="vat_bankName" property="vat_bankName"/>
+	  <!-- 银行账户 -->
+      <result column="vat_bankAccount" property="vat_bankAccount"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllMallUserInvoice" parameterType="String" resultMap="MallUserInvoiceReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_user_invoice
+		where 1=1
+
+			<if test="_parameter!=null and _parameter!=''">
+				and userId = #{userId}
+			</if>
+          order by lasttime desc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findMallUserInvoiceById" parameterType="String" resultMap="MallUserInvoiceReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_user_invoice
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateMallUserInvoice" parameterType="com.shifeng.dto.mall.MallUserInvoiceDTO">
+		update 
+			mall_user_invoice 
+		set
+	      	paymentsUnit = #{paymentsUnit},
+	      	content = #{content},
+	      	type = #{type},
+	      	vat_companyName = #{vat_companyName},
+	      	userId = #{userId},
+	      	vat_code = #{vat_code},
+	      	vat_address = #{vat_address},
+	      	vat_phone = #{vat_phone},
+	      	vat_bankName = #{vat_bankName},
+	      	vat_bankAccount = #{vat_bankAccount},
+	      	lasttime =now()
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveMallUserInvoice" parameterType="com.shifeng.dto.mall.MallUserInvoiceDTO" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into mall_user_invoice
+			(
+		      paymentsUnit, content, type, vat_companyName, userId, vat_code, vat_address, vat_phone, vat_bankName, vat_bankAccount, lasttime 
+			)
+		values
+			(
+		      #{paymentsUnit},
+		      #{content},
+		      #{type},
+		      #{vat_companyName},
+		      #{userId},
+		      #{vat_code},
+		      #{vat_address},
+		      #{vat_phone},
+		      #{vat_bankName},
+		      #{vat_bankAccount},
+		      now()
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteMallUserInvoice" parameterType="java.util.Map">
+  		delete from mall_user_invoice
+  		where id = #{id} and userId = #{userId}
+  	</delete>
+	
+</mapper>

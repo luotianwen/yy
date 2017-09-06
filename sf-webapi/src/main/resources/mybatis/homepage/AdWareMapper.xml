@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- app首页广告商品(sys_app_homead_ware)Mapper -->
+<mapper namespace="adWareMapper">
+    
+     
+   	<!-- 根据广告id查询广告商品 -->
+	<select id="getAdWareList" parameterType="int" resultType="com.shifeng.webapi.dto.homepage.AdWareDTO">
+		select
+			aw.id,p.name AS pname ,si.ipath AS imgPath ,imgLink ,aw.top_pic ,aw.sort ,aw.sku ,pr.activityprice,pr.price,pr.marketprice,pr.activitytype
+		from 
+			sys_app_homead_ware aw
+		LEFT JOIN p_pro_rules pr ON aw.sku = pr.sku	
+		LEFT JOIN p_product p ON pr.pid = p.id	
+		left join p_sku_images si on pr.colorid = si.colorid and si.ismain = 1
+		where  
+			aw.state = 1
+		and
+			aw.ad_id = #{ad_id}
+		order by aw.sort asc	
+
+		<!-- select
+			aw.id,name ,imgPath ,imgLink ,top_pic ,sort ,aw.sku ,activityprice,pr.price
+		from 
+			sys_app_homead_ware aw
+		left join p_pro_rules pr on aw.sku = pr.sku	
+		
+		where  
+			state = 1
+		and
+			ad_id = #{ad_id}
+		order by sort asc	 -->
+	</select>
+
+	 
+	
+</mapper>

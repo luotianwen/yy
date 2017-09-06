@@ -1,0 +1,400 @@
+.header img {
+  margin-top: 86px;
+  margin-bottom: 94px;
+}
+input::-webkit-input-placeholder {
+  color: #B4B4B4;
+}
+.fp_content {
+  width: 900px;
+  height: 500px;
+  margin: 0 auto;
+  border: 1px solid #06B639;
+  border-radius: 20px;
+}
+.fp_content .title {
+  font-size: 18px;
+  color: #2d2d2d;
+  font-weight: bold;
+  padding: 36px 0 0 32px;
+}
+.fp_content .nav {
+  width: 660px;
+  margin-top: 40px;
+  margin-left: 120px;
+  border-bottom: 1px solid #c8c8c8;
+}
+.fp_content .nav ul {
+  width: 100%;
+}
+.fp_content .nav ul li {
+  bottom: -2px;
+  position: relative;
+  font-size: 30px;
+  float: left;
+  width: 130px;
+  margin: 0 45px;
+  font-weight: 500;
+  border-bottom: 3px solid transparent;
+  color: #969696;
+  text-align: center;
+}
+.fp_content .nav ul li i {
+  font-size: 16px;
+}
+.fp_content .nav ul li.active {
+  border-bottom: 3px solid #06b639;
+  color: #06b639;
+}
+.fp_content .fp_msg .fpm_item {
+  width: 100%;
+}
+.fp_content .fp_msg .fpm_item.d_show {
+  display: block;
+}
+.fp_content .fp_msg .fpm_item.step_1 .fpm_phone,
+.fp_content .fp_msg .fpm_item.step_1 .auth_code {
+  margin-left: 298px;
+}
+.fp_content .fp_msg .fpm_item.step_1 .fpm_phone {
+  margin-top: 63px;
+}
+.fp_content .fp_msg .fpm_item.step_1 .fpm_phone input {
+  width: 273px;
+  height: 42px;
+  padding: 0 16px;
+  border: 1px solid #c8c8c8;
+  border-radius: 4px;
+  float: left;
+}
+.fp_content .fp_msg .fpm_item.step_1 .fpm_phone input:focus {
+  border: 1px solid #038a2a;
+}
+.fp_content .fp_msg .fpm_item.step_1 .fpm_phone span {
+  margin-left: 11px;
+  line-height: 44px;
+  float: left;
+}
+.fp_content .fp_msg .fpm_item.step_1 .fpm_phone span.hint {
+  color: #B4B4B4;
+}
+.fp_content .fp_msg .fpm_item.step_1 .fpm_phone span.error {
+  color: #ff6337;
+}
+.fp_content .fp_msg .fpm_item.step_1 .fpm_phone span.error i {
+  display: inline-block;
+  float: left;
+  margin-top: 14px;
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+  background: url(../img/warning.png) no-repeat;
+}
+.fp_content .fp_msg .fpm_item.step_1 .fpm_phone span.success i {
+  display: inline-block;
+  float: left;
+  margin-top: 14px;
+  margin-right: 5px;
+  width: 20px;
+  height: 20px;
+  background: url(../img/succeed_img.png) no-repeat
+}
+
+.fp_content .fp_msg .fpm_item.step_1 .auth_code {
+  margin-top: 25px;
+}
+.fp_content .fp_msg .fpm_item.step_1 .auth_code p {
+  width: 148px;
+  height: 44px;
+  float: left;
+  margin-right: 9px;
+}
+.fp_content .fp_msg .fpm_item.step_1 .auth_code p img {
+  width: 100%;
+  height: 100%;
+}
+.fp_content .fp_msg .fpm_item.step_1 .auth_code input {
+  width: 116px;
+  height: 42px;
+  border: 1px solid #c8c8c8;
+  border-radius: 4px;
+  float: left;
+  padding: 0 16px;
+}
+.fp_content .fp_msg .fpm_item.step_1 .auth_code input:focus {
+  border: 1px solid #038a2a;
+}
+.fp_content .fp_msg .fpm_item.step_1 .auth_code span {
+  margin-left: 11px;
+  line-height: 44px;
+  float: left;
+}
+.fp_content .fp_msg .fpm_item.step_1 .auth_code span.hint {
+  color: #B4B4B4;
+}
+.fp_content .fp_msg .fpm_item.step_1 .auth_code span.error {
+  color: #ff6337;
+}
+.fp_content .fp_msg .fpm_item.step_1 .auth_code span.error i {
+  display: inline-block;
+  float: left;
+  margin-top: 14px;
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+  background: url(../img/warning.png) no-repeat;
+}
+.fp_content .fp_msg .fpm_item.step_1 .auth_code span.success i {
+  display: inline-block;
+  float: left;
+  margin-top: 14px;
+  margin-right: 5px;
+  width: 20px;
+  height: 20px;
+  background: url(../img/succeed_img.png) no-repeat
+}
+
+.fp_content .fp_msg .fpm_item.step_1 button {
+  cursor: pointer;
+  width: 150px;
+  height: 44px;
+  border-radius: 4px;
+  border: 0;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #30c75c;
+  margin-top: 72px;
+  margin-left: 375px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+}
+.fp_content .fp_msg .fpm_item.step_1 button:hover {
+  background-color: #25ae4d;
+}
+.fp_content .fp_msg .fpm_item.step_2 .marked_words {
+  margin-top: 74px;
+  margin-left: 282px;
+  color: #2d2d2d;
+}
+.fp_content .fp_msg .fpm_item.step_2 .marked_words i {
+  color: #005B1A;
+}
+.fp_content .fp_msg .fpm_item.step_2 .phone_code {
+  margin-top: 32px;
+  margin-left: 298px;
+}
+.fp_content .fp_msg .fpm_item.step_2 .phone_code input {
+  width: 141px;
+  padding: 0 16px;
+  height: 42px;
+  border: 1px solid #c8c8c8;
+  border-radius: 4px;
+  float: left;
+  margin-right: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.fp_content .fp_msg .fpm_item.step_2 .phone_code span.noclick{
+  float: left;
+  display: inline-block;
+  width: 120px;
+  height: 44px;
+  border-radius: 4px;
+  color: #969696;
+  background-color: #ddd;
+  text-align: center;
+  line-height: 44px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.fp_content .fp_msg .fpm_item.step_2 .phone_code span{
+	cursor:pointer;
+	float: left;
+	display: inline-block;
+	width: 120px;
+	height: 44px;
+	background-color: #30c75c;
+	border-radius: 4px;
+	text-align: center;
+	line-height: 44px;
+	color: #fff;
+	font-weight: bold;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.fp_content .fp_msg .fpm_item.step_2 .phone_code span.clickable {
+  background-color: #30c75c !important;
+  color: #fff !important;
+}
+.fp_content .fp_msg .fpm_item.step_2 .btn {
+  cursor: pointer;
+  margin-left: 285px;
+  margin-top: 84px;
+}
+.fp_content .fp_msg .fpm_item.step_2 .btn span {
+  display: inline-block;
+  width: 150px;
+  height: 42px;
+  border: 1px solid #30c75c;
+  border-radius: 4px;
+  line-height: 42px;
+  text-align: center;
+  font-size: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+}
+.fp_content .fp_msg .fpm_item.step_2 .btn span.next_step {
+  background-color: #30c75c;
+  color: #fff;
+  margin-right: 30px;
+}
+.fp_content .fp_msg .fpm_item.step_2 .btn span.next_step:hover {
+  background-color: #25ae4d;
+}
+.fp_content .fp_msg .fpm_item.step_2 .btn span.last_step {
+  background-color: #fff;
+  color: #30c75c;
+}
+.fp_content .fp_msg .fpm_item.step_2 .btn span.last_step:hover {
+  background-color: #f5f5f5;
+}
+.fp_content .fp_msg .fpm_item.step_3 .new_code,
+.fp_content .fp_msg .fpm_item.step_3 .enter_again {
+  margin-left: 298px;
+}
+.fp_content .fp_msg .fpm_item.step_3 .new_code input,
+.fp_content .fp_msg .fpm_item.step_3 .enter_again input {
+  width: 273px;
+  height: 42px;
+  padding: 0 16px;
+  border: 1px solid #c8c8c8;
+  border-radius: 4px;
+  float: left;
+}
+.fp_content .fp_msg .fpm_item.step_3 .new_code input:focus,
+.fp_content .fp_msg .fpm_item.step_3 .enter_again input:focus {
+  border: 1px solid #038a2a;
+}
+.fp_content .fp_msg .fpm_item.step_3 .new_code span,
+.fp_content .fp_msg .fpm_item.step_3 .enter_again span {
+  margin-left: 11px;
+  line-height: 44px;
+  float: left;
+}
+.fp_content .fp_msg .fpm_item.step_3 .new_code span.hint,
+.fp_content .fp_msg .fpm_item.step_3 .enter_again span.hint {
+  color: #B4B4B4;
+}
+.fp_content .fp_msg .fpm_item.step_3 .new_code span.error,
+.fp_content .fp_msg .fpm_item.step_3 .enter_again span.error {
+  color: #ff6337;
+}
+.fp_content .fp_msg .fpm_item.step_3 .new_code span.error i,
+.fp_content .fp_msg .fpm_item.step_3 .enter_again span.error i {
+  display: inline-block;
+  float: left;
+  margin-top: 14px;
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+  background: url(../img/warning.png) no-repeat;
+}
+.fp_content .fp_msg .fpm_item.step_3 .new_code span.success i,
+.fp_content .fp_msg .fpm_item.step_3 .enter_again span.success i {
+  display: inline-block;
+  float: left;
+  margin-top: 14px;
+  margin-right: 5px;
+  width: 20px;
+  height: 20px;
+  background: url(../img/succeed_img.png) no-repeat
+}
+
+.fp_content .fp_msg .fpm_item.step_3 .new_code {
+  margin-top: 63px;
+}
+.fp_content .fp_msg .fpm_item.step_3 .enter_again {
+  margin-top: 25px;
+}
+.fp_content .fp_msg .fpm_item.step_3 button {
+  cursor: pointer;
+  width: 150px;
+  height: 44px;
+  border-radius: 4px;
+  border: 0;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #30c75c;
+  margin-top: 72px;
+  margin-left: 375px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+}
+.fp_content .fp_msg .fpm_item.step_3 button:hover {
+  background-color: #25ae4d;
+}
+.succeed {
+  width: 900px;
+  margin: 0 auto;
+  border: 1px solid #06B639;
+  border-radius: 20px;
+}
+.succeed p {
+  padding: 94px 0 0 292px;
+  font-size: 20px;
+  color: #2d2d2d;
+}
+.succeed p i {
+  display: inline-block;
+  float: left;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  margin-right: 10px;
+  background: url(../img/succeed_img.png) no-repeat;
+}
+.succeed span {
+  display: inline-block;
+  margin-left: 322px;
+  margin-top: 10px;
+  color: #505050;
+}
+.succeed a {
+  display: block;
+  width: 150px;
+  height: 44px;
+  border-radius: 4px;
+  border: 0;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #30c75c;
+  margin-top: 72px;
+  margin-left: 375px;
+  margin-bottom: 45px;
+  text-align: center;
+  line-height: 44px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+}
+.succeed a:hover {
+  background-color: #25ae4d;
+}
+.error_border {
+  border: 1px solid #FF5B2D !important;
+}

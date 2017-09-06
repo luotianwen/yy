@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <title>世峰户外商城-友情链接</title>
+    <meta name="keywords" content="世峰户外商城-友情链接" />
+    <meta name="description" content="世峰户外商城-友情链接" />
+    <meta name="Robots" content="all">
+    <meta name="author" content="世峰户外商城">
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/blogroll.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/laypage/laypage.js"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'友情链接'}){}%>
+<% include("/detailnav.btl"){}%>
+
+<div class="bll_content boxw clearfix">
+    <div class="already_have clearfix">
+        <div class="title">友情链接</div>
+        <div class="ah_menu clearfix">
+            <ul>
+                 <% for(nav in list){%>
+                   <a href="${nav.link}" target="_blank"><li>${nav.name}</li></a>
+                <%}%>
+            </ul>
+        </div>
+    </div>
+    <div class="apply_for">
+        <div class="title">
+            申请友情链接
+        </div>
+        <div class="af_menu clearfix">
+            <ul class="clearfix">
+                <li style="font-weight: bold;margin-top: 20px;margin-bottom: 33px;">申请步骤：</li>
+                <li>
+                    <p>1.请先在贵网站做好世峰的文字友情链接：</p>
+                    <p>链接文字：世峰户外商城 </p>
+                    <p>链接地址：http://www.seebong.com</p>
+                </li>
+                <li>2.做好链接后，请在右侧填写申请信息，目前世峰仅接受申请文字友情链接</li>
+                <li>3.已经开通我站友情链接且内容健康，符合本站友情链接要求的网站，经世峰管理员审核后，可以显示在此友情链接页面。</li>
+                <li class="br"></li>
+            </ul>
+            <div class="af_list clearfix">
+                <div class="af_title">
+                    申请信息：
+                </div>
+                <p class="p_1">网站名称：<input type="text" name="name" id="name"/></p>
+                <p class="p_2">网址：<input type="text" name="link" id="link"/></p>
+                <p class="p_1">联系人：<input type="text" name="contacts" id="contacts"/></p>
+                <p class="p_1">联系电话：<input type="text" name="phone" id="phone"/></p>
+                <p class="p_3">电子邮箱：<input type="text" name="email" id="email"/></p>
+                <p class="last_p"><i style="float: left;">网站介绍：</i><textarea name="note"  id="note"></textarea></p>
+                <span id="submit" style="cursor: pointer">提交信息</span>
+            </div>
+        </div>
+    </div>
+</div>
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+<script src="/static/js/friendshipLink/friendshipLink.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>

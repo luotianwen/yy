@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/list.css" />
+
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/js/layer/laypage/laypage.js"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+    
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:''}){}%>
+<% include("/detailnav.btl"){}%>
+	<div class="boxw clearfix">
+		<div class="fl selector clearfix">
+			<ul>
+				<%
+					if(!isEmpty(page.propertyList))
+					for(item in page.propertyList){
+				%>
+					<li>
+						<div class="sl-key">
+							${item.propertyName}<i class="fold"></i>
+						</div>
+						<div class="sl-value last">
+							<%
+								for(itemc in item.PropertyValueList){
+							%>
+								<a data_type="no" data_id="${itemc.id}">${itemc.content}</a>
+							<%
+								}
+							%>
+						</div>
+					</li>
+				<%
+					}
+				%>
+			</ul>
+		</div>
+		<div class="fr content clearfix">
+			<div class="card">
+				<a class="del-all">[清空所有]</a>
+			</div>
+			<div class="g-sort">
+				<a data_type="0" class="current">
+					<span>综合</span>
+					<em class="fs-down">
+						<i class="arrow"></i>
+					</em>
+				</a>
+				<a data_type="1">
+					<span>销量</span>
+					<em class="fs-down">
+						<i class="arrow"></i>
+					</em>
+				</a>
+				<a data_type="2">
+					<span>销量</span>
+					<em class="fs-down">
+						<i class="arrow-top"></i>
+						<i class="arrow-bottom"></i>
+					</em>
+				</a>
+				<span
+					class="result-sum">共<b>${page.rowCount}</b>件商品
+				</span>
+			</div> 
+			<div class="goods-list clearfix">
+				<ul class="clearfix goods-list-ul" id="productList">
+					<%
+						for(product in page.result){
+							for(ware in product.skuList){
+					%>
+						<li class="goods-list-li" data_id="${ware.id}">
+							<div class="g_img">
+								<a class="data_href" href="/detail/${ware.id}.html"><img class="data_src" src="${ware.colorPic}"/></a>
+							</div>
+							<div class="g_banner clearfix">
+						      	<%
+									if(product.skuList.~size>5){
+								%>
+									<a class="bl_btn"></a>
+						      		<a class="br_btn"></a>	
+								<%
+									}
+								%>
+						      	<div class="list_menu clearfix">
+						      		<ul>
+							      		<%
+							      			var count = 1;
+							      			for(sku in product.skuList){
+							      				var class = "";
+							      				if(count==1){
+							      					class = "active";
+												}else if(count==product.skuList.~size){
+													class = "last_li";
+												}
+										%>
+											<li class="${class}" data_id="${sku.id}" data_price="${sku.price}" data_marketprice="${sku.marketprice}" data_colorPic="${sku.colorPic}">
+												<img title="${sku.colorName}" src="${sku.colorPic}"/>
+											</li>
+										<%
+												count++;
+											}
+										%>
+							      	</ul>
+						      	</div>
+							</div>
+							
+							<div class="g_name"><a class="data_href" href="/detail/${ware.id}.html">${product.pName}</a></div>
+							<div class="g_price">
+								<span class="data_price">¥${ware.price}</span>
+								<del class="data_del">¥${ware.marketprice}</del>
+								<a class="data_cart" href="/my/joincart?sku=${ware.id}&pcount=1"><i class="ico-cart" title="加入购物车"></i></a>
+								<i class="data_id" data_id="${ware.id}" class="ico-collect" title="收藏"></i>
+							</div>
+						</li>
+					<%
+								break;
+							}
+						}
+					%>
+				</ul>
+			</div>
+			<div id="page" style="text-align: center;"></div>
+		</div>
+	</div>
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+
+<script type="text/javascript">
+	var userId = "";
+	var keyword = "";
+	var pageCount = "";
+	<%
+		if(isNotEmpty(session.MALL_SESSION_USER)){
+	%>
+		userId = "${session.MALL_SESSION_USER.uId}";
+	<%
+		}
+	%>
+	<%
+		if(isNotEmpty(keyword)){
+	%>
+		keyword = "${keyword}";
+	<%
+		}
+	%>
+	<%
+		if(isNotEmpty(page.pageCount)){
+	%>
+		pageCount = "${page.pageCount}";
+	<%
+		}
+	%>
+	
+</script>
+<script src="/static/js/product/product.js" type="text/javascript" charset="utf-8"></script>
+
+</body>
+</html>

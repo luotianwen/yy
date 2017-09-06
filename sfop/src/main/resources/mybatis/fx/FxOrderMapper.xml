@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 分销订单(fx_order)Mapper -->
+<mapper namespace="fxorderMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	orderid,state ,commission ,recommend_userid ,recommended_userid ,type ,order_time ,order_amount 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.fx.FxOrder" id="FxOrderReturnMap">
+	  <!-- 订单ID -->
+      <id column="orderid" property="orderid"/>
+	  <!-- 分销结算状态 -->
+      <result column="state" property="state"/>
+	  <!-- 佣金 -->
+      <result column="commission" property="commission"/>
+	  <!-- 推荐用户id -->
+      <result column="recommend_userid" property="recommend_userid"/>
+	  <!-- 被推荐用户id -->
+      <result column="recommended_userid" property="recommended_userid"/>
+	  <!-- 状态 -->
+      <result column="type" property="type"/>
+	  <!-- 下单时间 -->
+      <result column="order_time" property="order_time"/>
+	  <!-- 订单金额（支付金额） -->
+      <result column="order_amount" property="order_amount"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllFxOrderPage" parameterType="Page" resultMap="FxOrderReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			fx_order
+		where 1=1
+			<if test="t.state!=null and t.state!=''">
+				and state = #{t.state}
+			</if>
+			<if test="t.commission!=null and t.commission!=''">
+				and commission = #{t.commission}
+			</if>
+			<if test="t.recommend_userid!=null and t.recommend_userid!=''">
+				and recommend_userid = #{t.recommend_userid}
+			</if>
+			<if test="t.recommended_userid!=null and t.recommended_userid!=''">
+				and recommended_userid = #{t.recommended_userid}
+			</if>
+			<if test="t.type!=null and t.type!=''">
+				and type = #{t.type}
+			</if>
+			<if test="t.order_time!=null and t.order_time!=''">
+				and order_time = #{t.order_time}
+			</if>
+			<if test="t.order_amount!=null and t.order_amount!=''">
+				and order_amount = #{t.order_amount}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findFxOrderById" parameterType="String" resultMap="FxOrderReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			fx_order
+		where 
+			orderid = #{orderid}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateFxOrder" parameterType="com.shifeng.entity.fx.FxOrder">
+		update 
+			fx_order 
+		set
+	      	state = #{state},
+	      	commission = #{commission},
+	      	recommend_userid = #{recommend_userid},
+	      	recommended_userid = #{recommended_userid},
+	      	type = #{type},
+	      	order_time = #{order_time},
+	      	order_amount = #{order_amount}
+		 where
+			orderid = #{orderid}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveFxOrder" parameterType="com.shifeng.entity.fx.FxOrder">
+		insert into fx_order
+			(
+		      state, commission, recommend_userid, recommended_userid, type, order_time, order_amount 
+			)
+		values
+			(
+		      #{state},
+		      #{commission},
+		      #{recommend_userid},
+		      #{recommended_userid},
+		      #{type},
+		      #{order_time},
+		      #{order_amount}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteFxOrder" parameterType="String">
+  		delete from fx_order
+  		where orderid = #{orderid}
+  	</delete>
+	
+</mapper>

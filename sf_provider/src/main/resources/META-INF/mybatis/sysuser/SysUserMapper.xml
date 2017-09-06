@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 用户表(SysUser)Mapper -->
+<mapper namespace="SysUserMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,account ,password ,name ,phone ,province ,city ,region ,address ,postcode ,portrait ,sex ,email ,integral ,coin ,birthday ,state ,rtime ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.user.SysUser" id="SysUserReturnMap">
+		<!-- id -->
+      <id column="id" property="id"/>
+		<!-- 用户登录名 -->
+      <result column="account" property="account"/>
+		<!-- 密码 -->
+      <result column="password" property="password"/>
+		<!-- 用户姓名 -->
+      <result column="name" property="name"/>
+		<!-- 手机号 -->
+      <result column="phone" property="phone"/>
+		<!-- 省份 -->
+      <result column="province" property="province"/>
+		<!-- 城市 -->
+      <result column="city" property="city"/>
+		<!-- 区 -->
+      <result column="region" property="region"/>
+		<!-- 地址 -->
+      <result column="address" property="address"/>
+		<!-- 邮编 -->
+      <result column="postcode" property="postcode"/>
+		<!-- 照片 -->
+      <result column="portrait" property="portrait"/>
+		<!-- 性别 -->
+      <result column="sex" property="sex"/>
+		<!-- 邮箱 -->
+      <result column="email" property="email"/>
+		<!-- 积分 -->
+      <result column="integral" property="integral"/>
+		<!-- 硬币 -->
+      <result column="coin" property="coin"/>
+		<!-- 出生日期 -->
+      <result column="birthday" property="birthday"/>
+		<!-- 状态(1正常 2冻结) -->
+      <result column="state" property="state"/>
+		<!-- 注册时间 -->
+      <result column="rtime" property="rtime"/>
+		<!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+		<!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+   
+   
+   <!-- 根据用户id修改用户状态 -->
+   <update id="updateUserState" parameterType="String" >
+   		update 
+   			sys_user 
+   		set 
+   			state = #{array[1]} 
+   			,lasttime = NOW(),updatename = #{array[2]}
+   		where
+   			id = #{array[0]}
+   </update>
+  
+  
+  <!-- 用户登录验证 -->
+  <select id="userLogin" parameterType="String" resultType="com.shifeng.entity.user.SysUser">
+  		select
+  			id,account ,name ,phone ,province ,city ,region ,address ,postcode ,portrait ,sex ,email ,integral ,coin ,birthday ,state
+  		from
+  			sys_user
+  		where
+  			password = #{array[1]}  and  
+  			( <!-- id = #{array[0]} or --> account = #{array[0]} or phone = #{array[0]} or email = #{array[0]} )		
+  </select>
+  
+  
+    <!-- 根据用户id查找用户 -->
+  <select id="findUserById" parameterType="String" resultType="com.shifeng.entity.user.SysUser">
+  		select
+  			id,account ,name ,phone ,province ,city ,region ,address ,postcode ,portrait ,sex ,email ,integral ,coin ,birthday ,state
+  		from
+  			sys_user
+  		where
+  			 id = #{id}
+  </select>
+  
+  
+    <!-- 检测用户名是否存在 -->
+  <select id="checkAccount" parameterType="String" resultType="com.shifeng.entity.user.SysUser">
+  		select
+  			id,account ,name ,phone ,email
+  		from
+  			sys_user
+  		where
+  			account = #{account} or phone = #{account} or email = #{account} 	
+  </select>
+ 
+  <!-- 添加用户 -->
+  <insert id="addUser" parameterType="com.shifeng.entity.user.SysUser"  keyColumn="id"  keyProperty="id"  useGeneratedKeys="true">
+  		  INSERT INTO 
+				sys_user
+		            (account ,password ,name ,phone ,province ,city ,region ,address ,postcode ,portrait ,sex ,email ,integral ,coin ,birthday  ,rtime,lasttime ,updatename  )
+		  VALUES
+		  		(
+		  			#{account },#{password },#{name },#{phone },#{province },#{city },#{region },#{address },#{postcode },#{portrait },#{sex },#{email },#{integral },#{coin },#{birthday },NOW()
+		  		 <choose>
+		                <when test="updatename !=null and updatename !=''">
+		                       ,NOW(),#{updatename} 
+		                </when>
+		                <otherwise>
+		                       ,#{lasttime},#{updatename} 
+		                 </otherwise>
+		         </choose>
+		  		 )
+  </insert>
+  
+  
+   <!-- 添加联合登录用户 -->
+  <insert id="addJointUser" parameterType="com.shifeng.entity.user.SysUser"  keyColumn="id"  keyProperty="id"  useGeneratedKeys="true">
+  		  INSERT INTO 
+				sys_user
+		            (name ,phone ,province ,city ,region ,address ,postcode ,portrait ,sex ,email ,integral ,coin ,birthday  ,rtime  )
+		  VALUES
+		  		(
+		  			#{name },#{phone },#{province },#{city },#{region },#{address },#{postcode },#{portrait },#{sex },#{email },0,0,#{birthday },NOW()
+		  		 )
+  </insert> 
+    <!-- 更新联合登录用户信息 -->
+  <update id="updateJointUser" parameterType="com.shifeng.entity.user.SysUser">
+   		update 
+   			sys_user 
+   		set 
+   			name = #{name} 
+   			,portrait = #{portrait}
+   			,sex = #{sex}
+   			,lasttime = NOW()
+   			,updatename = #{name}
+   		where
+   		  	id = #{id}
+  </update>
+  
+  
+  
+  
+  <!-- 根据用户账号（账户名/手机号/邮箱）修改密码 -->
+  <update id="updatePassword" parameterType="String">
+   		update 
+   			sys_user 
+   		set 
+   			password = #{array[1]} 
+   			,lasttime = NOW(),updatename = #{array[2]}
+   		where
+   			<!-- id = #{array[0]} or  -->
+   			(account = #{array[0]} or phone = #{array[0]} or email = #{array[0]} ) and password = #{array[3]} 
+  </update>
+
+	<!-- 根据用户账号（账户名/手机号/邮箱）修改密码 -->
+	<update id="updatePasswordByAccount" parameterType="String">
+		update
+		sys_user
+		set
+		password = #{array[1]}
+		,lasttime = NOW(),updatename = #{array[2]}
+		where
+		account = #{array[0]}
+	</update>
+
+	<!-- 根据用户手机号修改密码 -->
+	<update id="updatePasswordByPhone" parameterType="String">
+		update
+			sys_user
+		set
+			password = #{array[1]}
+			,lasttime = NOW(),updatename = #{array[0]}
+		where
+		 	phone = #{array[0]}
+	</update>
+	
+	<!-- 根据用户id修改用户头像 -->
+	<update id="updateHeadImg" parameterType="String">
+		update
+			sys_user
+		set
+			portrait = #{array[1]}
+		where
+			id = #{array[0]}
+	</update>
+	
+	<!-- 根据用户id修改用户基本信息（该接口仅支持修改昵称、性别、生日登基本用户信息，不支持修改用户密码 、头像操作） -->
+	<update id="updateUserInfo" parameterType="com.shifeng.entity.user.SysUser">
+		update
+			sys_user
+		<trim prefix="set" suffixOverrides=",">
+		  <if test="name!=null and name!='' ">name=#{name},</if>
+		  <if test="province!=null and province!='' ">province=#{province},</if>
+		  <if test="city!=null and city!='' ">city=#{city},</if>
+		  <if test="region!=null and region!='' ">region=#{region},</if>
+		  <if test="address!=null and address!='' ">address=#{address},</if>
+		  <if test="sex!=null and sex!='' ">sex=#{sex},</if>
+		  <if test="birthday!=null and birthday!='' ">birthday=#{birthday},</if>
+		</trim>
+		where
+			id = #{id}
+	</update>
+	
+	<!-- 获取我的积分 -->
+	<select id="getIntegral" parameterType="String" resultType="int">
+		select
+			integral
+		from
+			sys_user
+		where
+			id = #{id}
+	</select>
+	
+	<!-- 用户绑定手机号 -->
+	<update id="updateBindPhone" parameterType="java.util.Map">
+		update
+			sys_user
+		set
+			phone = #{phone}
+		where
+		 	id = #{user_id}
+		 	and
+		 	phone = null
+	</update>
+	
+	<!-- 用户修改手机号 -->
+	<update id="updatePhone"  parameterType="String">
+		update
+			sys_user
+		set
+			phone = #{array[1]},
+			lasttime = NOW(),
+			updatename = #{array[0]}
+		where
+		 	phone = #{array[0]}
+	</update>
+	
+
+</mapper>

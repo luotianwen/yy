@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <title>${shop.shopName}</title>
+    <meta name="keywords" content="${shop.shopName}" />
+    <meta name="description" content="${shop.shopName}" />
+    <meta name="Robots" content="all">
+    <meta name="author" content="世峰户外商城">
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/list.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/laypage/laypage.js"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'店铺页'}){}%>
+<% include("/detailnav.btl"){}%>
+    <!--<div class="boxw user-dz"><%if(isNotEmpty(shop.logo)){%> <img src="${shop.logo}" alt=""/><%}%></div>-->
+<input type="hidden" id="shopid" value="${shop.shopId}">
+    <!--<div class="boxw user-banner"><img src="/static/img/banner.jpg" alt=""/></div>-->
+    <div class="boxw clearfix">
+        <div class="fl clearfix">
+           <div class="evaluate">
+                <div class="total_points">
+                    <h3>${shop.shopName}<a href="/shop/${shop.shopId}.html"></a></h3>
+                    <div class="t_info">
+                        <div class="t_item t_shop">
+                            <span class="title">商品</span>
+                            <div class="percent">
+                                <span></span>
+                            </div>
+                            <i class="grade">5.0</i>
+                        </div>
+                        <div class="t_item t_serve">
+                            <span class="title">服务</span>
+                            <div class="percent">
+                                <span></span>
+                            </div>
+                            <i class="grade">5.0</i>
+                        </div>
+                        <div class="t_item t_logistics">
+                            <span class="title">物流</span>
+                            <div class="percent">
+                                <span></span>
+                            </div>
+                            <i class="grade">5.0</i>
+                        </div>
+                        <span class="b_boder"></span>
+                        <div class="store_btn">
+                            <a data_type="no" href="javascript:void(0)" id="bookmark" shopid="${shop.shopId}" style="margin-right: 9px;">收藏店铺</a>
+                            <a href="/shop/${shop.shopId}.html">进入店铺</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="store_search">
+                    <h3>店内搜索<i></i></h3>
+                    <div class="ss_content">
+                        <div class="keyword">
+                            <span>关键字：</span><input type="text" />
+                        </div>
+                        <div class="price">
+                            <span>价格：</span>
+                            <div class="data">
+                                <input type="text" /><i>~</i><input type="text" />
+                            </div>
+                        </div>
+                        <div class="search_btn">
+                            <a href="">搜索</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="ranking_list" style="display:none;">
+                    <div class="list_name">
+                        <span class="r_collect active"><i></i>销量榜</span>
+                        <span class="sales_num"><i></i>收藏榜</span>
+                    </div>
+                    <div class="list_content">
+                        <ul>
+                            <!--<li>
+                                <div class="item_msg">
+                                    <img src="/static/img/TB2AZv4uXXXXXXLXXXXXXXXXXXX_!!2186362266@2x.png" />
+                                    <span>极星户外男士功能长裤 夏季吸汗快干裤子户极星户外男士功能长裤 夏季吸汗快干裤子户星户外男士功能长裤 夏季吸汗快干裤子户星户外男士功能长裤 夏季吸汗快干裤子户</span>
+                                </div>
+                                <div class="item_price">
+                                    <span class="ranking">NO.1</span><span class="price_num">￥199.00</span>
+                                </div>
+                            </li>-->
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fr content clearfix" id="page">
+
+        </div>
+    </div>
+    <% include("/rightnav.btl"){}%>
+    <% include("/footer.btl"){}%>
+<script src="/static/js/shop/page.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>

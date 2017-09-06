@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 分类导航关联表(p_navigation_category)Mapper -->
+<mapper namespace="navigationcategoryMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,nid ,cid ,parentid ,url ,sort ,lasttime ,updatename ,remark 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.category.NavigationCategory" id="NavigationCategoryReturnMap">
+	  <!-- 主键 -->
+      <id column="id" property="id"/>
+	  <!-- 导航id -->
+      <result column="nid" property="nid"/>
+	  <!-- 分类id -->
+      <result column="cid" property="cid"/>
+	  <!-- 父分类id -->
+      <result column="parentid" property="parentid"/>
+	  <!-- url -->
+      <result column="url" property="url"/>
+	  <!-- 排序 -->
+      <result column="sort" property="sort"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+   </resultMap>
+   
+    <!-- 查询所有导航分类 -->
+    <select id="findAllNavigationCategoryListByNid" parameterType="String" resultType="com.shifeng.entity.category.NavigationCategory">
+		select
+			id,nid ,cid ,parentid ,url ,sort ,lasttime ,updatename ,remark 
+		from
+			p_navigation_category
+		where nid = #{id}
+	</select>
+    
+    
+    <!-- 查询所有导航分类 -->
+    <select id="findAllNavigationCategoryByNid" parameterType="String" resultType="com.shifeng.op.dto.category.NavigationCategoryDTO">
+		select
+			pnc.id,pnc.nid ,pnc.cid ,pnc.parentid ,pnc.url ,pnc.sort , cc.descript cName
+		from 
+			p_navigation_category pnc
+		left join c_category cc on cc.id = pnc.cid
+		where pnc.nid = #{id} and pnc.parentid = 0
+		order by sort asc
+	</select>
+	
+     <!-- 查询所有导航子分类 -->
+    <select id="findAllNavigationCategoryByPid" parameterType="java.util.Map" resultType="com.shifeng.op.dto.category.NavigationCategoryDTO">
+		select
+			pnc.id,pnc.nid ,pnc.cid ,pnc.parentid ,pnc.url ,pnc.sort , cc.descript cName
+		from 
+			p_navigation_category pnc
+		left join c_category cc on cc.id = pnc.cid
+		where pnc.parentid = #{id} and pnc.nid = #{nid}
+		order by sort asc
+	</select>
+    
+    <!-- 查询所有已关联导航分类 -->
+	<select id="findCIdByNid" parameterType="String" resultType="String">
+		select
+			cid
+		from 
+			p_navigation_category
+		where nid = #{id}
+	</select>
+    
+   	<!-- 查询所有导航分类 -->
+	<select id="findAllNavigationCategoryPage" parameterType="Page" resultMap="NavigationCategoryReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_navigation_category
+		order by sort asc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findNavigationCategoryById" parameterType="String" resultMap="NavigationCategoryReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_navigation_category
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateNavigationCategory" parameterType="com.shifeng.entity.category.NavigationCategory">
+		update 
+			p_navigation_category 
+		set
+	      	url = #{url},
+	      	sort = #{sort},
+	      	lasttime = now(),
+	      	updatename = #{updatename}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveNavigationCategory" parameterType="java.util.Map">
+		insert into p_navigation_category
+			(
+		      nid, cid, parentid, sort, lasttime, updatename
+			)
+		values
+		<foreach collection="ids" item="cid" separator=",">
+		(
+			#{id},
+			#{cid},
+			(select parentid from c_category cc where id = #{cid}),
+			0,
+			now(),
+			#{uName}
+		)
+		</foreach>
+	</insert>
+  
+	<!-- 删除之前关联数据 -->
+	<delete id="deleteNavigationCategoryByNid" parameterType="String">
+	    delete from p_navigation_category
+	    where nid = #{id}
+	</delete>
+	
+	<!-- 删除导航分类 -->
+	<delete id="deleteNavigationcategory" parameterType="java.util.Map">
+	    delete from p_navigation_category
+	    where id = #{id} or parentid = #{cid}
+	</delete>
+	
+	<!-- 根据分类ID删除导航分类 -->
+	<delete id="deleteNavigationcategoryByCid" parameterType="String">
+	    delete from p_navigation_category
+	    where cid = #{cid}
+	</delete>
+	
+</mapper>

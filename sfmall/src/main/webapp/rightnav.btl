@@ -1,0 +1,22 @@
+<ul id="rightnav">
+    <li class="r_item nav_1">
+        <a href="/my/order.html"><img src="/static/img/dd_img.png" /><span>我的订单</span></a>
+    </li>
+    <li class="r_item nav_2">
+        <a href="/my/cart.html"><i></i><img src="/static/img/gw_cart.png" /><span>购物车</span></a>
+    </li>
+    <li class="r_item nav_3">
+        <a href="/my/goodscollect.html"><img src="/static/img/sc_img.png" /><span>我的收藏</span></a>
+    </li>
+    <li class="r_item nav_4">
+        <a href="http://kefu.seebong.com/"><img src="/static/img/kf_img.png" /><span>咨询客服</span></a>
+    </li>
+    <li class="r_item nav_5">
+        <a href="/my/feedback.html"><img src="/static/img/fk_img.png" /><span>意见反馈</span></a>
+    </li>
+    <li id="go_top" class="r_item nav_6" onClick="$('html,body').animate({scrollTop: 0}, 500);">
+        <img src="/static/img/top.png" />
+        <i>TOP</i>
+    </li>
+
+</ul>

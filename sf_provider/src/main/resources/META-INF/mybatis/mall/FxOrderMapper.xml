@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 分销订单(fx_order)Mapper -->
+<mapper namespace="fxorderMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	orderid,state ,commission ,recommend_userid ,recommended_userid ,type ,order_time ,order_amount 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.fx.FxOrder" id="FxOrderReturnMap">
+	  <!-- 订单ID -->
+      <id column="orderid" property="orderid"/>
+	  <!-- 分销结算状态  1：待结算（下单，支付）；2：已结算（确认收货）；3：订单失效（即用户取消订单，退货）-->
+      <result column="state" property="state"/>
+	  <!-- 佣金 -->
+      <result column="commission" property="commission"/>
+	  <!-- 推荐用户id -->
+      <result column="recommend_userid" property="recommend_userid"/>
+	  <!-- 被推荐用户id -->
+      <result column="recommended_userid" property="recommended_userid"/>
+	  <!-- 状态 -->
+      <result column="type" property="type"/>
+	  <!-- 下单时间 -->
+      <result column="order_time" property="order_time"/>
+	  <!-- 订单金额（支付金额） -->
+      <result column="order_amount" property="order_amount"/>
+   </resultMap>
+   
+   	<!-- 获取我的订单列表        day	（0：全部订单；1：今日订单；2：昨天订单；3：本周订单；4：本月订单）-->
+	<select id="getMyFxOrderPageList" parameterType="Page" resultType="com.shifeng.dto.fx.order.FxOrderDTO">
+		SELECT
+			orderid,fo.state ,commission ,fu.name recommended_userName ,fo.recommended_userid ,TYPE ,order_time ,order_amount 
+		FROM
+			fx_order fo
+		LEFT JOIN fx_user fu ON fo.recommend_userid = fu.recommend_userid AND fo.recommended_userid = fu.recommended_userid
+		WHERE
+			fo.recommend_userid = #{t.user_id}
+			
+	        <if test='t.day=="1"'>
+	            and DATE_FORMAT(order_time,'%Y-%m-%d') =  #{t.start_time}
+	        </if>
+	        <if test='t.day=="2"'>
+	            and DATE_FORMAT(order_time,'%Y-%m-%d') =  #{t.start_time}
+	        </if>
+	        <if test='t.day=="3" || t.day=="4"'>
+	            and DATE_FORMAT(order_time,'%Y-%m-%d') >=  #{t.start_time}
+	            and DATE_FORMAT(order_time,'%Y-%m-%d') <![CDATA[ <= ]]>  #{t.end_time}
+	        </if>	
+			<if test="t.recommended_userid!=null and t.recommended_userid!=''">
+				and fo.recommended_userid = #{t.recommended_userid}
+			</if>
+	        
+	        
+		ORDER BY 
+			order_time DESC
+	</select>
+	
+	<!-- 根据时间范围统计订单收入 --><!--  SUM( IF( state = 2, commission, 0))  -->
+	<select id="getOrderTotal" parameterType="java.util.Map" resultType="com.shifeng.dto.fx.order.FxTotalOrderDetailedDTO">
+		SELECT
+	 		COUNT(1) order_quantity,SUM(commission) income_amount
+		FROM
+		  fx_order 
+		WHERE
+		  recommend_userid = #{user_id}
+		        <if test='day=="1" || day=="2"'>
+		            and DATE_FORMAT(order_time,'%Y-%m-%d') =  #{start_time}
+		        </if>
+		        <if test='day=="3"'>
+		            and DATE_FORMAT(order_time,'%Y-%m-%d') >=  #{start_time}
+		            and DATE_FORMAT(order_time,'%Y-%m-%d') <![CDATA[ <= ]]>  #{end_time}
+		        </if>
+			and state <![CDATA[ < ]]> 3
+	
+	</select>
+	
+	
+	
+	<!-- 获取用户的分销订单总量 -->
+	<select id="getOrderCount" parameterType="String" resultType="int">
+		SELECT
+	 		COUNT(1)
+		FROM
+		  fx_order 
+		WHERE
+		  recommend_userid = #{user_id}
+	</select>
+	
+	<!-- 保存分销订单 -->
+	<insert id="saveFxOrder" parameterType="java.util.Map">
+		insert into  fx_order
+            (orderid,state ,commission ,recommend_userid ,recommended_userid ,type ,order_time ,order_amount)
+ 
+		SELECT
+		  orderId,1,SUM(quantity*p.commission) commission
+		  ,#{recommend_userid},#{recommended_userid},1,NOW(),SUM(totalMoney)
+		FROM  fx_product p
+		LEFT JOIN o_orderdetailinfo o ON o.sku = p.sku
+		WHERE
+			perentId = #{order_id}
+		GROUP BY orderId	
+	
+	</insert>
+	
+	
+		<!-- 获取用户的待收益佣金 -->
+	<select id="getOrderDaiShouYi" parameterType="String" resultType="double">
+		select
+			SUM(commission) commission
+		from  fx_order
+		where
+			state = 1 and  
+		  recommend_userid = #{user_id}
+	</select>
+	
+	<!-- 获取用户的待收益佣金 -->
+	<select id="getOrderDaiShouYiByOrderId" parameterType="java.util.Map" resultType="double">
+		select
+			SUM(commission) commission
+		from  fx_order
+		where
+			state = 1 and  
+		  recommend_userid = #{recommend_userid}
+			and
+			orderid = #{orderid}
+	</select>
+	
+	<!-- 更新订单收益状态(取消、退货) -->
+	<update id="updateOrderProfitStateForClose" parameterType="java.util.Map">
+		update fx_order
+		set state = 3
+		where 
+			recommended_userid = #{recommended_userid}
+			and
+			orderid = #{orderid}
+	</update>
+	
+	<!-- 更新订单收益状态(确认收货) -->
+	<update id="updateOrderProfitStateForSettlement" parameterType="java.util.Map">
+		update fx_order
+		set state = 2
+		where 
+			recommended_userid = #{recommended_userid}
+			and
+			orderid = #{orderid}
+	</update>
+ 
+	
+</mapper>

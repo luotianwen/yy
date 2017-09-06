@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 品牌信息(s_shop_brand)Mapper -->
+<mapper namespace="shopbrandMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,s_merchants_id,b_brand_id ,submitime ,state ,remark ,valid_period ,qualification_img ,name ,
+    	logo ,descript ,letter ,type ,trademarktype ,businesstype ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.ShopBrand" id="ShopBrandReturnMap">
+      <id column="id" property="id"/>
+      <!-- 入驻id -->
+      <result column="s_merchants_id" property="s_merchants_id"/>
+	  <!-- 品牌id -->
+      <result column="b_brand_id" property="b_brand_id"/>
+	  <!-- 提交时间 -->
+      <result column="submitime" property="submitime"/>
+	  <!-- 审核状态(1：审核通过，2：审核失败，3：待审核) -->
+      <result column="state" property="state"/>
+	  <!-- 审核备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 品牌资质有效期 -->
+      <result column="valid_period" property="valid_period"/>
+	  <!-- 品牌资质电子版 -->
+      <result column="qualification_img" property="qualification_img"/>
+	  <!-- 品牌名称 -->
+      <result column="name" property="name"/>
+	  <!-- 品牌logo -->
+      <result column="logo" property="logo"/>
+	  <!-- 品牌描述 -->
+      <result column="descript" property="descript"/>
+	  <!-- 品牌首字母 -->
+      <result column="letter" property="letter"/>
+	  <!-- 品牌类型 -->
+      <result column="type" property="type"/>
+	  <!-- 商标注册人 -->
+      <result column="trademarktype" property="trademarktype"/>
+	  <!-- 经营类型 -->
+      <result column="businesstype" property="businesstype"/>
+      <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+
+    <resultMap type="com.shifeng.seller.shop.dto.ShopBrandDTO" id="ShopBrandDTOReturnMap">
+        <result column="b_brand_id" property="b_brand_id"/>
+        
+        <!-- 品牌信息 -->
+		<association property="brand" javaType="com.shifeng.entity.brand.Brand" column="b_brand_id" select="brandMapper.findBrandById"></association>
+    </resultMap>
+    
+	<!-- 根据用户ID查询表 -->
+	<select id="findMyShopBrandPage" parameterType="Page" resultMap="ShopBrandDTOReturnMap">
+		select
+			s.id,s.s_merchants_id,s.b_brand_id ,s.submitime ,s.state ,s.remark ,s.valid_period ,
+			s.qualification_img ,s.name ,s.logo ,s.descript ,s.letter ,s.type ,s.trademarktype ,s.businesstype 
+		from 
+			s_shop_brand s
+		left join b_brand b on s.b_brand_id = b.id
+		where 
+			s.s_merchants_id = #{t.s_merchants_id}
+			<if test="t.name!=null and t.name!=''">
+			    and (b.name LIKE CONCAT(CONCAT('%', #{t.name}),'%') or s.name LIKE CONCAT(CONCAT('%', #{t.name}),'%'))
+			</if>
+			<if test="t.state>0">
+			    and s.state = #{t.state}
+			</if>
+		order by s.id desc
+	</select>
+
+	<!-- 新增表 -->
+	<insert id="saveApplyBrand" parameterType="com.shifeng.entity.shop.ShopBrand">
+		insert into s_shop_brand
+		(
+			s_merchants_id ,b_brand_id, submitime, state, remark, valid_period, qualification_img, name, logo, 
+			descript, letter, type, trademarktype, businesstype ,lasttime 
+		)
+		values
+		(
+			#{s_merchants_id},
+			#{b_brand_id},
+			now(),
+			3,
+			#{remark},
+			#{valid_period},
+			#{qualification_img},
+			#{name},
+			#{logo},
+			#{descript},
+			#{letter},
+			#{type},
+			#{trademarktype},
+			#{businesstype},
+			now()
+		)
+	</insert>
+	
+	<!-- 查询店铺所有可用品牌 -->
+	<select id="findShopBrand" parameterType="String" resultMap="ShopBrandReturnMap">
+	    select b.id,b.name
+	    from s_shop_brand s
+	    left join b_brand b on s.b_brand_id = b.id
+	    where
+	    	s.s_merchants_id = #{shopId} and s.state = 1
+	</select>
+	
+	<!-- 根据ID查询店铺品牌 -->
+	<select id="findShopBrandById" parameterType="java.util.Map" resultMap="ShopBrandDTOReturnMap">
+	    select 
+	    	<include refid="Base_Column_List"/>
+	    from s_shop_brand
+	    where 
+	    	s_merchants_id = #{shopid} and id = #{id}
+	</select>
+	
+</mapper>

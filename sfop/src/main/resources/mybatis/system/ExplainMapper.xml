@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 商城说明表(s_explain)Mapper -->
+<mapper namespace="explainMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,title ,name ,content ,type ,releaseDate ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.system.Explain" id="ExplainReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 标题 -->
+      <result column="title" property="title"/>
+	  <!-- 名称 -->
+      <result column="name" property="name"/>
+	  <!-- 内容 -->
+      <result column="content" property="content"/>
+	  <!-- 类型 -->
+      <result column="type" property="type"/>
+	  <!-- 发布日期 -->
+      <result column="releaseDate" property="releaseDate"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllExplainPage" parameterType="Page" resultMap="ExplainReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_explain
+		WHERE  1=1
+		<if test="t.title != null and t.title != ''">
+			AND title LIKE CONCAT(CONCAT('%', #{t.title}),'%')
+		</if>
+
+		<if test=" t.type!=0 ">
+			AND type= #{t.type}
+		</if>
+		<if test="t.lasttime!=null and t.lasttime!='' ">
+			<![CDATA[
+			AND date(releaseDate) <= #{t.lasttime}
+			]]>
+		</if>
+		<if test="t.releaseDate!=null and t.releaseDate!='' ">
+			<![CDATA[
+			AND date(releaseDate) >= #{t.releaseDate}
+			]]>
+		</if>
+		order by lasttime desc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findExplainById" parameterType="String" resultMap="ExplainReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_explain
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateExplain" parameterType="com.shifeng.entity.system.Explain">
+		update 
+			s_explain 
+		set
+	      	title = #{title},
+	      	name = #{name},
+	      	content = #{content},
+	      	type = #{type},
+	      	releaseDate = #{releaseDate},
+	      	lasttime = now(),
+	      	updatename = #{updatename}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveExplain" parameterType="com.shifeng.entity.system.Explain">
+		insert into s_explain
+			(
+		      title, name, content, type, releaseDate, lasttime, updatename 
+			)
+		values
+			(
+		      #{title},
+		      #{name},
+		      #{content},
+		      #{type},
+		      #{releaseDate},
+		      now(),
+		      #{updatename}
+			)
+	</insert>
+  <delete id="deleteExplain" parameterType="com.shifeng.entity.system.Explain">
+	  DELETE  FROM  s_explain   where
+			id = #{id}
+	</delete>
+</mapper>

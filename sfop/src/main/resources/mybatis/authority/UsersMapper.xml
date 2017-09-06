@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UsersMapper">
+
+	<!--mybatis ehcache缓存配置 -->
+	<!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/> -->
+
+
+	<sql id="Base_Column_List">
+		u_id,uName ,uEmail ,uPhone ,uPassword ,uSex ,uHeadImg
+		,uLoginAreaCode
+		,uCreateTime ,uLastUpdateTime ,uType ,rId
+		,isGAG,uLoginIp,uLoginDate,uLoginCount
+	</sql>
+
+	<resultMap type="com.shifeng.op.entity.users.Users" id="UsersReturnMap">
+		<id column="u_id" property="uId" />
+		<result column="uName" property="uName" />
+		<result column="uEmail" property="uEmail" />
+		<result column="uPhone" property="uPhone" />
+		<result column="uPassword" property="uPassword" />
+		<result column="uSex" property="uSex" />
+		<result column="uHeadImg" property="uHeadImg" />
+		<result column="uLoginAreaCode" property="uLoginAreaCode" />
+		<result column="uCreateTime" property="uCreateTime" />
+		<result column="uLastUpdateTime" property="uLastUpdateTime" />
+		<result column="uType" property="uType" />
+		<result column="rId" property="rId" />
+		<result column="isFroZen" property="isFroZen" />
+		<result column="isGAG" property="isGAG" />
+		<result column="uLoginIp" property="uLoginIp" />
+		<result column="uLoginDate" property="uLoginDate" />
+		<result column="uLoginCount" property="uLoginCount" />
+
+		<!-- 查询角色 -->
+		<association property="role" javaType="com.shifeng.op.entity.authority.Roles"
+			column="rId" select="rolesMapper.findRoleByRId">
+		</association>
+	</resultMap>
+
+	<!-- 用户详细信息 -->
+	<resultMap type="com.shifeng.op.entity.users.UserInfo" id="UserInfoReturnMap">
+		<id column="u_id" property="uId" />
+		<result column="uName" property="uName" />
+		<result column="uEmail" property="uEmail" />
+		<result column="uPhone" property="uPhone" />
+		<result column="uPassword" property="uPassword" />
+		<result column="uSex" property="uSex" />
+		<result column="uHeadImg" property="uHeadImg" />
+		<result column="uLoginAreaCode" property="uLoginAreaCode" />
+		<result column="uCreateTime" property="uCreateTime" />
+		<result column="uLastUpdateTime" property="uLastUpdateTime" />
+		<result column="uType" property="uType" />
+		<result column="rId" property="rId" />
+		<result column="isFroZen" property="isFroZen" />
+		<result column="isGAG" property="isGAG" />
+		<result column="uLoginIp" property="uLoginIp" />
+		<result column="uLoginDate" property="uLoginDate" />
+		<result column="uLoginCount" property="uLoginCount" />
+	</resultMap>
+
+	<!-- 根据手机号/邮箱登录用户 -->
+	<select id="loginUserByPhoneOrEmail" parameterType="com.shifeng.op.entity.users.Users"
+		resultMap="UsersReturnMap" useCache="false">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM op_users WHERE ISFROZEN = 2 and  u_id=#{uId}
+	</select>
+
+	<!-- 删除角色检测是否关联用户 -->
+	<select id="deleteRoleFindUser" parameterType="String"
+		resultType="Integer">
+		SELECT COUNT(1) FROM op_users WHERE rId=#{rId}
+	</select>
+
+	<!-- 分页获取后台管理用户列表 -->
+	<select id="getSysListPage" parameterType="Page" resultMap="UserInfoReturnMap">
+		SELECT u_id,uName ,uEmail ,uPhone ,uSex ,uHeadImg
+		,uCreateTime,uType,isFroZen,uLoginIp,uLoginDate,uLoginCount ,rName
+		FROM op_users u
+		left join op_roles r on r.rid = u.rid
+		WHERE 1 = 1
+		<if test="t.uName != null and t.uName != '' ">
+			AND uName LIKE CONCAT(CONCAT('%', #{t.uName}),'%')
+		</if>
+		AND u_id != '1'
+		order by u.rid asc,uCreateTime asc
+	</select>
+
+	<!--根据系统用户ID获取系统用户详细信息 -->
+	<select id="findSysUserById" parameterType="String" resultMap="UserInfoReturnMap">
+		SELECT u_id,uName ,uEmail ,uPhone ,uPassword ,uSex ,uHeadImg
+		,uLoginAreaCode ,uCreateTime ,uLastUpdateTime ,uType ,r.rId
+		,isFroZen,isGAG,uLoginIp,uLoginDate,uLoginCount ,a.aId
+		FROM op_users u
+		left join op_roles r on r.rid = u.rid
+		left join op_arrays a on a.aid = r.aid
+		where
+		u_id = #{userId} and uType = 4 AND u_id != '1'
+	</select>
+
+	<!-- 保存系统用户 -->
+	<insert id="saveSysUser" parameterType="com.shifeng.op.entity.users.Users">
+		insert into op_users
+		(u_id,uName,uEmail,uPhone,uSex,uHeadImg,uPassword,rId,uCreateTime,uLastUpdateTime,uType,ULOGINIP,ULOGINDATE,ULOGINCOUNT)
+		values
+		(#{uId},#{uName},#{uEmail},#{uPhone},#{uSex},#{uHeadImg},#{uPassword},#{rId},#{uCreateTime},#{uCreateTime},#{uType},#{uLoginIp},#{uLoginDate},#{uLoginCount})
+	</insert>
+
+
+
+	<update id="updateUserRoleByUid" parameterType="java.util.HashMap">
+		update op_users set rId=#{rId} where u_id=#{uId}
+	</update>
+
+	<!-- 更改用户冻结 解冻状态 -->
+	<update id="updateUserFrozenTypeByUid" parameterType="String">
+		update op_users set ISFROZEN = case when ISFROZEN = 1 then 2 else 1 end where
+		u_id=#{uId} AND u_id != '1'
+	</update>
+
+
+	<!-- 更新系统用户信息 -->
+	<update id="updateSysUser" parameterType="com.shifeng.op.entity.users.Users">
+		update op_users set
+		uLastUpdateTime = now()
+		,uName = #{uName}
+		,uEmail = #{uEmail}
+		,uPhone = #{uPhone}
+		,uSex = #{uSex}
+		<if test="uPassword != null and uPassword != '' ">
+			,uPassword = #{uPassword}
+		</if>
+		,rId = #{rId}
+		where u_id = #{uId} and uType = 4
+		AND u_id != '1'
+	</update>
+
+	<!-- 删除系统用户 -->
+	<delete id="deleteSysUser" parameterType="String">
+		delete from op_users where u_id = #{uId} and uType = 4 AND u_id != '1'
+	</delete>
+
+	<!-- 改变用户登录信息（IP、最后登录时间、登录次数） -->
+	<update id="updateUserLoginInfo" parameterType="com.shifeng.op.entity.users.Users">
+		update op_users set
+		ULOGINIP=#{uLoginIp},uLoginDate=#{uLoginDate},uLoginCount=#{uLoginCount}
+		where u_id = #{uId}
+	</update>
+
+
+	<!-- 修改系统用户密码 -->
+	<update id="updateSysUserPassword" parameterType="java.util.HashMap">
+		update op_users set uPassword=#{newPassword}
+		where u_id = #{userId} and uType = 4 and uPassword=#{uPassword}
+	</update>
+
+
+
+
+</mapper>

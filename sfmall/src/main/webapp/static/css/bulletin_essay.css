@@ -1,0 +1,38 @@
+.essay_msg {
+  width: 1000px;
+  border: 1px solid #c8c8c8;
+  border-radius: 90px;
+  padding: 0 100px;
+  padding-bottom: 90px;
+  margin: 0 auto;
+  margin-top: 20px;
+  color: #686868;
+}
+.essay_msg .title {
+  text-align: center;
+  font-size: 28px;
+  padding-top: 45px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid #c8c8c8;
+}
+.essay_msg .author {
+  padding: 0 73px;
+  margin: 32px 0;
+}
+.essay_msg .author span {
+  font-size: 14px;
+  color: #505050;
+}
+.essay_msg .author span i {
+  color: #686868;
+}
+.essay_msg .author .time {
+  margin-left: 26px;
+  margin-right: 166px;
+}
+.essay_msg .author .ar {
+  margin-right: 176px;
+}
+.essay_msg .essay_content {
+  padding: 0 73px;
+}

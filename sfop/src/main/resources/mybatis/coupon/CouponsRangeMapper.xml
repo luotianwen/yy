@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 优惠券使用范围(c_coupons_range)Mapper -->
+<mapper namespace="couponsrangeMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,coupons_id ,type ,number 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.coupon.CouponsRange" id="CouponsRangeReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 优惠券id -->
+      <result column="coupons_id" property="coupons_id"/>
+	  <!-- 范围（1：商品2：店铺3：分类） -->
+      <result column="type" property="type"/>
+	  <!-- 值 -->
+      <result column="number" property="number"/>
+   </resultMap>
+   
+   	<!-- 查询所有商品范围 -->
+	<select id="findAllCouponsRangeForProduct" resultType="com.shifeng.op.dto.coupons.ProductDTO">
+		select
+			pp.id,ppr.sku,ppr.number,pp.name,pp.state,ppr.marketprice,ppr.price,ppr.stocks,pp.logo image
+		from c_coupons_range ccr
+		left join p_pro_rules ppr on ccr.number = ppr.sku
+		left join p_product pp ON ppr.pid = pp.id
+		where ccr.coupons_id = #{id}
+	</select>
+	
+	<!-- 查询所有店铺范围 -->
+	<select id="findAllCouponsRangeForShop" resultType="com.shifeng.entity.shop.Shopinfo">
+		select
+			ssi.s_merchants_id,ssi.name
+		from c_coupons_range ccr
+		left join s_shopinfo ssi ON ssi.s_merchants_id = ccr.number
+		where ccr.coupons_id = #{id}
+	</select>
+
+	<!-- 查询关联ID -->
+	<select id="findNumberById" parameterType="String" resultType="String">
+	    select number
+	    from c_coupons_range
+	    where coupons_id = #{id}
+	</select>
+	
+	<!-- 根据ID查询表 -->
+	<select id="findCouponsRangeById" parameterType="String" resultMap="CouponsRangeReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			c_coupons_range
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateCouponsRange" parameterType="com.shifeng.entity.coupon.CouponsRange">
+		update 
+			c_coupons_range 
+		set
+	      	coupons_id = #{coupons_id},
+	      	type = #{type},
+	      	number = #{number}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveCouponsRange" parameterType="java.util.Map">
+		insert into c_coupons_range
+			(
+		      coupons_id, type, number 
+			)
+		values
+			<foreach collection="number" item="item" separator=",">
+				(
+					#{coupons_id},
+					<if test="type==1">
+					    0,
+					</if>
+					<if test="type==2 or type==3">
+					    1,
+					</if>
+					<if test="type==4 or type==5">
+					    2,
+					</if>
+					<if test="type==6 or type==7">
+					    3,
+					</if>
+					#{item}
+				)
+			</foreach>
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteCouponsRange" parameterType="String">
+  		delete from c_coupons_range
+  		where id = #{id}
+  	</delete>
+	
+  	<!-- 删除 -->
+  	<delete id="deleteCouponsRangeByCid" parameterType="String">
+  	    delete from c_coupons_range
+  		where coupons_id = #{id}
+  	</delete>
+  	
+</mapper>

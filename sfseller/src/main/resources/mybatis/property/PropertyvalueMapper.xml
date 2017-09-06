@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 属性值表(p_propertyvalue)Mapper -->
+<mapper namespace="propertyvalueMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,pid ,content ,sort ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.category.Propertyvalue" id="PropertyvalueReturnMap">
+	  <!-- 主键 -->
+      <id column="id" property="id"/>
+	  <!-- 属性编号 -->
+      <result column="pid" property="pid"/>
+	  <!-- 属性值 -->
+      <result column="content" property="content"/>
+	  <!-- 排序 -->
+      <result column="sort" property="sort"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+   	<!-- 根据属性ID查询所有表 -->
+	<select id="findAllPropertyvalue" parameterType="String" resultMap="PropertyvalueReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_propertyvalue
+		where pid = #{id}
+		order by sort asc
+	</select>
+	
+</mapper>

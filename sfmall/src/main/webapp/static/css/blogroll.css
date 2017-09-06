@@ -1,0 +1,133 @@
+.bll_content .already_have {
+  float: left;
+  width: 300px;
+  margin-right: 20px;
+}
+.bll_content .already_have .title {
+  border-left: 4px solid #06b639;
+  height: 16px;
+  font-size: 16px;
+  line-height: 16px;
+  padding-left: 4px;
+  margin-top: 18px;
+  margin-bottom: 11px;
+}
+.bll_content .already_have .ah_menu {
+  padding: 20px 0;
+  -moz-box-shadow: 0 0 5px #969696;
+  -webkit-box-shadow: 0 0 5px #969696;
+  box-shadow: 0 0 5px #969696;
+}
+.bll_content .already_have .ah_menu ul li {
+  width: 150px;
+  text-align: center;
+  float: left;
+  font-size: 14px;
+  height: 32px;
+  line-height: 32px;
+}
+.bll_content .apply_for {
+  float: left;
+}
+.bll_content .apply_for .title {
+  border-left: 4px solid #06b639;
+  height: 16px;
+  font-size: 16px;
+  line-height: 16px;
+  padding-left: 4px;
+  margin-top: 18px;
+  margin-bottom: 11px;
+}
+.bll_content .apply_for .af_menu {
+  padding-bottom: 40px;
+  -moz-box-shadow: 0 0 5px #969696;
+  -webkit-box-shadow: 0 0 5px #969696;
+  box-shadow: 0 0 5px #969696;
+}
+.bll_content .apply_for .af_menu ul {
+  position: relative;
+  float: left;
+  width: 380px;
+  padding-left: 20px;
+  padding-right: 40px;
+}
+.bll_content .apply_for .af_menu ul li {
+  margin-bottom: 25px;
+  font-size: 14px;
+}
+.bll_content .apply_for .af_menu ul .br {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  bottom: 40px;
+  width: 0;
+  height: 300px;
+  color: #ccc;
+  border-right: 1px solid #ccc;
+  border-top-left-radius: 32px;
+  border-bottom-left-radius: 32px;
+}
+.bll_content .apply_for .af_menu .af_list {
+  float: left;
+  padding-left: 20px;
+  padding-right: 96px;
+  font-size: 14px;
+}
+.bll_content .apply_for .af_menu .af_list .af_title {
+  padding: 20px 0;
+  font-weight: bold;
+}
+.bll_content .apply_for .af_menu .af_list .p_1,
+.bll_content .apply_for .af_menu .af_list .p_2,
+.bll_content .apply_for .af_menu .af_list .p_3 {
+  height: 34px;
+  line-height: 34px;
+  margin-bottom: 10px;
+}
+.bll_content .apply_for .af_menu .af_list .p_1 input,
+.bll_content .apply_for .af_menu .af_list .p_2 input,
+.bll_content .apply_for .af_menu .af_list .p_3 input {
+  float: right;
+  width: 248px;
+  height: 30px;
+  border: 1px solid #c8c8c8;
+}
+.bll_content .apply_for .af_menu .af_list .last_p {
+  height: 100px;
+  line-height: 0;
+}
+.bll_content .apply_for .af_menu .af_list .last_p i {
+  width: auto;
+  display: block;
+  float: left;
+  line-height: 14px;
+}
+.bll_content .apply_for .af_menu .af_list .last_p textarea {
+  float: left;
+  width: 244px;
+  height: 94px;
+}
+.bll_content .apply_for .af_menu .af_list span {
+  display: inline-block;
+  width: 120px;
+  height: 36px;
+  border-radius: 5px;
+  background-color: #30c75c;
+  color: #fff;
+  line-height: 36px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 69px;
+  margin-top: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+}
+.bll_content .apply_for .af_menu .af_list span:active {
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none ;
+  text-shadow: none;
+}

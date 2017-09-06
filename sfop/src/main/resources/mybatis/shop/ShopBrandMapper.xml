@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 品牌信息(s_shop_brand)Mapper -->
+<mapper namespace="shopbrandMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,s_merchants_id,b_brand_id ,submitime ,state ,remark ,valid_period ,
+    	qualification_img ,name ,logo ,descript ,letter ,type ,trademarktype ,businesstype,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.ShopBrand" id="ShopBrandReturnMap">
+      <id column="id" property="id"/>
+	  <!-- 入驻id -->
+      <result column="s_merchants_id" property="s_merchants_id"/>
+	  <!-- 品牌id -->
+      <result column="b_brand_id" property="b_brand_id"/>
+	  <!-- 提交时间 -->
+      <result column="submitime" property="submitime"/>
+	  <!-- 审核状态(1：审核通过，2：审核失败，3：待审核) -->
+      <result column="state" property="state"/>
+	  <!-- 审核备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 品牌资质有效期 -->
+      <result column="valid_period" property="valid_period"/>
+	  <!-- 品牌资质电子版 -->
+      <result column="qualification_img" property="qualification_img"/>
+	  <!-- 品牌名称 -->
+      <result column="name" property="name"/>
+	  <!-- 品牌logo -->
+      <result column="logo" property="logo"/>
+	  <!-- 品牌描述 -->
+      <result column="descript" property="descript"/>
+	  <!-- 品牌首字母 -->
+      <result column="letter" property="letter"/>
+	  <!-- 品牌类型 -->
+      <result column="type" property="type"/>
+	  <!-- 商标注册人 -->
+      <result column="trademarktype" property="trademarktype"/>
+	  <!-- 经营类型 -->
+      <result column="businesstype" property="businesstype"/>
+      <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+
+	<!-- 查询所有表 -->
+	<select id="findAllShopBrandByShopPage" parameterType="Page" resultType="com.shifeng.op.dto.shop.ShopBrandDTO">
+		select
+        b.name,b.id as b_brand_id,s.s_merchants_id
+		from
+		b_brand b
+		left join s_shop_brand s on b.id=s.b_brand_id and s.s_merchants_id=#{t.s_merchants_id}
+		where b.state=1
+	</select>
+
+	<!-- 查询所有表 -->
+	<select id="findAllShopBrand" parameterType="Page" resultMap="ShopBrandReturnMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from
+		s_shop_brand
+		where 1=1
+		<if test="t.b_brand_id!=null and t.b_brand_id!=''">
+			and b_brand_id = #{t.b_brand_id}
+		</if>
+		<if test="t.submitime!=null and t.submitime!=''">
+			and submitime = #{t.submitime}
+		</if>
+		order by lasttime
+	</select>
+
+	<!-- 查询所有表 -->
+	<select id="findAllShopBrandPage" parameterType="Page" resultMap="ShopBrandReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_shop_brand
+		where 1=1 and
+			<if test="t.b_brand_id!=null and t.b_brand_id!=''">
+				and b_brand_id = #{t.b_brand_id}
+			</if>
+			<if test="t.submitime!=null and t.submitime!=''">
+				and submitime = #{t.submitime}
+			</if>
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateShopBrand" parameterType="com.shifeng.entity.shop.ShopBrand">
+		update 
+			s_shop_brand 
+		set
+	      	b_brand_id = #{b_brand_id},
+	      	submitime = #{submitime}
+		 where
+			id = #{s_merchants_id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveShopBrand" parameterType="com.shifeng.entity.shop.ShopBrand">
+		insert into s_shop_brand
+			(
+		      b_brand_id, submitime ,state
+			)
+		values
+			(
+		      #{b_brand_id},
+		      #{submitime},
+		      1
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteShopBrand" parameterType="String">
+  		delete from s_shop_brand
+  		where s_merchants_id = #{s_merchants_id}
+  	</delete>
+	<insert id="addShopBrandBatch"   parameterType="java.util.HashMap">
+		insert into s_shop_brand(b_brand_id, s_merchants_id,submitime,state)
+		values
+
+		<foreach collection="b_brand_id" item="item" index="index" separator="," >
+			(#{item},#{s_merchants_id},now(),1)
+		</foreach>
+	</insert>
+	
+	
+	<resultMap type="com.shifeng.op.dto.shop.AuditBrandDTO" id="AuditBrandReturnMap">
+	    <result column="b_brand_id" property="b_brand_id"/>
+	    
+	    <!-- 品牌信息 -->
+		<association property="brand" javaType="com.shifeng.entity.brand.Brand" column="b_brand_id" select="brandMapper.findBrandById"></association>
+	</resultMap>
+	
+	<!-- 查询所有审核品牌 -->
+	<select id="findAuditBrandPage" parameterType="Page" resultMap="AuditBrandReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from s_shop_brand
+		where 1=1
+			<if test="t.s_merchants_id!=null and t.s_merchants_id!=''">
+			    and s_merchants_id = #{t.s_merchants_id}
+			</if>
+		order by submitime desc
+	</select>
+	
+	<!-- 根据ID查询表 -->
+	<select id="findShopBrandById" parameterType="String" resultMap="AuditBrandReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_shop_brand
+		where 
+			id = #{id}
+	</select>
+	
+	<!-- 品牌审核 -->
+	<update id="updateAuditShopBrand" parameterType="com.shifeng.entity.shop.ShopBrand">
+	    update s_shop_brand set
+	    	state = #{state},
+	    	remark = #{remark},
+	    	b_brand_id = #{b_brand_id},
+			lasttime = now(),
+		    updatename = #{updatename}
+	    where id = #{id}
+	</update>
+	
+	
+</mapper>

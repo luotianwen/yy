@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<% include("/basecss.btl"){}%>
+		<link rel="stylesheet" type="text/css" href="/static/css/check_in.css"/>
+	</head>
+	<body>
+		<% include("/header.btl"){}%>
+		<div class="h_container h_feature_1">
+			<div class="boxw">
+				<div class="h_function">
+					<div class="logo_1 fl">
+						<a href="http://www.seebong.com/" target="_blank"><img src="/static/img/all/logo.jpg" /></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="CheckNav">
+			<div class="boxw">
+				<ul class="CheckList">
+					<li class="check_active">招商首页</li>
+					<li>申请进度</li>
+					<li>招商标准</li>
+					<li>资费标准</li>
+				</ul>
+			</div>			
+		</div>
+		<div class="boxw">
+			<div class="check_message_1" id="check_message_1">
+				<ul class="check_num">
+					<li class="m_item_first">
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="m_item_active">
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="m_item_last"></li>
+				</ul>
+				<ul class="check_text">
+					<li class="active">
+						<i>1</i>
+						查看入住须知及协议
+					</li>
+					<li class="active">
+						<i>2</i>
+						填写公司信息
+					</li>
+					<li>
+						<i>3</i>
+						填写店铺信息
+					</li>
+					<li>
+						<i>4</i>
+						完成，等待审核
+					</li>
+					<li>
+						<i>5</i>
+						付款
+					</li>
+					<li>
+						<i>6</i>
+						入驻成功
+					</li>
+				</ul>
+			</div>
+
+			<div class="shop_message clearfix">
+				<form id="form" method="post" enctype="multipart/form-data">
+				<h1>入驻基本信息</h1>
+					<dl class="clearfix">
+						<dt><span class="c-red">*</span>公司类型：</dt>
+						<dd>
+							<select id="type" name="type">
+								<option value="1" <%if(shopDTO.type==1){%>   selected="selected" <%}%>>生产厂商</option>
+								<option value="2" <%if(shopDTO.type==2){%>   selected="selected" <%}%>>品牌商</option>
+								<option value="3" <%if(shopDTO.type==3){%>   selected="selected" <%}%>>中国总代</option>
+								<option value="4" <%if(shopDTO.type==4){%>   selected="selected" <%}%>>地区总代</option>
+								<option value="5" <%if(shopDTO.type==5){%>   selected="selected" <%}%>>代运营商</option>
+								<option value="6" <%if(shopDTO.type==6){%>   selected="selected" <%}%>>经销商</option>
+							</select>
+							<span class="messageSpan"><span class="eg_1" >*请选择公司类型</span></span>
+						</dd>
+					</dl>
+					<dl class="clearfix">
+						<dt><span class="c-red">*</span>合作模式：</dt>
+						<dd>
+							<select id="cooperation" name="cooperation">
+								<option value="1" <%if(shopDTO.cooperation==1){%>   selected="selected" <%}%>>代销</option>
+								<option value="2" <%if(shopDTO.cooperation==2){%>   selected="selected" <%}%>>入驻</option>
+							</select>
+							<span class="messageSpan"><span class="eg_1" >*请选择合作模式</span></span>
+						</dd>
+					</dl>
+
+				<dl class="clearfix">
+	                <dt><span class="c-red">*</span>负责人姓名：</dt>
+	                <dd>
+	                    <input id="head_name" value="${shopDTO.head_name}" name="head_name" class="input" type="text"><span class="messageSpan"><span class="eg_1">*请填写真实姓名</span></span>
+	                </dd>
+	            </dl>
+	            <dl class="clearfix">
+	                <dt><span class="c-red">*</span>负责人手机号：</dt>
+	                <dd>
+	                    <input id="head_phone" value="${shopDTO.head_phone}" name="head_phone" class="input" type="text" style="width: 245px;" ><input id="btnSendCode" type="button" value="获取短信验证码" class="jym"><span class="messageSpan"></span>
+	                </dd>
+	            </dl>
+	            <dl class="clearfix">
+	                <dt><span class="c-red">*</span>短信验证码：</dt>
+	                <dd>
+	                    <input id="code" name="code" class="input" type="text" style="width: 140px;"><span class="messageSpan"><span class="eg_1" >*请填写短信验证码</span></span></dd>
+	            </dl>
+	            <dl class="clearfix">
+	                <dt><span class="c-red">*</span>负责人邮箱：</dt>
+	                <dd>
+	                    <input value="${shopDTO.head_email}" id="head_email" name="head_email" class="input" type="text"><span class="messageSpan"><span class="eg_1">*请填写真实有效信息</span></span></dd>
+	            </dl>
+	            <dl class="clearfix">
+	                <dt> 公司官网地址：</dt>
+	                <dd>
+	                    <input  value="${shopDTO.website}" id="website" name="website" class="input" type="text" style="width: 380px;"><span class="messageSpan"><span class="eg_1">*请正确填写网址，如：http://www.sfhwsc.com</span></span></dd>
+	            </dl>
+	            <dl id="dlOnlineStore" class="clearfix">
+	                <dt> 三方平台店铺网址：</dt>
+	                <dd>
+	                    <input value="${shopDTO.onlinestore}" id="onlinestore" name="onlinestore" class="input" type="text" style="width: 380px;"><span class="messageSpan"><span class="eg_1">*请正确填写网址，如：http://www.sfhwsc.com</span></span></dd>
+	            </dl>
+				<input type="hidden" name="id" value="${shopDTO.id}">
+	            <div class="qd clearfix">
+	                <span class="fl">通过哪种渠道了解到世峰户外商城：</span>
+	                <dl class="clearfix">
+	                <dd style="width: 700px; margin-left: 20px;">
+	                	<label><span class="cssradio">
+	                    <input type="radio"   <%if(shopDTO.channel==1||shopDTO.channel==null){%>   checked="checked" <%}%>	name="channel" value="1"> <span></span></span>推荐</label>
+	                	<label><span class="cssradio">
+	                    <input type="radio" <%if(shopDTO.channel==2){%>   checked="checked" <%}%>	name="channel" value="2"><span></span></span>广告</label>
+	                	<label><span class="cssradio">
+	                    <input type="radio" <%if(shopDTO.channel==3){%>   checked="checked" <%}%>	name="channel" value="3"><span></span></span>展会</label>
+	                	<label><span class="cssradio">
+	                    <input type="radio" <%if(shopDTO.channel==4){%>   checked="checked" <%}%>	name="channel" value="4"><span></span></span>搜索引擎</label>
+	                	<label><span class="cssradio">
+	                    <input type="radio" <%if(shopDTO.channel==5){%>   checked="checked" <%}%>	name="channel" value="5"><span></span></span>论坛</label>
+	                	<label><span class="cssradio">
+	                    <input type="radio" <%if(shopDTO.channel==6){%>   checked="checked" <%}%>	name="channel" value="6"><span></span></span>微博</label>
+	                	<label><span class="cssradio">
+	                    <input type="radio" <%if(shopDTO.channel==7){%>   checked="checked" <%}%>	name="channel" value="7"><span></span></span>微信</label>
+                    </dd>
+	                </dl>
+
+	            </div>
+				<h1 style="margin-top: 80px;">公司详细信息</h1>
+	            <dl class="clearfix">
+	                <dt><span class="c-red">*</span>法定代表人姓名：</dt>
+	                <dd>
+	                    <input id="legalRepresentative" value="${shopDTO.legalRepresentative}" name="legalRepresentative" class="input" type="text" style="width: 140px;"><span class="messageSpan"><span class="eg_1" >*请填写真实姓名</span></span>
+	                </dd>
+	            </dl>
+	            <dl class="clearfix">
+	                <dt><span class="c-red">*</span>法定代表人手机号：</dt>
+	                <dd>
+	                    <input id="legalPersonPhone" name="legalPersonPhone" value="${shopDTO.legalPersonPhone}"  class="input" type="text" style="width: 200px;"><span class="messageSpan"><span class="eg_1" >*请填写真实有效号码</span></span>
+	                </dd>
+	            </dl>
+	            <dl class="clearfix">
+	                <dt><span class="c-red">*</span>身份证号：</dt>
+	                <dd>
+	                    <input id="id_number" name="id_number" value="${shopDTO.id_number}" class="input" type="text" style="width: 160px;"><span class="messageSpan"><span class="eg_1" >*请填写真实准确的身份证号码</span></span>
+	                </dd>
+	            </dl>
+	            <dl class="clearfix">
+	                <dt><span class="c-red">*</span>公司名称：</dt>
+	                <dd>
+	                    <input id="name" name="name" value="${shopDTO.name}" class="input" type="text" style="width: 280px;"><span class="messageSpan"><span class="eg_1" >*请填写真实的公司名称</span></span>
+	                </dd>
+	            </dl>
+	            <dl class="clearfix">
+	                <dt><span class="c-red">*</span>公司所在地：</dt>
+	                <dd>
+	                    <select class="province" data_type="companyAreas" name="companyArea">
+							<%
+								var companyAreas_1 = "";
+								var companyAreas_2 = "";
+								var companyAreas_3 = "";
+								if(shopDTO.companyArea!=null&&shopDTO.companyArea!=''){
+									var companyAreas = @shopDTO.getCompanyArea().split(",");
+									companyAreas_1 = companyAreas[0];
+									companyAreas_2 = companyAreas[1];
+									companyAreas_3 = companyAreas[2];
+								}
+								for(province in provinces){
+							%>
+								<option value="${province.id}" <%if(province.id==companyAreas_1){%>selected<%}%>>${province.name}</option>
+							<%
+								}
+							%>
+	                    </select>
+	                    <select class="city" data_type="companyAreas" name="companyArea"></select>
+	                    <select class="district" name="companyArea"></select>
+						<span class="messageSpan"><span class="eg_1" >*请选择公司所在地</span></span>
+	                </dd>
+	            </dl>
+	            <dl class="clearfix">
+	                <dt><span class="c-red">*</span>公司详细地址：</dt>
+	                <dd>
+	                    <input id="companyAddress" name="companyAddress" value="${shopDTO.companyAddress}" class="input" type="text" style="width: 280px;"><span class="messageSpan"><span class="eg_1" >*请输入公司所在地详细地址</span></span>
+	                </dd>
+	            </dl>
+	            <dl class="clearfix">
+	                <dt><span class="c-red">*</span>公司电话号：</dt>
+	                <dd>
+	                    <input id="companyPhone" name="companyPhone" value="${shopDTO.companyPhone}" class="input" type="text" style="width: 140px;"><span class="messageSpan"><span class="eg_1" >*请填写有效电话号码，如：010-4000928400</span></span>
+	                </dd>
+	            </dl>
+	            <dl class="clearfix">
+	                <dt><span class="c-red">*</span>ERP类型：</dt>
+	                <dd>
+	                    <select id="erptype" name="erptype">
+							<option value="1" <%if(shopDTO.erptype==1){%>   selected="selected" <%}%>>自有ERP</option>
+							<option value="2" <%if(shopDTO.erptype==2){%>   selected="selected" <%}%>>第三方ERP代运营</option>
+							<option value="3" <%if(shopDTO.erptype==3){%>   selected="selected" <%}%>>无</option>
+	                    </select>
+						<span class="messageSpan"><span class="eg_1" >*请选择ERP类型</span></span>
+	                </dd>
+	            </dl>
+	            <div class="upload_photos clearfix">
+	            	<p><span class="c-red">*</span>法定代表人身份证照片：</p>
+	            	<div class="material">
+	            		<div class="material_item">
+	            			<div class="m_item_1" id="uploadZ">
+	            				<span class="mt_1"></span>
+	            				<span class="mt_2">点击添加正面证件照</span>
+							    <input type="hidden" id="corporate_front_card" name="corporate_front_card" value="${shopDTO.corporate_front_card}">
+	            				<img src="${shopDTO.corporate_front_card}" alt="" id="uploadImgZ"/>
+	            			</div>
+	            			<div class="m_item_1" id="uploadF" style="margin-top: 30px;">
+	            				<span class="mt_1"></span>
+	            				<span class="mt_2">点击添加反面证件照</span>
+								<input type="hidden" id="corporate_back_card" name="corporate_back_card" value="${shopDTO.corporate_back_card}">
+	            				<img src="${shopDTO.corporate_back_card}" alt="" id="uploadImgF"/>
+	            			</div>
+	            		</div>
+	            		<div class="material_example">
+	            			<div class="m_example_1">
+	            				<span class="me_1">示例：</span>
+	            				<div class="me_2">
+	            					<img src="/static/img/check_in/identity_template_1.jpg"/>
+	            				</div>
+	            			</div>
+	            			<div class="m_example_1" style="margin-top: 55px;">
+	            				<span class="me_1">示例：</span>
+	            				<div class="me_2">
+	            					<img src="/static/img/check_in/identity_template_2.jpg"/>
+	            				</div>
+	            			</div>
+	            		</div>
+	            	</div>
+	            </div>
+	            <div class="upload_photos clearfix">
+	            	<p><span class="c-red">*</span>银行开户许可证电子版：</p>
+	            	<div class="material">
+	            		<div class="material_item">
+	            			<div class="m_item_1" id="uploadB">
+	            				<span class="mt_1"></span>
+	            				<span class="mt_2">点击添加银行开户许可证</span>
+								<input type="hidden" id="bank_image" name="bank_image" value="${shopDTO.bank_image}">
+								<img src="${shopDTO.bank_image}" alt="" id="uploadImgB"/>
+	            			</div>
+	            		</div>
+	            		<div class="material_example">
+	            			<div class="m_example_1">
+	            				<span class="me_1">示例：</span>
+	            				<div class="me_2">
+	            					<img src="/static/img/check_in/license_template_5.jpg" style="margin: 5px 18px;"/>
+	            				</div>
+	            			</div>
+	            		</div>
+	            	</div>
+	            </div>
+	            <div class="upload_photos clearfix" id="certificate_three">
+	            	<p><span class="c-red">*</span>三证合一电子版：</p>
+	            	<div class="judge_option">
+	                	<label><span class="cssradio">
+	                    <input type="radio"  name="isThree" value="1" onclick="chg()" <%if(shopDTO.isThree!=2){%>checked="checked"<%}%>><span></span></span>有</label>
+	                	<label><span class="cssradio">
+	                    <input type="radio" name="isThree" value="2" onclick="chg()" <%if(shopDTO.isThree==2){%>checked="checked"<%}%>><span></span></span>无</label>
+	            	</div>
+
+	            	<div class="papers_y" <%if(shopDTO.isThree==2){%>style="display: none;"<%}%>>
+		            	<div class="material">
+		            		<div class="material_item">
+		            			<div class="m_item_1" style="margin-left: 64px;" id="uploadT">
+		            				<span class="mt_1"></span>
+		            				<span class="mt_2">点击添加三证合一</span>
+									<input type="hidden" id="threeInOneImage" name="threeInOneImage" value="${shopDTO.threeInOneImage}">
+									<img src="${shopDTO.threeInOneImage}" alt="" id="uploadImgT"/>
+		            			</div>
+		            		</div>
+		            		<div class="material_example">
+		            			<div class="m_example_1" style="margin-left: 50px;">
+		            				<span class="me_1">示例：</span>
+		            				<div class="me_2">
+		            					<img src="/static/img/check_in/license_template_1.jpg" style="margin: 5px 67px;"/>
+		            				</div>
+		            			</div>
+		            		</div>
+		            	</div>
+	            	</div>
+	            	<div class="papers_n"  <%if(shopDTO.isThree!=2){%>style="display: none;"<%}%>>
+	            		<div class="upload_photos clearfix" style="margin-top: 54px;">
+			            	<p><span class="c-red">*</span>组织机构代码证电子版：</p>
+			            	<div class="material">
+			            		<div class="material_item">
+			            			<div class="m_item_1" id="uploadO">
+			            				<span class="mt_1"></span>
+			            				<span class="mt_2">点击添加组织机构代码证</span>
+										<input type="hidden" id="organizationImage" name="organizationImage" value="${shopDTO.organizationImage}">
+										<img src="${shopDTO.organizationImage}" alt="" id="uploadImgO"/>
+			            			</div>
+			            		</div>
+			            		<div class="material_example">
+			            			<div class="m_example_1">
+			            				<span class="me_1">示例：</span>
+			            				<div class="me_2">
+			            					<img src="/static/img/check_in/license_template_2.jpg"/>
+			            				</div>
+			            			</div>
+			            		</div>
+			            	</div>
+			            </div>
+			            <div class="upload_photos clearfix">
+			            	<p><span class="c-red">*</span>纳税登记证电子版：</p>
+			            	<div class="material">
+			            		<div class="material_item">
+			            			<div class="m_item_1" style="margin-left: 48px;" id="uploadTax">
+			            				<span class="mt_1"></span>
+			            				<span class="mt_2">点击添加纳税登记证</span>
+										<input type="hidden" id="taxImage" name="taxImage" value="${shopDTO.taxImage}">
+										<img src="${shopDTO.taxImage}" alt=""id="uploadImgTax"/>
+			            			</div>
+			            		</div>
+			            		<div class="material_example">
+			            			<div class="m_example_1" style="margin-left: 33px;">
+			            				<span class="me_1">示例：</span>
+			            				<div class="me_2">
+			            					<img src="/static/img/check_in/license_template_3.jpg" style="margin: 5px 23px;"/>
+			            				</div>
+			            			</div>
+			            		</div>
+			            	</div>
+			            </div>
+			            <div class="upload_photos clearfix" style="margin-bottom: 20px;">
+			            	<p><span class="c-red">*</span>营业执照副本电子版：</p>
+			            	<div class="material">
+			            		<div class="material_item">
+			            			<div class="m_item_1" style="margin-left: 32px;" id="uploadL">
+			            				<span class="mt_1"></span>
+			            				<span class="mt_2">点击添加营业执照副本</span>
+										<input type="hidden" id="licenseImage" name="licenseImage" value="${shopDTO.licenseImage}">
+										<img src="${shopDTO.licenseImage}" alt="" id="uploadImgL"/>
+			            			</div>
+			            		</div>
+			            		<div class="material_example">
+			            			<div class="m_example_1" style="margin-left: 16px;">
+			            				<span class="me_1">示例：</span>
+			            				<div class="me_2">
+			            					<img src="/static/img/check_in/license_template_4.jpg" style="margin: 5px 18px;"/>
+			            				</div>
+			            			</div>
+			            		</div>
+			            	</div>
+			            </div>
+	            	</div>
+	            </div>
+	            <dl class="clearfix" style="margin-top: 50px;">
+	                <dt><span class="c-red">*</span>银行开户名：</dt>
+	                <dd>
+	                    <input id="bankName" name="bankName"  value="${shopDTO.bankName}" class="input" type="text" style="width: 185px;"><span class="messageSpan"><span class="eg_1" >*请正确填写银行开户名</span></span>
+	                </dd>
+	            </dl>
+	             <dl class="clearfix">
+	                <dt><span class="c-red">*</span>公司银行账号：</dt>
+	                <dd>
+	                    <input id="bankNum" name="bankNum" value="${shopDTO.bankNum}" class="input" type="text" style="width: 280px;"><span class="messageSpan"><span class="eg_1" >*请正确填写银行结算账号</span></span>
+	                </dd>
+	            </dl>
+	             <dl class="clearfix">
+	                <dt><span class="c-red">*</span>开户银行支行名称：</dt>
+	                <dd>
+	                    <input id="bankBranchName" name="bankBranchName" value="${shopDTO.bankBranchName}" class="input" type="text" style="width: 280px;"><span class="messageSpan"><span class="eg_1" >*请正确填写开户银行支行名称</span></span>
+	                </dd>
+	            </dl>
+	             <dl class="clearfix">
+	                <dt><span class="c-red">*</span>开户银行支行所在地：</dt>
+	                <dd>
+	                     <select class="province"  data_type="locationBankbranch" name="locationBankbranch">
+							<%
+								var locationBankbranchs_1 = "";
+								var locationBankbranchs_2 = "";
+								var locationBankbranchs_3 = "";
+								if(shopDTO.locationBankbranch!=null&&shopDTO.locationBankbranch!=''){
+									var locationBankbranchs = @shopDTO.getLocationBankbranch().split(",");
+									locationBankbranchs_1 = locationBankbranchs[0];
+									locationBankbranchs_2 = locationBankbranchs[1];
+									locationBankbranchs_3 = locationBankbranchs[2];
+								}
+								for(province in provinces){
+							%>
+								<option value="${province.id}" <%if(province.id==locationBankbranchs_1){%>selected<%}%>>${province.name}</option>
+							<%
+								}
+							%>
+	                    </select>
+	                    <select class="city" data_type="companyAreas" name="locationBankbranch"></select>
+	                    <select class="district" name="locationBankbranch"></select>
+	                    </select><span class="messageSpan"><span class="eg_1" >*请选择开户银行支行所在地</span></span>
+	                </dd>
+	            </dl>
+	             <dl class="clearfix">
+	                <dt><span class="c-red">*</span>纳税人类型：</dt>
+	                <dd>
+	                    <select id="taxpayerType" name="taxpayerType">
+							<option value="1" <%if(shopDTO.taxpayerType==1){%>   selected="selected" <%}%> >一般纳税人</option>
+							<option value="2" <%if(shopDTO.taxpayerType==2){%>   selected="selected" <%}%> >小规模纳税人</option>
+							<option value="3" <%if(shopDTO.taxpayerType==3){%>   selected="selected" <%}%> >非增值税纳税人</option>
+	                    </select><span class="messageSpan"><span class="eg_1" >*请选择纳税人类型</span></span>
+	                </dd>
+	            </dl>
+	             <dl class="clearfix">
+	                <dt><span class="c-red">*</span>纳税类型税码：</dt>
+	                <dd>
+                    	<select id="taxpayerCoding" name="taxpayerCoding">
+							<option <%if(shopDTO.taxpayerCoding==0){%>   selected="selected" <%}%> value="0">0</option>
+							<option <%if(shopDTO.taxpayerCoding==3){%>   selected="selected" <%}%> value="3">3</option>
+							<option <%if(shopDTO.taxpayerCoding==6){%>   selected="selected" <%}%> value="6">6</option>
+							<option <%if(shopDTO.taxpayerCoding==7){%>   selected="selected" <%}%> value="7">7</option>
+							<option <%if(shopDTO.taxpayerCoding==11){%>   selected="selected" <%}%> value="11">11</option>
+							<option <%if(shopDTO.taxpayerCoding==13){%>   selected="selected" <%}%> value="13">13</option>
+							<option <%if(shopDTO.taxpayerCoding==13){%>   selected="selected" <%}%> value="13">17</option>
+	                    </select><span class="messageSpan"><span class="eg_1" >*请选择纳税类型税码</span></span>
+	                </dd>
+	            </dl>
+				</form>
+          		<div class="next_btn clearfix" id="next_btn_2" style="margin-top: 72px;">
+		  			<button type="button" class="btn_038a2a" id="nextbtn">下一步</button>
+		  		</div>
+			</div>
+		</div>
+		
+		<% include("/footer.btl"){}%>
+		<% include("/basejs.btl"){}%>
+		<script type="text/javascript" src="/static/js/settled/settled.js"></script>
+		<script type="text/javascript" src="/static/upload/plupload-2.1.8/js/plupload.full.min.js"></script>
+		<script type="text/javascript" src="/static/js/check/uploadCheck.js"></script>
+		<script type="text/javascript" src="/static/js/validate/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="/static/js/validate/messages_zh.min.js"></script>		
+		<script type="text/javascript" src="/static/js/IDValidator/GB2260.js"></script>
+		<script type="text/javascript" src="/static/js/IDValidator/IDValidator.js"></script>
+		
+		<script type="text/javascript">
+			$(function(){
+				$(".province").on("change",function(){
+					var _this = $(this);
+					$.post("/getAllCityByPid?pid="+_this.val(),function(data){
+						var html = "";
+						for(var i=0,len=data.length;i<len;i++){
+							var id = "";
+							if(_this.attr("data_type")=="companyAreas"){
+								id = "${companyAreas_2}";
+							}else{
+								id = "${locationBankbranchs_2}";
+							}
+							
+							if(data[i].id==id){
+								html += "<option value='"+data[i].id+"' selected>"+data[i].name+"</option>";
+							}else{
+								html += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+							}
+						}
+						_this.next().html(html);
+						_this.next().trigger("change");
+					})
+				});
+				$(".city").on("change",function(){
+					var _this = $(this);
+					$.post("/getAllAreaByCid?cid="+_this.val(),function(data){
+						var html = "";
+						for(var i=0,len=data.length;i<len;i++){
+							var id = "";
+							if(_this.attr("data_type")=="companyAreas"){
+								id = "${companyAreas_3}";
+							}else{
+								id = "${locationBankbranchs_3}";
+							}
+
+							if(data[i].id==id){
+								html += "<option value='"+data[i].id+"' selected>"+data[i].name+"</option>";
+							}else{
+								html += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+							}
+						}
+						_this.next().html(html);
+					})
+				});
+				$(".province").trigger("change");
+				chg();
+			})
+			
+			function chg() {
+				var oradio = document.getElementsByName("isThree");
+				var s1 = $(".papers_y");
+				var s2 = $(".papers_n");
+				if(oradio[0].checked == true) {
+					s1.css("display","block");
+					s2.css("display","none");
+				}
+				if(oradio[1].checked == true) {
+					s1.css("display","none");
+					s2.css("display","block");
+				}
+			}
+			$("#nextbtn").click(function() {
+				if($("#form").valid()&&validImg()){
+					$.post("/settled/check_in_1_save", $('#form').serialize(), function(data) {
+						if (data.RESPONSE_STATE == '200') {
+							window.location.href="/settled/check_in_2";
+						} else {
+
+						}
+					});
+				}
+			});
+			
+			$("#form").validate({
+				onfocusout : false,
+				onkeyup : false,
+				onclick : false,
+				rules : {
+					head_name : {
+						required:true,
+						minlength:2
+					},
+					head_phone : {
+						required:true,
+						isMobile:true
+					},
+					code : {
+						required:true,
+						isYzm:true
+					},
+					head_email : {
+						required:true,
+						email:true
+					},
+					website : {
+						required:false,
+						url:true
+					},
+					onlinestore : {
+						required:false,
+						url:true
+					},
+					legalRepresentative : {
+						required:true,
+						minlength:2
+					},
+					legalPersonPhone : {
+						required:true,
+						isMobile:true
+					},
+					id_number : {
+						required:true,
+						isCard : true
+					},
+					name : {
+						required:true
+					},
+					companyAddress : {
+						required:true
+					},
+					companyPhone : {
+						required:true,
+						isPhone:true
+					},
+					bankName : {
+						required:true
+					},
+					bankNum : {
+						required:true
+					},
+					bankBranchName : {
+						required:true
+					}
+				},
+				messages : {
+					head_name : {
+						required : "请输入负责人姓名"
+					},
+					head_phone : "请输入正确的手机号",
+					code : {
+						required : "请输入验证码",
+						isYzm : "请输入正确的验证码"
+					},
+					head_email : "请输入正确的邮箱",
+					website : "请输入正确的官网地址",
+					onlinestore : "请输入正确的店铺地址",
+					legalRepresentative : {
+						required : "请输入法定代表人姓名"
+					},
+					legalPersonPhone : "请输入正确的手机号",
+					id_number : {
+						required:"请输入身份证号",
+						isCard : "请输入正确的身份证号"
+					},
+					name : "请输入公司名称",
+					companyAddress : "请输入公司详细地址",
+					companyPhone : "请输入正确的电话号码",
+					bankName : "请输入银行开户名",
+					bankNum : "请输入公司银行账号",
+					bankBranchName : "请输入开户银行支行名称"
+				},
+				showErrors: function(errorMap, errorList) {   
+            		var msg = "";
+            		var a;
+            		$.each(errorList,function(i,v){
+             			msg = v.message+"\r\n";
+             			a = v.element;
+             			if(msg!=''){
+            				layer.tips(msg, a, {
+								tips : [ 1, '#019F95' ],
+								time : 1500,
+								tipsMore: true
+							});
+            			}
+            			if(i==0){
+            				$("html, body").animate({scrollTop: $('#'+a.id).offset().top});
+            			}
+            		});
+        		},
+        		onfocusout: false
+			});
+			
+			// 手机号码验证
+			jQuery.validator.addMethod("isMobile", function(value, element) {
+				var length = value.length;
+				var mobile = /^0?(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$/;
+				return this.optional(element) || (length == 11 && mobile.test(value));
+			});
+			
+			// 座机号验证
+			jQuery.validator.addMethod("isPhone", function(value, element) {
+				var mobile = /^0\d{2,3}-\d{5,10}$/;
+				return this.optional(element) || mobile.test(value);
+			});
+			
+			// 身份证号验证
+			jQuery.validator.addMethod("isCard", function(value, element) {
+				return validator.isValid(value);
+			});
+			
+			//验证码
+			jQuery.validator.addMethod("isYzm", function(value, element) {
+				var phone = $("#head_phone").val();
+				$.ajaxSetup({
+    				async : false
+				});
+				var bool = true;
+				$.post("/settled/verifyYzm.json",{phone:phone,yzm:value},function(data){
+					if(data.RESPONSE_STATE == "500"){
+						bool = false;
+					}
+				})
+				
+				return bool;
+			});
+			
+			
+			function validImg(){
+				var top = "";
+				if ($('#corporate_front_card').val().trim() == '') {
+					layer.tips("请选择法定代表人身份证正面照片", $("#uploadZ"), {
+						tips : [ 1, '#019F95' ],
+						time : 1500,
+						tipsMore: true
+					});
+					top = "uploadZ";
+				}
+				if ($('#corporate_back_card').val().trim() == '') {
+					layer.tips("请选择法定代表人身份证反面照片", $("#uploadF"), {
+						tips : [ 1, '#019F95' ],
+						time : 1500,
+						tipsMore: true
+					});
+					if(top=="")
+					top = "uploadF";
+				}
+				if ($('#bank_image').val().trim() == '') {
+					layer.tips("请选择银行开户许可证电子版照片", $("#uploadB"), {
+						tips : [ 1, '#019F95' ],
+						time : 1500,
+						tipsMore: true
+					});
+					if(top=="")
+					top = "uploadB";
+				}
+				
+				var isThree = $("input[name='isThree']:checked").val();
+				if(isThree==1){
+					if ($('#threeInOneImage').val().trim() == '') {
+						layer.tips("请选择三证合一电子版照片", $("#uploadT"), {
+							tips : [ 1, '#019F95' ],
+							time : 1500,
+							tipsMore: true
+						});
+						if(top=="")
+						top = "uploadT";
+					}
+				}else{
+					if ($('#organizationImage').val().trim() == '') {
+						layer.tips("请选择组织机构代码证电子版照片", $("#uploadO"), {
+							tips : [ 1, '#019F95' ],
+							time : 1500,
+							tipsMore: true
+						});
+						if(top=="")
+						top = "uploadO";
+					}
+					if ($('#taxImage').val().trim() == '') {
+						layer.tips("请选择纳税登记证电子版照片", $("#uploadTax"), {
+							tips : [ 1, '#019F95' ],
+							time : 1500,
+							tipsMore: true
+						});
+						if(top=="")
+						top = "uploadTax";
+					}
+					if ($('#licenseImage').val().trim() == '') {
+						layer.tips("请选择营业执照副本电子版照片", $("#uploadL"), {
+							tips : [ 1, '#019F95' ],
+							time : 1500,
+							tipsMore: true
+						});
+						if(top=="")
+						top = "uploadL";
+					}
+				}
+				
+				if(top!=""){
+					$("html, body").animate({scrollTop: $("#"+top).offset().top});
+					return false;
+				}
+				if($(".progress").length>0){
+					layer.alert("图片正在上传，请稍等。。。",{icon:0,title:"提醒"});
+					return false;
+				}
+				return true;
+			}
+			
+			var isVerify = true;
+			$("#btnSendCode").on("click",function(){
+				if(isVerify){
+					var phone = $("#head_phone").val();
+					var mobile = /^0?(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$/;
+					
+					if(mobile.test(phone)){
+						// 防止重复提交，注销事件
+		        		//$("#btnSendCode").off("click");
+						isVerify = false;
+						var _this = $(this);
+		        	    
+		        	    //发送验证码
+	           	 		$.post("/settled/sendSMS.json",{phone:phone},function(data){
+	            			if(data.RESPONSE_STATE == "200"){
+	            				_this.css("background","#c8c8c8");
+	        	      	      var count = 60;
+	   	               	  		_this.val(count+"秒后重新获取");
+								var resend = setInterval(function(){
+	        	             	   count--;
+	        	              	  if (count > 0){
+	        	              	  		_this.val(count+"秒后重新获取");
+	        	                   	 	//$.cookie("registerCaptcha", count, {path: "/", expires: (1/86400)*count});
+	        	                	}else {
+	        	                    	clearInterval(resend);
+	        	                    	// 绑定重新获取验证码事件
+	        	                    	_this.val("获取短信验证码");
+	        	                   		_this.css("background","#fc4d10");
+	        	                    	isVerify = true;
+	        	                	}
+	        	            	}, 1000);
+	            			}else{
+								isVerify = true;
+	            				layer.alert(data.ERROR_INFO,{icon:0});
+	            			}
+	            		});
+					}else{
+						layer.tips("请输入正确的手机号", $("#head_phone"), {
+							tips : [ 1, '#019F95' ],
+							time : 1500,
+							tipsMore: true
+						});
+						$("html, body").animate({scrollTop: $('#head_phone').offset().top});
+					}
+				}
+			})
+			
+		</script>
+	</body>
+</html>

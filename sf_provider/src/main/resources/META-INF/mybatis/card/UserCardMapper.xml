@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 用户世峰e卡(c_user_card)Mapper -->
+<mapper namespace="usercardMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	userid,cardnumber ,money ,lasttime ,sdate ,edate ,status ,bindingtime 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.card.UserCard" id="UserCardReturnMap">
+	  <!-- 用户id -->
+      <id column="userid" property="userid"/>
+	  <!-- 世峰卡号 -->
+      <result column="cardnumber" property="cardnumber"/>
+	  <!-- 余额 -->
+      <result column="money" property="money"/>
+	  <!-- 最后更新时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 开始时间 -->
+      <result column="sdate" property="sdate"/>
+	  <!-- 结束时间 -->
+      <result column="edate" property="edate"/>
+	  <!-- 状态（1未绑定2未使用3部分使用4已用完5已作废6已过期） -->
+      <result column="status" property="status"/>
+	  <!-- 用户绑定e卡时间 -->
+      <result column="bindingtime" property="bindingtime"/>
+   </resultMap>
+   
+   	<!-- 查询用户绑定世峰e卡 -->
+	<select id="findUsercardByUserId" parameterType="String" resultMap="UserCardReturnMap">
+		select
+			userid ,
+			cardnumber ,
+			money ,
+			lasttime ,
+			sdate ,
+			edate ,
+			status ,
+			bindingtime
+		from c_user_card
+		where userid = #{userId} and (status = 1 or status = 2 or status = 3)
+		limit 1
+	</select>
+  	
+	<!-- 分销提现修改用户e卡金额 -->
+	<update id="updatefxCard" parameterType="com.shifeng.entity.card.Card">
+	    update c_user_card set
+	    	sdate = #{sdate},
+			edate = #{edate},
+			money = #{money}
+	    where cardnumber = #{number}
+	</update>
+	
+	<!-- 用户绑定e卡 -->
+	<insert id="savebindUser" parameterType="com.shifeng.entity.card.Card">
+	    insert into c_user_card
+	    (
+	    	userid,cardnumber ,money ,lasttime ,sdate ,edate ,status ,bindingtime
+	    )
+	    values
+	    (
+	    	#{userid},
+	    	#{number} ,
+	    	#{money} ,
+	    	now() ,
+	    	#{sdate} ,
+	    	#{edate} ,
+	    	2 ,
+	    	now()
+	    )
+	</insert>
+	
+</mapper>

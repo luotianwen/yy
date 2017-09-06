@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 分类表(c_category)Mapper -->
+<mapper namespace="categoryMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    id,parentid ,parentname ,descript ,url ,state ,image ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.category.Category" id="CategoryReturnMap">
+		<!-- 主键 -->
+      <id column="id" property="id"/>
+		<!-- 父级编号 -->
+      <result column="parentid" property="parentid"/>
+      <!-- 父级名称 -->
+      <result column="parentname" property="parentname"/>
+		<!-- 名称 -->
+      <result column="descript" property="descript"/>
+		<!-- url链接路径 -->
+      <result column="url" property="url"/>
+		<!-- 状态 -->
+      <result column="state" property="state"/>
+		<!-- 图片 -->
+      <result column="image" property="image"/>
+		<!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+		<!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+
+   	<!-- 查询所有父分类 -->
+	<select id="findAllParentCategory" parameterType="String" resultMap="CategoryReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from c_category
+		where parentid = 0 and state = 1
+		<if test="_parameter!=null and _parameter!=''">
+		    and descript = #{name}
+		</if>
+	</select>
+
+	<!-- 根据父ID查询 -->
+	<select id="findCategoryByPid" parameterType="String" resultMap="CategoryReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from c_category
+		where parentid = #{id} and state = 1
+	</select>
+	
+</mapper>

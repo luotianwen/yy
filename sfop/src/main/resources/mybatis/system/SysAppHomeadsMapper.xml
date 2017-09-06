@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- app首页广告(sys_app_homeads)Mapper -->
+<mapper namespace="sysapphomeadsMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,name ,title ,imgPath ,link ,type ,sort ,templet_type ,isfloor ,state ,lasttime ,updatename ,remark 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.system.SysAppHomeads" id="SysAppHomeadsReturnMap">
+	  <!-- 广告id -->
+      <id column="id" property="id"/>
+	  <!-- 名称 -->
+      <result column="name" property="name"/>
+	  <!-- 标题 -->
+      <result column="title" property="title"/>
+	  <!-- 图片地址 -->
+      <result column="imgPath" property="imgPath"/>
+	  <!-- 链接 -->
+      <result column="link" property="link"/>
+	  <!-- 类型 -->
+      <result column="type" property="type"/>
+	  <!-- 序号 -->
+      <result column="sort" property="sort"/>
+	  <!-- 展示模板类型 -->
+      <result column="templet_type" property="templet_type"/>
+	  <!-- 是否楼层 -->
+      <result column="isfloor" property="isfloor"/>
+	  <!-- 状态 -->
+      <result column="state" property="state"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllSysAppHomeadsPage" parameterType="Page" resultMap="SysAppHomeadsReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			sys_app_homeads
+		where 1=1
+			<if test="t.name!=null and t.name!=''">
+				and name = #{t.name}
+			</if>
+			<if test="t.title!=null and t.title!=''">
+				and title = #{t.title}
+			</if>
+			<if test="t.imgPath!=null and t.imgPath!=''">
+				and imgPath = #{t.imgPath}
+			</if>
+			<if test="t.link!=null and t.link!=''">
+				and link = #{t.link}
+			</if>
+			<if test="t.type!=null and t.type!=''">
+				and type = #{t.type}
+			</if>
+			<if test="t.sort!=null and t.sort!=''">
+				and sort = #{t.sort}
+			</if>
+			<if test="t.templet_type!=null and t.templet_type!=''">
+				and templet_type = #{t.templet_type}
+			</if>
+			<if test="t.isfloor!=null and t.isfloor!=''">
+				and isfloor = #{t.isfloor}
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and state = #{t.state}
+			</if>
+			<if test="t.lasttime!=null and t.lasttime!=''">
+				and lasttime = #{t.lasttime}
+			</if>
+			<if test="t.updatename!=null and t.updatename!=''">
+				and updatename = #{t.updatename}
+			</if>
+			<if test="t.remark!=null and t.remark!=''">
+				and remark = #{t.remark}
+			</if>
+        order by  sort asc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findSysAppHomeadsById" parameterType="String" resultMap="SysAppHomeadsReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			sys_app_homeads
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateSysAppHomeads" parameterType="com.shifeng.entity.system.SysAppHomeads">
+		update 
+			sys_app_homeads 
+		set
+	      	name = #{name},
+	      	title = #{title},
+	      	imgPath = #{imgPath},
+	      	link = #{link},
+	      	type = #{type},
+	      	sort = #{sort},
+	      	templet_type = #{templet_type},
+	      	isfloor = #{isfloor},
+	      	state = #{state},
+	      	lasttime = now(),
+	      	updatename = #{updatename},
+	      	remark = #{remark}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveSysAppHomeads" parameterType="com.shifeng.entity.system.SysAppHomeads">
+		insert into sys_app_homeads
+			(
+		      name, title, imgPath, link, type, sort, templet_type, isfloor, state, lasttime, updatename, remark 
+			)
+		values
+			(
+		      #{name},
+		      #{title},
+		      #{imgPath},
+		      #{link},
+		      #{type},
+		      #{sort},
+		      #{templet_type},
+		      #{isfloor},
+		      #{state},
+		     now(),
+		      #{updatename},
+		      #{remark}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteSysAppHomeads" parameterType="String">
+  		delete from sys_app_homeads
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

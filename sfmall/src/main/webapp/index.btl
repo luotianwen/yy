@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>世峰户外商城&gt;户外用品专家&gt;销售专业户外装备专用网站</title>
+    <meta name="keywords" content="户外装备,驴友商城,户外商城,户外装备商城,世峰户外商城,户外,户外用品,户外背包,户外服装,户外鞋,骑行装备,攀岩装备,驴友装备,登山装备,露营装备" />
+    <meta name="description" content="世峰户外商城&gt;在线销售专业户外装备，为驴友提供包括全套露营装备、登山攀岩用具、骑行装备&gt;专业安全舒适的户外服装、登山鞋、徒步鞋、户外背包、睡袋等" />
+    <meta name="Robots" content="all">
+    <meta name="author" content="世峰户外商城">
+    <link rel="stylesheet" type="text/css" href="/static/css/banner.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <% include("basecss.btl"){}%>
+</head>
+
+<body>
+<!--header-->
+<% include("header.btl"){}%>
+<!--header-->
+
+<div class="h_container h_feature" style="position: relative;">
+    <div class="boxw">
+        <div class="h_function">
+            <div class="logo fl">
+                <a href="http://www.seebong.com/" target="_blank"><img src="/static/img/all/logo.png" /></a>
+            </div>
+            <div class="search-input">
+                <ul id="shelper" style="display: none;"></ul>
+                <div class="form">
+                    <input type="text" name="keyword" id="keyword" value="" placeholder="冲锋衣" />
+                    <a href=""><i></i></a>
+                </div>
+                <div class="search_btn">
+                    <a class="global">搜索</a>
+                </div>
+                <ul class="links">
+                    <!--<li>
+                        <a href="">世峰户外</a>
+                    </li>
+                    <li>
+                        <a href="">世峰户外</a>
+                    </li>
+                    <li>
+                        <a href="">世峰户外</a>
+                    </li>
+                    <li>
+                        <a href="">世峰户外</a>
+                    </li>
+                    <li>
+                        <a href="">世峰户外</a>
+                    </li>
+                    <li>
+                        <a href="">世峰户外</a>
+                    </li>-->
+                </ul>
+            </div>
+            <div class="sign_in">
+                <span>签到</span>
+            </div>
+            <div class="shop_cart">
+                <i></i>
+                <a href="/my/cart.html" target="_blank">购物车</a>
+            </div>
+        </div>
+
+
+        <% include("/nav.btl"){}%>
+
+    </div>
+</div>
+
+<!--left--louceng-->
+<ul id="floornav">
+    <%for( ad in ads){%>
+        <%if(ad.module==1){%>
+            <li class="NavItems">
+                跑步<img src="/static/img/fl/pb.png" />
+            </li>
+        <%}%>
+    <%if(ad.module==2){%>
+    <li class="NavItem">
+        单车骑行<img src="/static/img/fl/dcqx.png" />
+    </li>
+    <%}%>
+    <%if(ad.module==3){%>
+    <li class="NavItem">
+        徒步登山<img src="/static/img/fl/tbds.png" />
+    </li>
+    <%}%>
+    <%if(ad.module==4){%>
+    <li class="NavItems">
+        男士<img src="/static/img/fl/man.png" />
+    </li>
+    <%}%>
+    <%if(ad.module==5){%>
+    <li class="NavItems">
+        女士<img src="/static/img/fl/madam.png" />
+    </li>
+    <%}%>
+    <%if(ad.module==6){%>
+    <li class="NavItems">
+        儿童<img src="/static/img/fl/et.png" />
+    </li>
+    <%}%>
+    <%if(ad.module==7){%>
+    <li class="NavItems">
+        自驾<img src="/static/img/fl/zj.png" />
+    </li>
+    <%}%>
+    <%}%>
+    <li class="lastli">
+        Top
+    </li>
+</ul>
+<!--left--louceng-->
+
+<!--banner-->
+<div class="h_container">
+    <div class="ck-slide">
+        <ul class="ck-slide-wrapper">
+            <% for(banner in banners){%>
+
+            <li   <%if(bannerLP.index==1) {%> style="opacity: 1; z-index: 99;" <%}%> >
+                <a href="${banner.imgLink}" target="_blank"><img src="${banner.imgPath}" alt="${banner.name}"></a>
+            </li>
+
+           <%}%>
+
+        </ul>
+        <a href="javascript:void(0);" class="ctrl-slide ck-prev" style="opacity: 0.6;">上一张</a>
+        <a href="javascript:void(0);" class="ctrl-slide ck-next" style="opacity: 0.6;">下一张</a>
+        <div class="ck-slidebox" style="margin-left: -54px;">
+            <div class="slideWrap">
+                <ul class="dot-wrap">
+                    <% for(banner in banners){%>
+                    <li <%if(bannerLP.index==1) {%> class="current" <%}%>><em>${bannerLP.index}</em></li>
+                    <%}%>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--banner-->
+<div class="boxw clearfix" id="content">
+
+    <%for( ad in ads){%>
+
+            <div class="Louti clearfix">
+                <%if(ad.module==1){%>
+                <div class="maxTitle">
+                    <h3>
+                        <a title="跑步RUNNING" alt="跑步RUNNING"> <img src="/static/img/all/t1.jpg" alt="跑步RUNNING"/>  </a>
+                    </h3>
+                </div>
+                <%}%>
+                <%if(ad.module==2){%>
+                <div class="maxTitle">
+                    <h3>
+                        <a title="单车/骑行CYCLING" alt="单车/骑行CYCLING"><img src="/static/img/all/t2.jpg" alt="单车/骑行CYCLING"/></a>
+                    </h3>
+                </div>
+                <%}%>
+                <%if(ad.module==3){%>
+                <div class="maxTitle">
+                    <h3>
+                        <a href="#" title="徒步/登山 HIKING/CLIMBING" alt="徒步/登山 HIKING/CLIMBING" target="_blank"><img src="/static/img/all/t3.jpg" alt="徒步/登山 HIKING/CLIMBING"/></a>
+                    </h3>
+                </div>
+                <%}%>
+                <%if(ad.module==4){%>
+                <div class="maxTitle">
+                    <h3>
+                        <a href="#" title="男士MAN" alt="男士MAN" target="_blank"><img src="/static/img/all/t4.jpg" alt="男士MAN"/></a>
+                    </h3>
+                </div>
+                <%}%>
+                <%if(ad.module==5){%>
+                <div class="maxTitle">
+                    <h3>
+                        <a href="#" title="女士woman" alt="女士woman" target="_blank"><img src="/static/img/all/t5.jpg" alt="女士woman"/></a>
+                    </h3>
+                </div>
+                <%}%>
+                <%if(ad.module==6){%>
+                <div class="maxTitle">
+                    <h3>
+                        <a href="#" title="儿童CHILDREN" alt="儿童CHILDREN" target="_blank"><img src="/static/img/all/t6.jpg" alt="儿童CHILDREN"/></a>
+                    </h3>
+                </div>
+                <%}%>
+                <%if(ad.module==7){%>
+                <div class="maxTitle">
+                    <h3>
+                        <a href="#" title="自驾SELF DRIVING" alt="自驾SELF DRIVING" target="_blank"><img src="/static/img/all/t7.jpg" alt="自驾SELF DRIVING"/></a>
+                    </h3>
+                </div>
+                <%}%>
+                <div class="maxContent clearfix">
+                    <div class="clft">
+                        <div class="item-1"><img src="${ad.fimg1}" alt="" /> </div>
+                        <div class="maxTKey clearfix">
+                            <ul class="clearfix">
+                                <%if(ad.module==1){%>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外服装" target="_blank" title="户外服装">户外服装</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外背包" target="_blank" title="户外背包">户外背包</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=速干衣" target="_blank" title="速干衣">速干衣</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=速干裤" target="_blank" title="速干裤">速干裤</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=冲锋衣" target="_blank" title="冲锋衣">冲锋衣</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=冲锋裤" target="_blank" title="冲锋裤">冲锋裤</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=皮肤衣" target="_blank" title="皮肤衣">皮肤衣</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=跑步鞋" target="_blank" title="跑步鞋">跑步鞋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=登山鞋" target="_blank" title="登山鞋">登山鞋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=登山包" target="_blank" title="登山包">登山包</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=骑行包" target="_blank" title="骑行包">骑行包</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=速干袜" target="_blank" title="速干袜">速干袜</a>
+                                </li>
+                                <%}%>
+                                <%if(ad.module==2){%>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=骑行装备" target="_blank" title="骑行装备">骑行装备</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外装备" target="_blank" title="户外装备">户外装备</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=骑行头盔" target="_blank" title="骑行头盔">骑行头盔</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=骑行眼镜" target="_blank" title="骑行眼镜">骑行眼镜</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=双肩包" target="_blank" title="双肩包">双肩包</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=骑行包" target="_blank" title="骑行包">骑行包</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=腰包/挎包" target="_blank" title="腰包/挎包">腰包/挎包</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=冲锋衣" target="_blank" title="冲锋衣">冲锋衣</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=冲锋裤" target="_blank" title="冲锋裤">冲锋裤</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=速干衣" target="_blank" title="速干衣">速干衣</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=速干裤" target="_blank" title="速干裤">速干裤</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=登山鞋" target="_blank" title="登山鞋">登山鞋</a>
+                                </li>
+                                <%}%>
+                                <%if(ad.module==3){%>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=登山装备" target="_blank" title="登山装备">登山装备</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=徒步装备" target="_blank" title="徒步装备">徒步装备</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=露营装备" target="_blank" title="露营装备">露营装备</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=攀岩装备" target="_blank" title="攀岩装备">攀岩装备</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外帐篷" target="_blank" title="户外帐篷">户外帐篷</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外睡袋" target="_blank" title="户外睡袋">户外睡袋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外眼镜" target="_blank" title="户外眼镜">户外眼镜</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外手表" target="_blank" title="户外手表">户外手表</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外刀具" target="_blank" title="户外刀具">户外刀具</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=登山杖" target="_blank" title="登山杖">登山杖</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=登山鞋" target="_blank" title="登山鞋">登山鞋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=主锁/快挂" target="_blank" title="主锁/快挂">主锁/快挂</a>
+                                </li>
+                                <%}%>
+                                <%if(ad.module==4){%>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外服装" target="_blank" title="户外服装">户外服装</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外背包" target="_blank" title="户外背包">户外背包</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外眼镜" target="_blank" title="户外眼镜">户外眼镜</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外手表" target="_blank" title="户外手表">户外手表</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=冲锋衣" target="_blank" title="冲锋衣">冲锋衣</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=冲锋裤" target="_blank" title="冲锋裤">冲锋裤</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=速干衣" target="_blank" title="速干衣">速干衣</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=速干裤" target="_blank" title="速干裤">速干裤</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=登山鞋" target="_blank" title="登山鞋">登山鞋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=溯溪鞋" target="_blank" title="溯溪鞋">溯溪鞋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=越野鞋" target="_blank" title="越野鞋">越野鞋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=攀岩鞋" target="_blank" title="攀岩鞋">攀岩鞋</a>
+                                </li>
+                                <%}%>
+                                <%if(ad.module==5){%>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外服装" target="_blank" title="户外服装">户外服装</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外背包" target="_blank" title="户外背包">户外背包</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外眼镜" target="_blank" title="户外眼镜">户外眼镜</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=冲锋衣" target="_blank" title="冲锋衣">冲锋衣</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=冲锋裤" target="_blank" title="冲锋裤">冲锋裤</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=速干衣" target="_blank" title="速干衣">速干衣</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=速干裤" target="_blank" title="速干裤">速干裤</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=登山鞋" target="_blank" title="登山鞋">登山鞋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=溯溪鞋" target="_blank" title="溯溪鞋">溯溪鞋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=越野鞋" target="_blank" title="越野鞋">越野鞋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=休闲鞋" target="_blank" title="休闲鞋">休闲鞋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=攀岩鞋" target="_blank" title="攀岩鞋">攀岩鞋</a>
+                                </li>
+                                <%}%>
+                                <%if(ad.module==6){%>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外服装" target="_blank" title="户外服装">户外服装</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外童装" target="_blank" title="户外童装">户外童装</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外帽子" target="_blank" title="户外帽子">户外帽子</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外背包" target="_blank" title="户外背包">户外背包</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=冲锋衣" target="_blank" title="冲锋衣">冲锋衣</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=冲锋裤" target="_blank" title="冲锋裤">冲锋裤</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=抓绒衣" target="_blank" title="抓绒衣">抓绒衣</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=抓绒裤" target="_blank" title="抓绒裤">抓绒裤</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外鞋" target="_blank" title="户外鞋">户外鞋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=登山鞋" target="_blank" title="登山鞋">登山鞋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=运动鞋" target="_blank" title="运动鞋">运动鞋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=速干袜" target="_blank" title="速干袜">速干袜</a>
+                                </li>
+                                <%}%>
+                                <%if(ad.module==7){%>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=露营装备" target="_blank" title="露营装备">露营装备</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=睡袋" target="_blank" title="睡袋">睡袋</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=双人帐篷" target="_blank" title="双人帐篷">双人帐篷</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=单人帐篷" target="_blank" title="单人帐篷">单人帐篷</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外炉具" target="_blank" title="户外炉具">户外炉具</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外餐具" target="_blank" title="户外餐具">户外餐具</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外食品" target="_blank" title="户外食品">户外食品</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=户外手表" target="_blank" title="户外手表">户外手表</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=望远镜" target="_blank" title="望远镜">望远镜</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=折叠桌" target="_blank" title="折叠桌">折叠桌</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=折叠椅" target="_blank" title="折叠椅">折叠椅</a>
+                                </li>
+                                <li>
+                                    <a href="/product/searchWare.html?keyword=钓鱼装备" target="_blank" title="钓鱼装备">钓鱼装备</a>
+                                </li>
+                                <%}%>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="cfcs">
+                        <ul>
+                            <li class="ruanwen">
+                                <a href="${ad.flink2}" title="${ad.remark}" class="hot-item-1" target="_blank">
+                                    <img src="${ad.fimg2}" alt="${ad.remark}">
+                                    <span class="rwTitle"><i class="r_item_1">${ad.remark}</i><!--<i class="r_item_2">RUNNING IS A KIND OF ATTITUDE</i>--></span>
+                                </a>
+                            </li>
+                            <li class="ad">
+                                <a href="${ad.flink3}" target="_blank" title=""><img src="${ad.fimg3}" alt="" /></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="crht clearfix">
+                        <ul class="clearfix">
+
+                            <%
+                            	var count = 0;
+                            	for( ware in ad.wareList){
+                            %>
+
+                                <li class="">
+                                    <div class="g-img">
+                                        <a href="/detail/${ware.sku}.html" target="_blank" title="${ware.pname}"><img src="${ware.imgPath}" alt="${ware.pname}"></a>
+                                    </div>
+                                    <div class=" titbk">
+                                        <div class="tit">
+                                            <a href="/detail/${ware.sku}.html" target="_blank" title="${ware.pname}">${ware.pname}</a>
+                                        </div>
+                                        <div class="pri">
+                                            <a href="/detail/${ware.sku}.html" target="_blank" title="${ware.pname}"><em>￥</em>${ware.price}</a>
+                                        </div>
+                                    </div>
+                                </li>
+                          <%
+                          		count++;
+                          		if(count>5){
+                          			break;
+                          		}
+                          	}
+                          %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+    <%}%>
+
+</div>
+<% include("/rightnav.btl"){}%>
+<% include("footer.btl"){}%>
+</body>
+<% include("basejs.btl"){}%>
+<script src="/static/js/home.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/js/banner.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/search.js"></script>
+<script type="text/javascript">
+    $('.ck-slide').ckSlide({
+        autoPlay: true
+    });
+</script>
+
+</html>

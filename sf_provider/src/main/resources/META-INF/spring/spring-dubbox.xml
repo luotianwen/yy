@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans.xsd  
+    http://code.alibabatech.com/schema/dubbo  
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    
+
+	
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<!-- owner 应用配置负责人、组织  dubbo:service、dubbo:reference没有配置负责人，则使用dubbo:application设置的负责人。 -->	
+	<dubbo:application name="sf_provider" owner="WinZhong" organization="shifeng"/>
+	
+	<!-- 使用zookeeper注册中心暴露服务地址 调试增加属性：register="false"--> 
+	<dubbo:registry address="${zk.address}"  />
+	
+	<!-- 用dubbo协议在20880端口暴露服务 -->
+	<dubbo:protocol name="dubbo" port="55555"  serialization="kryo"  optimizer="com.shifeng.common.SerializationOptimizerImpl" />
+	<!-- <dubbo:protocol name="dubbo" port="55555" /> -->
+	
+    <!-- 具体的实现bean -->
+	<bean id="sysUserService" class="com.shifeng.provide.sysuser.service.impl.SysUserServiceImpl" /> 
+	<!-- 声明需要暴露的服务接口 --><!-- version="1.0.0"  -->
+	<dubbo:service interface="com.shifeng.provide.sysuser.service.SysUserService"   ref="sysUserService"  timeout="1200000" /> 
+	
+    <!-- 阿里服务 具体的实现bean 以及 声明需要暴露的服务接口 -->
+	<bean id="aliService" class="com.shifeng.provide.ali.service.impl.AliServiceImpl" /> 
+	<dubbo:service interface="com.shifeng.provide.ali.service.AliService"   ref="aliService"  timeout="1200000" />  
+	
+    <!-- 微信登录服务 具体的实现bean 以及 声明需要暴露的服务接口 -->
+	<bean id="weiXinService" class="com.shifeng.provide.weixin.service.impl.WeiXinServiceImpl" /> 
+	<dubbo:service interface="com.shifeng.provide.weixin.service.WeiXinService"   ref="weiXinService"  timeout="1200000" />
+
+	<!-- 系统服务 -->
+	<bean id="systemService" class="com.shifeng.provide.system.service.impl.SystemServiceImpl" />
+	<dubbo:service interface="com.shifeng.provide.system.service.SystemService"   ref="systemService"  timeout="1200000" />
+
+	<!-- App引导页 -->
+	<bean id="appleadpicService" class="com.shifeng.provide.system.service.impl.SysAppleadpicServiceImpl" />
+	<dubbo:service interface="com.shifeng.provide.system.service.SysAppleadpicService"   ref="appleadpicService"  timeout="1200000" />
+
+
+	<!-- 导航服务 -->
+	<bean id="navigationService" class="com.shifeng.provide.navigation.service.impl.NavigationServiceImpl" />
+	<dubbo:service interface="com.shifeng.provide.navigation.service.NavigationService"   ref="navigationService"  timeout="1200000" />
+	<!-- 使用注解方式暴露接口 -->     
+    <dubbo:annotation package="com.shifeng.provide" /> 
+	
+
+</beans>

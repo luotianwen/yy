@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 团购基本信息表(tg_info)Mapper -->
+<mapper namespace="oldProductMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+ 
+    <resultMap type="com.shifeng.entity.ProductImgs" id="ProductReturnMap">
+		<!-- // 商品id -->
+		<result column="pid" property="pid"/>
+		<!-- // 图片路径  | 分割-->
+		<result column="iPath" property="iPath"/>
+		<!-- // 图片颜色 | 分割 -->
+		<result column="iColor" property="iColor"/>
+	 
+   </resultMap>
+ 
+    <resultMap type="com.shifeng.entity.ProductImgs2" id="ProductReturnMap2">
+	   <!--  // sku id -->
+		<id column="sku" property="sku"/>
+		<!-- // 商品id -->
+		<result column="pid" property="pid"/>
+		<!-- // 世峰价 -->
+		<result column="price" property="price"/>
+		<!-- // 库存 -->
+		<result column="stocks" property="stocks"/>
+		<!-- // 商品市场价格 -->
+		<result column="pMarketPrice" property="pMarketPrice"/>
+		<!-- // 商品编号 -->
+		<result column="pNumber" property="pNumber"/>
+		<!-- // 商品名称 -->
+		<result column="pName" property="pName"/>
+		<!-- // 状态（0：下架；1：上架） -->
+		<result column="pState" property="pState"/>
+		<!-- // 图片路径  | 分割-->
+		<result column="iPath" property="iPath"/>
+		<!-- // 图片颜色 | 分割 -->
+		<result column="iColor" property="iColor"/>
+		<!-- // 店铺id -->
+		<result column="shop_id" property="sId"/>
+		<!-- // 店铺名称 -->
+		<result column="sShopName" property="sShopName"/>
+	 
+   </resultMap>
+   
+  
+  <select id="findBysku" resultMap="ProductReturnMap" parameterType="String">
+  
+		 select
+			Pro_Rules.Id sku,Pro_Rules.PId pid,Pro_Rules.Price price,Pro_Rules.Stocks stocks,
+			Pro_Rules.PMarketPrice pMarketPrice,Pro_Rules.PNumber pNumber,Product.SId sId,Product.PName pName,Product.PState pState,
+			P_Images.IPath iPath,SellerInfo.SShopName sShopName,r1.RDescribe color,r2.RDescribe spec,P_Images.iColor
+		from [Pro_Rules] with (nolock) 
+		        inner join [Product] with (nolock) on   [Pro_Rules].[PId]=[Product].[PId]
+		        inner join [P_Images] with (nolock) on [Pro_Rules].[PId] = [P_Images].[PId]
+		        left  join [SellerInfo] with (nolock) on [SellerInfo].[SId] = [Product].[SId]
+		        left  join [Rules] r1 with (nolock) on r1.[RId] = [Pro_Rules].[ColorId]
+		        left  join [Rules] r2 with (nolock) on r2.[RId] = [Pro_Rules].[SpecId]
+		where  Pro_Rules.Id = #{sku}
+  
+  
+  </select>
+  
+  
+ 
+   
+ 
+    <resultMap type="com.shifeng.entity.oldmall.OldProduct" id="ProductMap">
+		<!-- // 商品id -->
+		<id column="pid" property="pid"/> 
+		<!-- -->
+		<result column="pName" property="pName"/>
+		<!-- -->
+		<result column="brandName" property="brandName"/>
+		<!-- -->
+		<result column="pDescribe" property="pDescribe"/>
+		<!-- -->
+		<result column="pParameter" property="pParameter"/>
+		<!-- -->
+		<result column="pListing" property="pListing"/>
+		<!-- -->
+		<result column="pLength" property="pLength"/>
+		<!-- -->
+		<result column="pWidth" property="pWidth"/>
+		<!-- -->
+		<result column="pHighly" property="pHighly"/>
+		<!-- -->
+		<result column="pGoodsSubTitle" property="pGoodsSubTitle"/>
+		<!-- -->
+		<result column="isSevenReturn" property="isSevenReturn"/>
+ 
+	 
+   </resultMap>
+  
+  <select id="getProductPage" parameterType="Page" resultMap="ProductMap">
+	select
+		Product.pid ,Product.SId,Product.pName,Brand.brandName,Product.PCid AS PCID,Product.PState,
+		Product.UpdateTime,SellerInfo.SShopName,SellerInfo.SShopLogo,convert(int,SellerInfo.SId) Shop_id,SellerInfo.SShopGrade
+		,pDescribe,pParameter
+		,pLength,pWidth,pHighly
+	    ,pListing
+	    ,pGoodsSubTitle
+		,isSevenReturn
+	FROM
+		[Product] WITH (nolock)
+	LEFT JOIN [SellerInfo] WITH (nolock) ON [SellerInfo].[SId] = [Product].[SId]
+	LEFT JOIN After_sales_policy WITH (nolock) ON After_sales_policy.Id = Product.PAfterService
+	LEFT JOIN Brand WITH (nolock) on Product.BRANDID = Brand.Id
+  </select>
+  
+  
+  
+  <select id="getProductImagesPage" parameterType="Page" resultMap="ProductReturnMap">
+  
+  	  select
+			[P_Images].pid,P_Images.IPath iPath,P_Images.iColor
+		from  [P_Images] with (nolock) 
+			left join [Product] with (nolock) on  [P_Images].Pid =[Product].[PId]
+		WHERE	
+			Product.PState = 1
+			
+	   <!-- select
+			Pro_Rules.Id sku,Pro_Rules.PId pid,P_Images.IPath iPath,P_Images.iColor,Product.pName
+			,r1.RDescribe color,r2.RDescribe spec
+		from [Pro_Rules] with (nolock) 
+		        inner join [Product] with (nolock) on   [Pro_Rules].[PId]=[Product].[PId]
+		        inner join [P_Images] with (nolock) on [Pro_Rules].[PId] = [P_Images].[PId]
+		      
+		        left  join [Rules] r1 with (nolock) on r1.[RId] = [Pro_Rules].[ColorId]
+		        left  join [Rules] r2 with (nolock) on r2.[RId] = [Pro_Rules].[SpecId]
+			WHERE	
+		Product.PState = 1  -->
+  </select>
+  
+  
+  
+	
+</mapper>

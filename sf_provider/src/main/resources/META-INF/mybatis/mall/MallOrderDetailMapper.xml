@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 订单明细表(o_orderDetailInfo)Mapper -->
+<mapper namespace="mallOrderDetailMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,orderId ,pid ,sku ,productNumber ,productName ,productImage ,category ,productType ,giftPoints ,productStatus ,discount ,initialPrice ,soldPrice ,quantity ,totalMoney ,color ,specification ,freeShipment ,perentId ,commission
+    </sql>
+
+    <resultMap type="com.shifeng.entity.order.OrderDetailInfo" id="OrderDetailInfoReturnMap">
+	  <!-- 主键 -->
+      <id column="id" property="id"/>
+	  <!-- 订单编号 -->
+      <result column="orderId" property="orderId"/>
+	  <!-- 商品id -->
+      <result column="pid" property="pid"/>
+	  <!-- Sku -->
+      <result column="sku" property="sku"/>
+	  <!-- 商品货号 -->
+      <result column="productNumber" property="productNumber"/>
+	  <!-- 商品名称 -->
+      <result column="productName" property="productName"/>
+	  <!-- 商品图片 -->
+      <result column="productImage" property="productImage"/>
+	  <!-- 分类 -->
+      <result column="category" property="category"/>
+	  <!-- 商品类型 -->
+      <result column="productType" property="productType"/>
+	  <!-- 积分 -->
+      <result column="giftPoints" property="giftPoints"/>
+	  <!-- 商品状态 -->
+      <result column="productStatus" property="productStatus"/>
+	  <!-- 折扣 -->
+      <result column="discount" property="discount"/>
+	  <!-- 市场价 -->
+      <result column="initialPrice" property="initialPrice"/>
+	  <!-- 销售价格 -->
+      <result column="soldPrice" property="soldPrice"/>
+	  <!-- 购买数量 -->
+      <result column="quantity" property="quantity"/>
+	  <!-- 总金额 -->
+      <result column="totalMoney" property="totalMoney"/>
+	  <!-- 颜色 -->
+      <result column="color" property="color"/>
+	  <!-- 规格 -->
+      <result column="specification" property="specification"/>
+	  <!-- 免运费(1：是；2：否) -->
+      <result column="freeShipment" property="freeShipment"/>
+	  <!-- 父订单号 -->
+      <result column="perentId" property="perentId"/>
+      <!-- 佣金 -->
+      <result column="commission" property="commission"/>
+      
+   </resultMap>
+   
+
+   
+   <!-- 保存订单明细 -->
+   <insert id="saveOrderDetail" parameterType="java.util.List">
+   		INSERT INTO 
+   			o_orderdetailinfo
+			   (
+				   orderId ,pid ,sku ,productNumber ,productName ,productImage ,category ,productType ,giftPoints 
+				   ,productStatus ,discount ,initialPrice ,soldPrice ,quantity ,totalMoney ,color 
+				   ,specification ,freeShipment ,perentId ,commission
+				   ,colorid,specid
+			   )
+        VALUES
+	  	 <foreach collection="list" item="item" index="index" separator=","  >
+	  	     (
+				#{item.orderId},#{item.pid},#{item.sku},#{item.productNumber},#{item.productName},#{item.productImage},#{item.category},#{item.productType}
+				,#{item.giftPoints},#{item.productStatus},#{item.discount},#{item.initialPrice},#{item.soldPrice},#{item.quantity},#{item.totalMoney}
+				,#{item.color},#{item.specification},#{item.freeShipment},#{item.perentId},#{item.commission}
+				,#{item.colorid},#{item.specid}
+			 )	
+		 </foreach> 
+   
+   </insert>
+	
+  	<!-- 获取订单商品明细 -->
+  	<select id="getOrderWares" parameterType="String" resultType="com.shifeng.dto.mall.order.OrderDetailInfoDTO">
+	  	SELECT
+		    pid ,sku ,productNumber ,productName ,productImage ,category ,productType ,giftPoints ,productStatus 
+		    ,discount ,initialPrice ,soldPrice ,quantity ,totalMoney ,color 
+		    ,specification ,freeShipment ,perentId ,sstatus
+		FROM 
+			o_orderdetailinfo
+		WHERE 
+			orderId = #{orderId}
+  	</select>
+  	
+  	<!-- 获取订单商品购买数量 -->
+  	<select id="getOrderWaresQuantity" parameterType="String" resultType="java.lang.Integer">
+	  	SELECT
+		 	SUM(quantity)	
+		FROM 
+			o_orderdetailinfo
+		WHERE 
+			orderId = #{orderId}
+  	</select>
+
+  	<!-- 获取订单商品售后状态 -->
+  	<select id="getOrderWareEstatus" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		SELECT
+			od.sstatus
+		FROM
+			o_orderInfo o
+		left join o_orderdetailinfo od on o.orderId = od.orderId	
+		WHERE
+			userId = #{user_id}
+			and o.orderId = #{order_id}
+			and od.sku = #{sku}
+			and o.orderStatus = 3
+  	</select>  	
+
+  	
+   
+   
+   <!-- 更新订单商品评论状态为已评论 -->
+   <update id="updateOrderWareCommentState" parameterType="String">
+   		update 
+   			o_orderDetailInfo
+   		set
+   			estatus = 1
+		WHERE
+			orderId = #{order_id}
+   </update>
+  	
+  	   <!-- 更新订单售后状态 -->
+   <update id="updateOrderShouHouState" parameterType="java.util.Map">
+   		update 
+   			o_orderDetailInfo
+   		set
+   			sstatus = #{sstatus}
+		WHERE
+			<!-- userId = #{user_id}
+			and  -->
+			sku = #{sku}
+			and  
+			orderId = #{order_id}
+			and
+			sstatus = 0
+   </update>
+  	
+   	
+</mapper>

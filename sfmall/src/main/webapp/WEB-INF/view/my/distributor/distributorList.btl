@@ -1,0 +1,87 @@
+<table border="0">
+	<tr>
+		<th>分销商姓名</th>
+		<th>联系方式</th>
+		<th>信息备注</th>
+		<th>操作</th>
+	</tr>
+	<%
+		for(data in page.resultData){
+	%>
+		<tr class="one">
+			<td>${data.name}</td>
+			<td>${data.phone}</td>
+			<td>${data.remark}</td>
+			<td>
+				<a id="check" data_id="${data.recommended_userid}"><img src="/static/img/img-check.png" title="查看" alt="查看" /></a>
+				<a id="edit" data_id="${data.recommended_userid}"><img src="/static/img/img-edit.png" title="修改" alt="修改" /></a>
+				<a id="delete" data_id="${data.recommended_userid}"><img src="/static/img/img-del.png" title="删除" alt="删除" /></a>
+			</td>
+		</tr>
+	<%
+		}
+	%>
+</table>
+
+<script type="text/javascript">
+	$(function(){
+		page("${page.totalPage}","${page.currentPage}");
+
+		$("table").on("click","tr td a#check",function(){
+			var id = $(this).attr("data_id");
+			window.location.href = "/my/";
+		})
+		$("table").on("click","tr td a#edit",function(){
+			var id = $(this).attr("data_id");
+			window.location.href = "/my/distributorEdit.html?id="+id;
+		})
+		$("table").on("click","tr td a#delete",function(){
+			var id = $(this).attr("data_id");
+			
+			layer.confirm("确认删除吗?", {
+				shade : 0.3,
+				btn : [ '确认', '取消' ],
+				icon : 3
+			}, function(layerIndex) {
+				layer.close(layerIndex);
+				$.post("/my/deleteDistributor.json",{id:id},function(req){
+					if (req.code == '0') {
+						layer.msg('删除成功', {
+							icon : 1,
+							time : 1 * 1000
+						}, function() {
+							location.reload();
+						});
+					} else {
+						layer.alert(req.msg, {
+							icon : 0
+						});
+					}
+				})
+			})
+		})
+		
+	})
+
+	function page(allpage,curr){
+		laypage({
+			cont: "page",
+			pages: allpage,
+			curr: curr,
+			skip: true, //是否开启跳页
+	        groups: 5, //连续显示分页数
+	        skin: '#76cf8f',
+	        first: 1,
+	        prev:"<",
+	        next:">",
+	        last: allpage, //在尾页追加总页数。
+			jump: function(obj, first){
+				if(!first){
+					$.post("/my/distributorList.json?name=${name}&currentPage="+obj.curr,function(data){
+						$("#list").html(data);
+					})
+				}
+			}
+		});
+	}
+</script>

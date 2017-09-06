@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 分销用户余额日志(fx_user_money_log)Mapper -->
+<mapper namespace="fxusermoneylogMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	uid,money ,lasttime ,lastmoney ,log_type ,remarks 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.fx.FxUserMoneyLog" id="FxUserMoneyLogReturnMap">
+	  <!-- uid -->
+      <id column="uid" property="uid"/>
+	  <!-- 金额 -->
+      <result column="money" property="money"/>
+	  <!-- 最后更新时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 余额 -->
+      <result column="lastmoney" property="lastmoney"/>
+	  <!-- 类型 -->
+      <result column="log_type" property="log_type"/>
+	  <!-- 备注 -->
+      <result column="remarks" property="remarks"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllFxUserMoneyLogPage" parameterType="Page" resultMap="FxUserMoneyLogReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			fx_user_money_log
+		where  
+			uid = #{t.uid}
+		order by lasttime desc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findFxUserMoneyLogById" parameterType="String" resultMap="FxUserMoneyLogReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			fx_user_money_log
+		where 
+			uid = #{uid}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateFxUserMoneyLog" parameterType="com.shifeng.entity.fx.FxUserMoneyLog">
+		update 
+			fx_user_money_log 
+		set
+	      	money = #{money},
+	      	lasttime = now(),
+	      	lastmoney = #{lastmoney},
+	      	log_type = #{log_type},
+	      	remarks = #{remarks}
+		 where
+			uid = #{uid}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveFxUserMoneyLog" parameterType="com.shifeng.entity.fx.FxUserMoneyLog">
+		insert into fx_user_money_log
+			(
+		      money, lasttime, lastmoney, log_type, remarks 
+			)
+		values
+			(
+		      #{money},
+		      now(),
+		      #{lastmoney},
+		      #{log_type},
+		      #{remarks}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteFxUserMoneyLog" parameterType="String">
+  		delete from fx_user_money_log
+  		where uid = #{uid}
+  	</delete>
+	
+</mapper>

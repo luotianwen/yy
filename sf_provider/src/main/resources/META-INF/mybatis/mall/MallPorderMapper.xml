@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 订单父表(o_porderInfo)Mapper -->
+<mapper namespace="mallPorderMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	perentId,subTime ,sellerId ,userId ,receiveName ,phoneNumber ,address ,zipCode ,giftPoints ,invoiceType ,invoiceNumber ,isSettlement ,settlementTime ,userConfirmTime ,orderStatus ,orderType ,remark ,lastModifiedTime ,defaultPayment ,sellerRemark ,ip ,pay_serial_number ,onlinepayfee ,order_total_price ,seller_discount ,order_seller_price ,totalMoney ,order_payment ,freight_price ,payment_confirm_time ,refundMoney ,paidMoney ,unPaidMoney 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.order.PorderInfo" id="PorderInfoReturnMap">
+	  <!-- 父订单编号 -->
+      <id column="perentId" property="perentId"/>
+	  <!-- 提交时间 -->
+      <result column="subTime" property="subTime"/>
+	  <!-- 卖家编号 -->
+      <result column="sellerId" property="sellerId"/>
+	  <!-- 用户编号 -->
+      <result column="userId" property="userId"/>
+	  <!-- 买家姓名 -->
+      <result column="receiveName" property="receiveName"/>
+	  <!-- 电话 -->
+      <result column="phoneNumber" property="phoneNumber"/>
+	  <!-- 地址 -->
+      <result column="address" property="address"/>
+	  <!-- 邮编 -->
+      <result column="zipCode" property="zipCode"/>
+	  <!-- 积分 -->
+      <result column="giftPoints" property="giftPoints"/>
+	  <!-- 发票抬头 -->
+      <result column="invoiceType" property="invoiceType"/>
+	  <!-- 发票编号 -->
+      <result column="invoiceNumber" property="invoiceNumber"/>
+	  <!-- 是否结算(1：是；2：否) -->
+      <result column="isSettlement" property="isSettlement"/>
+	  <!-- 结算时间 -->
+      <result column="settlementTime" property="settlementTime"/>
+	  <!-- 用户确认收货时间 -->
+      <result column="userConfirmTime" property="userConfirmTime"/>
+	  <!-- 订单状态 -->
+      <result column="orderStatus" property="orderStatus"/>
+	  <!-- 订单类型 -->
+      <result column="orderType" property="orderType"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 最后修改时间 -->
+      <result column="lastModifiedTime" property="lastModifiedTime"/>
+	  <!-- 默认支付方式 -->
+      <result column="defaultPayment" property="defaultPayment"/>
+	  <!-- 卖家备注 -->
+      <result column="sellerRemark" property="sellerRemark"/>
+	  <!-- Ip -->
+      <result column="ip" property="ip"/>
+	  <!-- 支付码 -->
+      <result column="pay_serial_number" property="pay_serial_number"/>
+	  <!-- 在线支付金额 -->
+      <result column="onlinepayfee" property="onlinepayfee"/>
+	  <!-- 订单总金额. -->
+      <result column="order_total_price" property="order_total_price"/>
+	  <!-- 商家优惠金额 -->
+      <result column="seller_discount" property="seller_discount"/>
+	  <!-- 订单货款金额（订单总金额-商家优惠金额） -->
+      <result column="order_seller_price" property="order_seller_price"/>
+	  <!-- 商品总金额 -->
+      <result column="totalMoney" property="totalMoney"/>
+	  <!-- 用户应付金额 -->
+      <result column="order_payment" property="order_payment"/>
+	  <!-- 商品的运费 -->
+      <result column="freight_price" property="freight_price"/>
+	  <!-- 付款确认时间 -->
+      <result column="payment_confirm_time" property="payment_confirm_time"/>
+	  <!-- 退款金额 -->
+      <result column="refundMoney" property="refundMoney"/>
+	  <!-- 支付金额 -->
+      <result column="paidMoney" property="paidMoney"/>
+	  <!-- 未支付金额 -->
+      <result column="unPaidMoney" property="unPaidMoney"/>
+   </resultMap>
+   
+
+	<!-- 保存父订单 -->
+	<insert id="savePorder" parameterType="com.shifeng.entity.order.PorderInfo">
+		insert into o_porderInfo
+			(
+		      perentId, subTime, sellerId, userId, receiveName, phoneNumber, address, zipCode, giftPoints, invoiceType, invoiceNumber, isSettlement, settlementTime, userConfirmTime, orderStatus, orderType, remark, lastModifiedTime, defaultPayment, sellerRemark, ip, pay_serial_number, onlinepayfee, order_total_price, seller_discount, order_seller_price, totalMoney, order_payment, freight_price, payment_confirm_time, refundMoney, paidMoney, unPaidMoney 
+			)
+		values
+			(
+			  #{perentId},
+		      #{subTime},
+		      #{sellerId},
+		      #{userId},
+		      #{receiveName},
+		      #{phoneNumber},
+		      #{address},
+		      #{zipCode},
+		      #{giftPoints},
+		      #{invoiceType},
+		      #{invoiceNumber},
+		      #{isSettlement},
+		      #{settlementTime},
+		      #{userConfirmTime},
+		      #{orderStatus},
+		      #{orderType},
+		      #{remark},
+		      #{lastModifiedTime},
+		      #{defaultPayment},
+		      #{sellerRemark},
+		      #{ip},
+		      #{pay_serial_number},
+		      #{onlinepayfee},
+		      #{order_total_price},
+		      #{seller_discount},
+		      #{order_seller_price},
+		      #{totalMoney},
+		      #{order_payment},
+		      #{freight_price},
+		      #{payment_confirm_time},
+		      #{refundMoney},
+		      #{paidMoney},
+		      #{unPaidMoney}
+			)
+	</insert>
+	
+	
+	<select id="getUnpaidWareOrderById" parameterType="java.util.Map" resultType="com.shifeng.entity.mall.UnpaidOrderInfo">
+		select
+			perentId AS order_id,order_payment AS total_fee
+		from 
+			o_porderInfo
+		where
+			perentId = #{order_id} and userId = #{user_id}
+			and orderStatus = 0
+	</select>
+  
+  
+	
+</mapper>

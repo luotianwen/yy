@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 世峰e卡(c_card)Mapper -->
+<mapper namespace="cardMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	number,password ,sdate ,edate ,status ,cdate ,userid ,money ,updateuser ,udate ,batch ,remark ,phone ,sendstatus ,sendremark 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.card.Card" id="CardReturnMap">
+	  <!-- 卡号 -->
+      <id column="number" property="number"/>
+	  <!-- 密码 -->
+      <result column="password" property="password"/>
+	  <!-- 开始时间 -->
+      <result column="sdate" property="sdate"/>
+	  <!-- 结束时间 -->
+      <result column="edate" property="edate"/>
+	  <!-- 状态（1未绑定2未使用3部分使用4已用完5已作废6已过期） -->
+      <result column="status" property="status"/>
+	  <!-- 创建时间 -->
+      <result column="cdate" property="cdate"/>
+	  <!-- 创建人 -->
+      <result column="userid" property="userid"/>
+	  <!-- 金额 -->
+      <result column="money" property="money"/>
+	  <!-- 修改人 -->
+      <result column="updateuser" property="updateuser"/>
+	  <!-- 修改时间 -->
+      <result column="udate" property="udate"/>
+	  <!-- 生成批次 -->
+      <result column="batch" property="batch"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 手机号 -->
+      <result column="phone" property="phone"/>
+	  <!-- 发送状态（1：未发送；2：已发送；3：发送失败） -->
+      <result column="sendstatus" property="sendstatus"/>
+	  <!-- 短信备注 -->
+      <result column="sendremark" property="sendremark"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllCardPage" parameterType="Page" resultMap="CardReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			c_card
+		where 1=1
+		<if test="t.cardnumber!=null and t.cardnumber!=''">
+		    and number = #{t.cardnumber}
+		</if>
+		<if test="t.sdate!=null and t.sdate!=''">
+		    and date(sdate) >= #{t.sdate}
+		</if>
+		<if test="t.edate!=null and t.edate!=''">
+		    and date(sdate) <![CDATA[ <= ]]> #{t.edate}
+		</if>
+		<if test="t.sdateend!=null and t.sdateend!=''">
+		    and date(edate) >= #{t.sdateend}
+		</if>
+		<if test="t.edateend!=null and t.edateend!=''">
+		    and date(edate) <![CDATA[ <= ]]> #{t.edateend}
+		</if>
+		<if test="t.status>0">
+		    and status = #{t.status}
+		</if>
+		<if test="t.userid!=null and t.userid!=''">
+		    and userid = #{t.userid}
+		</if>
+		<if test="t.batch>0">
+		    and batch = #{t.batch}
+		</if>
+		<if test="t.phone!=null and t.phone!=''">
+		    and phone = #{t.phone}
+		</if>
+		<if test="t.sendstatus>0">
+		    and sendstatus = #{t.sendstatus}
+		</if>
+		
+		order by 
+		<if test="t.orderby.sdate!=null and t.orderby.sdate!=''">
+		    sdate ${t.orderby.sdate},
+		</if>
+		<if test="t.orderby.edate!=null and t.orderby.edate!=''">
+		    edate ${t.orderby.edate},
+		</if>
+		<if test="t.orderby.cdate!=null and t.orderby.cdate!=''">
+		    cdate ${t.orderby.cdate},
+		</if>
+		<if test="t.orderby.number!=null and t.orderby.number!=''">
+		    number ${t.orderby.number}
+		</if>
+		<if test="t.orderby.number==null or t.orderby.number==''">
+		    number desc
+		</if> 
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findCardById" parameterType="String" resultMap="CardReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			c_card
+		where 
+			number = #{number}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateCard" parameterType="com.shifeng.entity.card.Card">
+		update 
+			c_card 
+		set
+	      	status = 5,
+	      	updateuser = #{updateuser},
+	      	udate = now()
+		 where
+			number = #{number}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveCard" parameterType="com.shifeng.entity.card.Card">
+		insert into c_card
+			(
+		      number,password, sdate, edate, status, cdate, userid, money, batch, remark
+			)
+		values
+		<foreach collection="list" index="index" item="item" separator=",">
+			(
+			  #{item.number},
+		      #{item.password},
+		      #{item.sdate},
+		      #{item.edate},
+		      1,
+		      now(),
+		      #{item.userid},
+		      #{item.money},
+		      #{item.batch},
+		      #{item.remark}
+			)
+		</foreach>
+	</insert>
+  
+	<!-- 获取最大批次号 -->
+	<select id="findMaxBatch" resultType="String">
+	    select max(batch) from c_card
+	</select>
+	
+	<!-- 修改过期E卡状态 -->
+	<update id="updateDueCard">
+	    update c_card set
+			status = 6
+		where
+			edate <![CDATA[<]]> getdate()
+			and status <![CDATA[<]]>4
+	</update>
+	
+	<!-- 世峰e卡发送短信 -->
+	<update id="updateCardSMS" parameterType="com.shifeng.entity.card.Card">
+		update c_card set
+			phone = #{phone},
+			sendstatus = #{sendstatus},
+			sendremark = #{sendremark},
+			updateuser = #{updateuser},
+			udate = now()
+		where
+			number = #{number}
+	</update>
+	
+</mapper>

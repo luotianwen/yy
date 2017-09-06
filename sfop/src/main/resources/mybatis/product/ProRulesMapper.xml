@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- SKU表(p_pro_rules)Mapper -->
+<mapper namespace="prorulesMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	sku ,pid ,stocks ,weight ,costprice ,marketprice ,price ,number , 
+    	lasttime ,updatename ,remark ,colorid ,specid ,starttime ,endtime ,
+    	activitytype ,activityprice ,activitystocks,discount
+    </sql>
+
+    <resultMap type="com.shifeng.entity.product.ProRules" id="ProRulesReturnMap">
+	  <!-- sku -->
+      <id column="sku" property="sku"/>
+	  <!-- 商品编号 -->
+      <result column="pid" property="pid"/>
+	  <!-- 库存 -->
+      <result column="stocks" property="stocks"/>
+	  <!-- 重量 -->
+      <result column="weight" property="weight"/>
+	  <!-- 进货价 -->
+      <result column="costprice" property="costprice"/>
+	  <!-- 市场价 -->
+      <result column="marketprice" property="marketprice"/>
+	  <!-- 世峰价 -->
+      <result column="price" property="price"/>
+	  <!-- 商品货号 -->
+      <result column="number" property="number"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 颜色 -->
+      <result column="colorid" property="colorid"/>
+	  <!-- 规格 -->
+      <result column="specid" property="specid"/>
+	  <!-- 开始时间 -->
+      <result column="starttime" property="starttime"/>
+	  <!-- 结束时间 -->
+      <result column="endtime" property="endtime"/>
+	  <!-- 活动类型 -->
+      <result column="activitytype" property="activitytype"/>
+	  <!-- 活动价 -->
+      <result column="activityprice" property="activityprice"/>
+	  <!-- 活动数量 -->
+      <result column="activitystocks" property="activitystocks"/>
+      <!-- 折扣 -->
+      <result column="discount" property="discount"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllProRulesPage" parameterType="Page" resultMap="ProRulesReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_pro_rules
+		where 1=1
+			<if test="t.pid!=null and t.pid!=''">
+				and pid = #{t.pid}
+			</if>
+			<if test="t.stocks!=null and t.stocks!=''">
+				and stocks = #{t.stocks}
+			</if>
+			<if test="t.weight!=null and t.weight!=''">
+				and weight = #{t.weight}
+			</if>
+			<if test="t.costprice!=null and t.costprice!=''">
+				and costprice = #{t.costprice}
+			</if>
+			<if test="t.marketprice!=null and t.marketprice!=''">
+				and marketprice = #{t.marketprice}
+			</if>
+			<if test="t.price!=null and t.price!=''">
+				and price = #{t.price}
+			</if>
+			<if test="t.number!=null and t.number!=''">
+				and number = #{t.number}
+			</if>
+
+			<if test="t.lasttime!=null and t.lasttime!=''">
+				and lasttime = #{t.lasttime}
+			</if>
+			<if test="t.updatename!=null and t.updatename!=''">
+				and updatename = #{t.updatename}
+			</if>
+			<if test="t.remark!=null and t.remark!=''">
+				and remark = #{t.remark}
+			</if>
+			<if test="t.colorid!=null and t.colorid!=''">
+				and colorid = #{t.colorid}
+			</if>
+			<if test="t.specid!=null and t.specid!=''">
+				and specid = #{t.specid}
+			</if>
+			<if test="t.starttime!=null and t.starttime!=''">
+				and starttime = #{t.starttime}
+			</if>
+			<if test="t.endtime!=null and t.endtime!=''">
+				and endtime = #{t.endtime}
+			</if>
+			<if test="t.activitytype!=null and t.activitytype!=''">
+				and activitytype = #{t.activitytype}
+			</if>
+			<if test="t.activityprice!=null and t.activityprice!=''">
+				and activityprice = #{t.activityprice}
+			</if>
+			<if test="t.activitystocks!=null and t.activitystocks!=''">
+				and activitystocks = #{t.activitystocks}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findProRulesById" parameterType="String" resultMap="ProRulesReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_pro_rules
+		where 
+			sku = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateProRules" parameterType="com.shifeng.entity.product.ProRules">
+		update 
+			p_pro_rules 
+		set
+	      	pid = #{pid},
+	      	stocks = #{stocks},
+	      	weight = #{weight},
+	      	costprice = #{costprice},
+	      	marketprice = #{marketprice},
+	      	price = #{price},
+	      	number = #{number},
+	      	lasttime = #{lasttime},
+	      	updatename = #{updatename},
+	      	remark = #{remark},
+	      	colorid = #{colorid},
+	      	specid = #{specid}
+
+		 where
+			sku = #{sku}
+	</update>
+	<!-- 修改表 -->
+	<update id="updateProRulesActivity" parameterType="com.shifeng.entity.product.ProRules">
+		update
+		p_pro_rules
+		set
+		lasttime=now(),
+		starttime = #{starttime},
+		endtime = #{endtime},
+		activitytype = #{activitytype},
+		activityprice = #{activityprice},
+		activitystocks = #{activitystocks}
+		where
+		sku = #{sku}
+	</update>
+	<!-- 修改表 -->
+	<update id="updateProRulesActivityEmpty" parameterType="String">
+		update
+		p_pro_rules
+		set
+		lasttime=now(),
+		starttime = null,
+		endtime = null,
+		activitytype =null,
+		activityprice = null,
+		activitystocks = null
+		where
+		sku = #{sku}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveProRules" parameterType="com.shifeng.entity.product.ProRules">
+		insert into p_pro_rules
+			(
+		      pid, stocks, weight, costprice, marketprice, price, number,  lasttime, updatename, remark, colorid, specid
+			)
+		values
+			(
+		      #{pid},
+		      #{stocks},
+		      #{weight},
+		      #{costprice},
+		      #{marketprice},
+		      #{price},
+		      #{number},
+		      #{lasttime},
+		      #{updatename},
+		      #{remark},
+		      #{colorid},
+		      #{specid}
+
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteProRules" parameterType="String">
+  		delete from p_pro_rules
+  		where sku = #{id}
+  	</delete>
+	
+  	<!-- 优惠券使用范围(指定参加/不参加商品) -->
+	<select id="findProductForCouponsPage" parameterType="Page" resultType="com.shifeng.op.dto.coupons.ProductDTO">
+		select
+			pp.id,ppr.sku,ppr.number,pp.name,pp.state,ppr.marketprice,ppr.price,ppr.stocks,pp.logo image
+		from p_pro_rules ppr
+		left join p_product pp ON ppr.pid = pp.id
+		where 1=1
+		<if test="t.productId!=null and t.productId!=''">
+		    and pp.id = #{t.productId}
+		</if>
+		<if test="t.sku!=null and t.sku!=''">
+		    and ppr.sku = #{t.sku}
+		</if>
+		<if test="t.productName!=null and t.productName!=''">
+		    and pp.name = #{t.productName}
+		</if>
+		<if test="t.categoryc!=null and t.categoryc!=''">
+		    and pp.cid = #{t.categoryc}
+		</if>
+		
+	</select>
+  	
+</mapper>

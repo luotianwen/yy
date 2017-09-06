@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 订单发票(o_orderInvoice)Mapper -->
+<mapper namespace="mallOrderInvoiceMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+
+	<sql id="Base_Column_List">
+    	orderId,invoiceId ,paymentsUnit ,content ,type ,vat_companyName ,vat_code ,vat_address ,vat_phone ,vat_bankName ,vat_bankAccount ,totalMoneyLower ,drawer ,subTime ,remark ,userId ,postAddress ,postName ,postPhone ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.order.OrderInvoice" id="OrderInvoiceReturnMap">
+	  <!-- 订单编号 -->
+      <id column="orderId" property="orderId"/>
+	  <!-- 发票编号 -->
+      <result column="invoiceId" property="invoiceId"/>
+	  <!-- 发票抬头 -->
+      <result column="paymentsUnit" property="paymentsUnit"/>
+	  <!-- 发票内容 -->
+      <result column="content" property="content"/>
+	  <!-- 发票类型 -->
+      <result column="type" property="type"/>
+	  <!-- 单位名称 -->
+      <result column="vat_companyName" property="vat_companyName"/>
+	  <!-- 纳税人识别码 -->
+      <result column="vat_code" property="vat_code"/>
+	  <!-- 注册地址 -->
+      <result column="vat_address" property="vat_address"/>
+	  <!-- 注册电话 -->
+      <result column="vat_phone" property="vat_phone"/>
+	  <!-- 开户银行 -->
+      <result column="vat_bankName" property="vat_bankName"/>
+	  <!-- 银行账户 -->
+      <result column="vat_bankAccount" property="vat_bankAccount"/>
+	  <!-- 发票金额 -->
+      <result column="totalMoneyLower" property="totalMoneyLower"/>
+	  <!-- 开票人 -->
+      <result column="drawer" property="drawer"/>
+	  <!-- 时间 -->
+      <result column="subTime" property="subTime"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 用户编号 -->
+      <result column="userId" property="userId"/>
+	  <!-- 邮寄地址 -->
+      <result column="postAddress" property="postAddress"/>
+	  <!-- 收件人姓名 -->
+      <result column="postName" property="postName"/>
+	  <!-- 收件人电话 -->
+      <result column="postPhone" property="postPhone"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+   <!-- 根据订单号，获取发票信息 -->
+   	<select id="getOrderInvoiceInfo" parameterType="String" resultType="com.shifeng.dto.mall.order.OrderInvoiceDTO">
+   		SELECT
+			  paymentsUnit,
+			  content,
+			  type,
+			  vat_companyName,
+			  vat_code,
+			  vat_address,
+			  vat_phone,
+			  vat_bankName,
+			  vat_bankAccount 
+		FROM 
+			o_orderinvoice
+		WHERE
+			orderId = #{orderId}
+   	</select>
+    
+
+	<!-- 新增表 -->
+	<insert id="saveOrderInvoice" parameterType="java.util.Map">
+			INSERT INTO 
+		 o_orderInvoice
+			(
+		      orderId,invoiceId, paymentsUnit, content, TYPE, vat_companyName, vat_code, vat_address, vat_phone, vat_bankName
+		       ,vat_bankAccount, totalMoneyLower, userId, postAddress, postName, postPhone
+		       ,lasttime
+			)
+		
+		SELECT
+		'#{orderId}' AS orderId ,id,paymentsUnit ,content ,TYPE , vat_companyName ,vat_code ,vat_address ,vat_phone ,vat_bankName 
+		,vat_bankAccount ,'#{totalMoneyLower}' AS totalMoneyLower, userId , '#{postAddress}' AS  postAddress,'#{postName}' AS  postName,'#{postPhone}' AS  postPhone
+		,NOW()
+		FROM  mall_user_invoice
+		WHERE
+		 userId	= #{user_id} and id = #{invoiceId}
+	 
+	</insert>
+	
+	
+
+
+	<!-- 新增表 -->
+	<insert id="saveOrderInvoice1" parameterType="java.util.Map">
+		insert into o_orderInvoice
+			(
+		      orderId,invoiceId, paymentsUnit, content, type, vat_companyName, vat_code, vat_address
+		      , vat_phone, vat_bankName, vat_bankAccount, totalMoneyLower, drawer, subTime
+		      , remark, userId, postAddress, postName, postPhone
+			)
+		values
+			(
+			  #{orderId},
+		      #{invoiceId},
+		      #{paymentsUnit},
+		      #{content},
+		      #{type},
+		      #{vat_companyName},
+		      #{vat_code},
+		      #{vat_address},
+		      #{vat_phone},
+		      #{vat_bankName},
+		      #{vat_bankAccount},
+		      #{totalMoneyLower},
+		      #{drawer},
+		      #{subTime},
+		      #{remark},
+		      #{user_id},
+		      #{postAddress},
+		      #{postName},
+		      #{postPhone}
+			)
+	</insert>
+  
+  
+	
+</mapper>

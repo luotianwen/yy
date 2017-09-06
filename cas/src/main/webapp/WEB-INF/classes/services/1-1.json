@@ -1,0 +1,12 @@
+{
+  "@class" : "org.jasig.cas.services.RegexRegisteredService",
+  "serviceId" : "^http://127.0.0.1:8081/.*",
+  "name" : "1",
+   
+  "id" : 1, 
+  "description" : "^http://127.0.0.1:8081/.*",
+     
+  "attributeReleasePolicy" : {
+    "@class" : "org.jasig.cas.services.ReturnAllAttributeReleasePolicy"
+       } 
+  }

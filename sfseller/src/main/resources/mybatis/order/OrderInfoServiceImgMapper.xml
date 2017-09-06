@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 订单售后图片(o_orderInfo_service_img)Mapper -->
+<mapper namespace="orderInfoserviceimgMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,ois_id ,path 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.order.OrderInfoServiceImg" id="OrderInfoServiceImgReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 服务单号 -->
+      <result column="ois_id" property="ois_id"/>
+	  <!-- 图片路径 -->
+      <result column="path" property="path"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findOrderInfoServiceImgByOisId" parameterType="String" resultMap="OrderInfoServiceImgReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_orderInfo_service_img
+		where ois_id = #{id}
+	</select>
+
+</mapper>

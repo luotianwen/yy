@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 商城订单Mapper -->
+<mapper namespace="mallOrderMapper">
+
+
+	
+	
+	<select id="getUnpaidWareOrderById" parameterType="java.util.Map" resultType="com.shifeng.entity.mall.UnpaidOrderInfo">
+		select
+			orderId AS order_id,order_payment AS total_fee
+		from 
+			o_orderInfo
+		where
+			orderId = #{order_id} and userId = #{user_id}
+			and orderStatus = 0
+	</select>
+    
+   <!-- 获取预览订单店铺信息 -->
+   <select id="getPreviewShop" parameterType="java.util.ArrayList" resultType="com.shifeng.dto.mall.order.OrderPreviewInfoDTO">
+   		SELECT
+			p.shopid,s.name AS shopName
+		 FROM
+		 p_pro_rules pr 
+		LEFT JOIN p_product p ON pr.pid = p.id
+		LEFT JOIN s_shopinfo s ON p.shopid = s.s_merchants_id
+		WHERE
+			pr.sku IN 
+			<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+				 #{item.sku}
+			</foreach> 
+		GROUP BY p.shopid
+   </select>
+    
+   <!-- 获取预览订单商品信息 -->
+   <select id="getPreviewWare" parameterType="java.util.ArrayList" resultType="com.shifeng.dto.mall.order.OrderPreviewWareInfoDTO">
+			SELECT
+				pr.sku ,p.shopid  ,p.name AS pName
+				,co.name AS colorName
+				,sp.name AS specName
+				,si.ipath AS colorPic
+				,p.state AS pState
+				,activityprice
+				,p.logo
+				,pr.marketprice,pr.price
+				,pr.starttime,pr.endtime,pr.activitytype,pr.activityprice
+			 FROM
+			 p_pro_rules pr 
+			LEFT JOIN p_product p ON pr.pid = p.id
+			LEFT JOIN p_sku_images si ON pr.colorid = si.colorid AND ismain = 1 AND si.pid = pr.pid
+			LEFT JOIN p_color co ON co.id = pr.colorid AND co.pid = pr.pid
+			LEFT JOIN p_spec sp ON pr.specid = sp.id
+			WHERE
+				pr.sku IN 
+			<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+				 #{item.sku}
+			</foreach> 
+			ORDER BY p.shopid
+   </select>
+   
+   
+   
+
+	<!-- 保存订单 -->
+	<insert id="saveOrderInfo" parameterType="com.shifeng.entity.order.OrderInfo">
+		insert into o_orderInfo
+			(
+		      orderId,subTime, sellerId, userId, receiveName, phoneNumber, address, zipCode, giftPoints, invoiceType, invoiceNumber, isSettlement, settlementTime, userConfirmTime, orderStatus, orderType, remark, lastModifiedTime, defaultPayment, sellerRemark, ip, pay_serial_number, onlinepayfee, perentId, order_total_price, seller_discount, order_seller_price, totalMoney, order_payment, freight_price, payment_confirm_time, refundMoney, paidMoney, unPaidMoney 
+			)
+		values
+			(
+			 #{orderId},
+		      #{subTime},
+		      #{sellerId},
+		      #{userId},
+		      #{receiveName},
+		      #{phoneNumber},
+		      #{address},
+		      #{zipCode},
+		      #{giftPoints},
+		      #{invoiceType},
+		      #{invoiceNumber},
+		      #{isSettlement},
+		      #{settlementTime},
+		      #{userConfirmTime},
+		      #{orderStatus},
+		      #{orderType},
+		      #{remark},
+		      #{lastModifiedTime},
+		      #{defaultPayment},
+		      #{sellerRemark},
+		      #{ip},
+		      #{pay_serial_number},
+		      #{onlinepayfee},
+		      #{perentId},
+		      #{order_total_price},
+		      #{seller_discount},
+		      #{order_seller_price},
+		      #{totalMoney},
+		      #{order_payment},
+		      #{freight_price},
+		      #{payment_confirm_time},
+		      #{refundMoney},
+		      #{paidMoney},
+		      #{unPaidMoney}
+			)
+	</insert>
+   
+   	
+  <!--  <discriminator javaType=""></discriminator> -->
+  	<resultMap type="com.shifeng.dto.mall.order.OrderInfoDTO" id="OrderInfoDTOMap">
+	  <id property="orderId" column="orderId"/>
+      <result column="shopId" property="shopId"/>
+      <result column="shopName" property="shopName"/>
+      <result column="order_payment" property="order_payment"/>
+      <result column="freight_price" property="freight_price"/>
+      <result column="subTime" property="subTime"/>
+      <result column="orderStatus" property="orderStatus"/>
+       <!-- 评价状态 -->
+      <result column="estatus" property="estatus"/>
+	  <!-- 售后状态 -->
+      <result column="sstatus" property="sstatus"/>
+	  <collection property="wareNum" ofType="java.lang.Integer" column="orderId" select="mallOrderDetailMapper.getOrderWaresQuantity"></collection>
+	  <collection property="wares" ofType="com.shifeng.dto.mall.order.OrderDetailInfoDTO" column="orderId" 
+	  	select="mallOrderDetailMapper.getOrderWares"></collection>
+	</resultMap>
+   
+  <!--  获取用户订单信息列表 -->
+   <select id="getOrderPageList" parameterType="Page" resultMap="OrderInfoDTOMap">
+	   SELECT
+			orderId,sellerId AS shopId,subTime,isSettlement,orderStatus,orderType,order_payment,freight_price
+			,s.name shopName
+			,o.estatus,o.sstatus
+		FROM
+		o_orderInfo o
+		LEFT JOIN s_shopinfo s ON o.sellerId = s.s_merchants_id
+		WHERE
+			userId = #{t.user_id}
+			<if test="t.order_id!=null and t.order_id!=''">
+				and orderId = #{t.order_id}
+			</if>
+			<if test="t.status!=null and t.status!=''">
+				and o.orderStatus = #{t.status}
+			</if>
+			<if test="t.comment!=null and t.comment!=''">
+				and o.estatus = #{t.comment}
+			</if>
+   			order by o.subTime desc
+   </select>
+   
+   
+   
+  <!--  获取用户售后订单信息列表 -->
+<!--    <select id="getRepairOrderPageList" parameterType="Page" resultMap="OrderInfoDTOMap">
+	   SELECT
+			o.orderId,sellerId AS shopId,subTime,isSettlement,orderStatus,orderType,order_payment,freight_price
+			,s.name shopName
+			,o.estatus,o.sstatus
+		FROM
+		 o_orderDetailInfo od
+		left join o_orderinfo o on od.orderId = o.orderId     
+		LEFT JOIN s_shopinfo s ON o.sellerId = s.s_merchants_id
+		WHERE
+			o.userId = #{t.user_id}
+			<if test="t.order_id!=null and t.order_id!=''">
+				and o.orderId = #{t.order_id}
+			</if>
+			 AND od.sstatus > 0	
+			order by o.subTime desc	  			
+   			
+   </select>
+    -->
+   
+  	<resultMap type="com.shifeng.dto.mall.order.OrderInfoDTO" id="OrderDetailDTOMap">
+	  <id property="orderId" column="orderId"/>
+      <result column="shopId" property="shopId"/>
+      <result column="shopName" property="shopName"/>
+      <result column="order_payment" property="order_payment"/>
+      <result column="freight_price" property="freight_price"/>
+      <result column="subTime" property="subTime"/>
+      <result column="orderStatus" property="orderStatus"/>
+      <result column="addressee" property="addressee"/>
+      <result column="phone" property="phone"/>
+      <result column="address" property="address"/>
+       <!-- 评价状态 -->
+      <result column="estatus" property="estatus"/>
+	  <!-- 售后状态 -->
+      <result column="sstatus" property="sstatus"/>
+      
+	  <collection property="express" ofType="com.shifeng.dto.mall.order.OrderExpressDTO" column="orderId" 
+	  		select="mallOrderExpressMapper.getOrderExpress"></collection>
+	 
+	  <collection property="wares" ofType="com.shifeng.dto.mall.order.OrderDetailInfoDTO" column="orderId" 
+	  		select="mallOrderDetailMapper.getOrderWares"></collection>
+
+	  <collection property="invoice" ofType="com.shifeng.dto.mall.order.OrderInvoiceDTO" column="orderId" 
+	  		select="mallOrderInvoiceMapper.getOrderInvoiceInfo"></collection>
+	</resultMap>
+   
+  <!-- 获取用户订单信详情  -->
+   <select id="getOrderInfo" parameterType="java.util.Map" resultMap="OrderDetailDTOMap">
+	   SELECT
+			orderId,sellerId AS shopId,subTime,isSettlement,orderStatus,orderType,order_payment,freight_price
+			,s.name shopName
+			,receiveName addressee, phoneNumber phone,address
+			,o.estatus,o.sstatus
+			,payment_confirm_time paytime
+		FROM
+			o_orderInfo o
+		LEFT JOIN s_shopinfo s ON o.sellerId = s.s_merchants_id
+		WHERE
+			userId = #{user_id}
+			and 
+			orderId = #{order_id}
+   </select>
+   
+   
+   
+   
+  <!-- 获取用户订单状态  订单状态（0：等待付款；1：等待发货；2：等待收货；3：交易成功；4：取消订单；5：交易关闭；6：退货；7：待退款）-->
+   <select id="getOrderStatus" parameterType="java.util.Map" resultType="int">
+	   SELECT
+			orderStatus
+		FROM
+			o_orderInfo 
+		WHERE
+			userId = #{user_id}
+			and 
+			orderId = #{order_id}
+   </select>
+   
+   <!-- 更新订单状态（取消订单） -->
+   <update id="updateOrderStatusForCancel" parameterType="java.util.Map">
+   		update 
+   			o_orderInfo
+   		set
+   			orderStatus = 4
+   			,reason = #{reason}
+		WHERE
+			userId = #{user_id}
+			and 
+			orderId = #{order_id}
+			and
+			orderStatus = 0
+   </update>
+   
+   <!-- 更新订单状态（订单退款） -->
+   <update id="updateOrderStatusForRefund" parameterType="java.util.Map">
+   		update 
+   			o_orderInfo
+   		set
+   			orderStatus = 7
+   			,reason = #{reason}
+		WHERE
+			userId = #{user_id}
+			and 
+			orderId = #{order_id}
+			and
+			orderStatus = 1
+   </update>
+   
+   <!-- 更新订单状态（确认收货） -->
+   <update id="updateOrderStatusForConfirm" parameterType="java.util.Map">
+   		update 
+   			o_orderInfo
+   		set
+   			orderStatus = 3
+   			,estatus = 2
+		WHERE
+			userId = #{user_id}
+			and 
+			orderId = #{order_id}
+			and
+			orderStatus = 2
+   </update>
+    
+    <!-- 统计订单状态 -->
+    <select id="getOrderStatusStatistic" parameterType="String" resultType="com.shifeng.dto.mall.usercenter.OrderStatusDTO">
+	    SELECT
+			orderStatus ,COUNT(1) num
+		FROM
+			o_orderinfo
+		WHERE
+			userId = #{userId}
+		GROUP BY orderStatus	
+    </select>
+    
+    <!-- 统计订单售后状态 -->
+    <select id="getOrderShouhouStatistic" parameterType="String" resultType="int">
+		SELECT
+		     COUNT(1) num
+		FROM
+		     o_orderDetailInfo od
+		left join o_orderinfo o on od.orderId = o.orderId     
+		WHERE
+			o.userId = #{userId}
+			AND od.sstatus > 0	
+    </select>
+    
+    <!-- 统计订单待评价状态 -->
+    <select id="getOrderPingJiaStatistic" parameterType="String" resultType="int">
+		SELECT
+		     COUNT(1) num
+		FROM
+		     o_orderinfo
+		WHERE
+			userId = #{userId}
+			and estatus = 2 
+			and orderStatus = 3
+    </select>
+	
+    <!--  -->
+   <select id="getOrderShopID" parameterType="java.util.Map" resultType="int">
+	   SELECT
+			sellerId AS shopId
+		FROM
+		o_orderInfo 
+		WHERE
+			userId = #{user_id}
+			and orderId = #{order_id}
+   </select>
+   
+   
+	
+    <!-- 获取订单评论状态 -->
+   <select id="getOrderCommentState" parameterType="java.util.Map" resultType="int">
+	   SELECT
+			estatus
+		FROM
+			o_orderInfo 
+		WHERE
+			userId = #{user_id}
+			and orderId = #{order_id}
+   </select>
+   
+   
+   
+   
+   <!-- 更新订单评论状态为已评论 -->
+   <update id="updateOrderCommentState" parameterType="java.util.Map">
+   		update 
+   			o_orderInfo
+   		set
+   			estatus = 1
+		WHERE
+			userId = #{user_id}
+			and 
+			orderId = #{order_id}
+			and
+			orderStatus = 3
+   </update>
+   
+   
+
+   
+</mapper>

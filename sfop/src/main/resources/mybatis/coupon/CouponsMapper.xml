@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 优惠券(c_coupons)Mapper -->
+<mapper namespace="couponsMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,name ,type ,scope ,category ,sellerId ,number ,surplusNumber ,receiveCount ,useCount ,full ,minus ,startDate ,endDate ,note ,url ,isPackage ,state ,user_id ,createTime ,lastTime ,updateName ,remark 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.coupon.Coupons" id="CouponsReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 名称 -->
+      <result column="name" property="name"/>
+	  <!-- 类型 -->
+      <result column="type" property="type"/>
+	  <!-- 适用范围 -->
+      <result column="scope" property="scope"/>
+	  <!-- 使用分类 -->
+      <result column="category" property="category"/>
+	  <!-- 店铺 -->
+      <result column="sellerId" property="sellerId"/>
+	  <!-- 发券数量 -->
+      <result column="number" property="number"/>
+	  <!-- 剩余数量 -->
+      <result column="surplusNumber" property="surplusNumber"/>
+	  <!-- 已领取数量 -->
+      <result column="receiveCount" property="receiveCount"/>
+	  <!-- 已使用数量 -->
+      <result column="useCount" property="useCount"/>
+	  <!-- 优惠券面值(满) -->
+      <result column="full" property="full"/>
+	  <!-- 优惠券面值(减) -->
+      <result column="minus" property="minus"/>
+	  <!-- 优惠券有效期 -->
+      <result column="startDate" property="startDate"/>
+	  <!-- 优惠券有效期结束 -->
+      <result column="endDate" property="endDate"/>
+	  <!-- 优惠券说明 -->
+      <result column="note" property="note"/>
+	  <!-- 领取地址 -->
+      <result column="url" property="url"/>
+	  <!-- 是否套餐 -->
+      <result column="isPackage" property="isPackage"/>
+	  <!-- 状态(1：正常；2：过期；3：待发放； 4：暂停发放；5：领取完毕) -->
+      <result column="state" property="state"/>
+	  <!-- 创建人 -->
+      <result column="user_id" property="user_id"/>
+	  <!-- 创建时间 -->
+      <result column="createTime" property="createTime"/>
+	  <!-- 最后修改时间 -->
+      <result column="lastTime" property="lastTime"/>
+	  <!-- 最后修改人 -->
+      <result column="updateName" property="updateName"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllCouponsPage" parameterType="Page" resultMap="CouponsReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			c_coupons
+		where 1=1
+		<if test="t.id!=null and t.id!=''">
+		    and id = #{t.id}
+		</if>
+		<if test="t.name!=null and t.name!=''">
+		    and name like CONCAT(CONCAT('%', #{t.name}),'%')
+		</if>
+		<if test="t.type>0">
+		    and type = #{t.type}
+		</if>
+		<if test="t.scope>0">
+		    and scope = #{t.scope}
+		</if>
+		<if test="t.state>0">
+		    and state = #{t.state}
+		</if>
+		<if test="t.createTime!=null and t.createTime!=''">
+		    and date(createTime) >= #{t.createTime}
+		</if>
+		
+		order by createTime desc,lastTime desc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findCouponsById" parameterType="String" resultMap="CouponsReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			c_coupons
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateCoupons" parameterType="com.shifeng.entity.coupon.Coupons">
+		update 
+			c_coupons 
+		set
+	      	name = #{name},
+	      	type = #{type},
+	      	scope = #{scope},
+	      	<!-- category = #{category},
+	      	sellerId = #{sellerId}, -->
+	      	number = #{number},
+	      	surplusNumber = #{surplusNumber},
+	      	receiveCount = #{receiveCount},
+	      	useCount = #{useCount},
+	      	full = #{full},
+	      	minus = #{minus},
+	      	startDate = #{startDate},
+	      	endDate = #{endDate},
+	      	note = #{note},
+	      	url = #{url},
+	      	isPackage = #{isPackage},
+	      	<!-- state = #{state}, -->
+	      	lastTime = NOW(),
+	      	updateName = #{updateName},
+	      	remark = #{remark}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveCoupons" parameterType="com.shifeng.entity.coupon.Coupons">
+		insert into c_coupons
+			(
+		      id,name, type, scope, category, sellerId, number, surplusNumber, receiveCount, useCount, full, minus, startDate, endDate, note, url, isPackage, state, user_id, createTime, remark 
+			)
+		values
+			(
+			  #{id},
+		      #{name},
+		      #{type},
+		      #{scope},
+		      #{category},
+		      #{sellerId},
+		      #{number},
+		      #{number},
+		      0,
+		      0,
+		      #{full},
+		      #{minus},
+		      #{startDate},
+		      #{endDate},
+		      #{note},
+		      #{url},
+		      #{isPackage},
+		      #{state},
+		      #{user_id},
+		      NOW(),
+		      #{remark}
+			)
+	</insert>
+  
+	<!-- 发放/暂停发放优惠券 -->
+	<update id="updateCouponsState" parameterType="java.util.Map">
+	    update
+			c_coupons 
+		set
+			lastTime = now(),
+			updateName = #{uName},
+			state = #{state}
+	    where
+			id = #{id}
+	</update>
+	
+	<!-- 优惠券套餐查询所有优惠券 -->
+	<select id="findAllCouponsByPackage" resultMap="CouponsReturnMap">
+	    select
+	    	id,name ,surplusNumber,full ,minus ,note
+	    from c_coupons
+	    where (state = 1 or state = 3 or state = 4) and endDate>now()
+	</select>
+	
+	<!-- 查询优惠券 -->
+	<select id="findCouponsByPackage" parameterType="String" resultMap="CouponsReturnMap">
+	    select
+	    	id,name ,surplusNumber,full ,minus ,note
+	    from c_coupons
+	    where id in (${_parameter})
+	</select>
+	
+</mapper>

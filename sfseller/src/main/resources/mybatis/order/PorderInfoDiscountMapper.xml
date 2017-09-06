@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 父订单折扣表(o_porderInfo_discount)Mapper -->
+<mapper namespace="porderInfodiscountMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	perentId,type ,number ,discountMoney 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.order.PorderInfoDiscount" id="PorderInfoDiscountReturnMap">
+	  <!-- 父订单编号 -->
+      <id column="perentId" property="perentId"/>
+	  <!-- 折扣类型（1为优惠券2世峰e卡） -->
+      <result column="type" property="type"/>
+	  <!-- 序号（者优惠券id或卡号） -->
+      <result column="number" property="number"/>
+	  <!-- 金额 -->
+      <result column="discountMoney" property="discountMoney"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllPorderInfoDiscountPage" parameterType="Page" resultMap="PorderInfoDiscountReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_porderInfo_discount
+		where 1=1
+			<if test="t.type!=null and t.type!=''">
+				and type = #{t.type}
+			</if>
+			<if test="t.number!=null and t.number!=''">
+				and number = #{t.number}
+			</if>
+			<if test="t.discountMoney!=null and t.discountMoney!=''">
+				and discountMoney = #{t.discountMoney}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findPorderInfoDiscountById" parameterType="String" resultMap="PorderInfoDiscountReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_porderInfo_discount
+		where 
+			perentId = #{orderId}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updatePorderInfoDiscount" parameterType="com.shifeng.entity.order.PorderInfoDiscount">
+		update 
+			o_porderInfo_discount 
+		set
+	      	type = #{type},
+	      	number = #{number},
+	      	discountMoney = #{discountMoney}
+		 where
+			id = #{perentId}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="savePorderInfoDiscount" parameterType="com.shifeng.entity.order.PorderInfoDiscount">
+		insert into o_porderInfo_discount
+			(
+		      type, number, discountMoney 
+			)
+		values
+			(
+		      #{type},
+		      #{number},
+		      #{discountMoney}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deletePorderInfoDiscount" parameterType="String">
+  		delete from o_porderInfo_discount
+  		where id = #{perentId}
+  	</delete>
+	
+</mapper>

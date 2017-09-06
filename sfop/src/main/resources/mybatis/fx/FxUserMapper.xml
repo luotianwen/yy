@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 分销用户(fx_user)Mapper -->
+<mapper namespace="fxuserMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	recommend_userid,recommended_userid ,name , stime ,remark ,state
+    </sql>
+
+    <resultMap type="com.shifeng.entity.fx.FxUser" id="FxUserReturnMap">
+	  <!-- 推荐用户id -->
+      <id column="recommend_userid" property="recommend_userid"/>
+	  <!-- 被推荐用户id -->
+      <result column="recommended_userid" property="recommended_userid"/>
+	  <!-- 被推荐用户名称 -->
+      <result column="name" property="name"/>
+		<!-- 被推荐用户名称 -->
+		<result column="uname" property="uname"/>
+	  <!-- 推荐时间 -->
+      <result column="stime" property="stime"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 状态 -->
+      <result column="state" property="state"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllFxUserPage" parameterType="Page" resultMap="FxUserReturnMap">
+		select
+		f.recommend_userid,f.recommended_userid ,du2.uname as name ,du.uname  ,f.stime ,f.remark ,f.state
+		from 
+			fx_user f,
+			mall_users du,
+		    mall_users du2
+		where
+		      f.recommend_userid=du.id
+		      and f.recommended_userid=du2.id
+			<if test="t.recommended_userid!=null and t.recommended_userid!=''">
+				and f.recommended_userid = #{t.recommended_userid}
+			</if>
+			<if test="t.name!=null and t.name!=''">
+				and du2.uname = #{t.name}
+			</if>
+			<if test="t.recommend_userid!=null and t.recommend_userid!=''">
+				and f.recommend_userid= #{t.recommend_userid}
+			</if>
+			<if test="t.uname!=null and t.uname!=''">
+				and du.uname = #{t.uname}
+			</if>
+
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findFxUserById" parameterType="String" resultMap="FxUserReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			fx_user
+		where 
+			recommend_userid = #{recommend_userid}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateFxUser" parameterType="com.shifeng.entity.fx.FxUser">
+		update 
+			fx_user 
+		set
+	      	recommended_userid = #{recommended_userid},
+	      	name = #{name},
+	      	stime = #{stime},
+	      	remark = #{remark},
+	      	state = #{state}
+		 where
+			recommend_userid = #{recommend_userid}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveFxUser" parameterType="com.shifeng.entity.fx.FxUser">
+		insert into fx_user
+			(
+		      recommended_userid, name, stime, remark, state 
+			)
+		values
+			(
+		      #{recommended_userid},
+		      #{name},
+		      #{stime},
+		      #{remark},
+		      #{state}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteFxUser" parameterType="String">
+  		delete from fx_user
+  		where recommend_userid = #{recommend_userid}
+  	</delete>
+	
+</mapper>

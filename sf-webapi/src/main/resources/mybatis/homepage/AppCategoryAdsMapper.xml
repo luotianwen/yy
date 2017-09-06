@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- app类目广告(sys_app_categoryads)Mapper -->
+<mapper namespace="sysCategoryadsMapper">
+    
+ 
+   	<!-- 查询所有表 -->
+	<select id="getAdsList"  resultType="com.shifeng.webapi.dto.homepage.CategoryAdsDTO">
+		select
+			name,imgPath,imgLink,isactivity,module,sort,title,price
+		from 
+			sys_app_categoryads
+		where  
+			state = 1
+		order by sort asc	
+	</select>
+
+	 
+	
+</mapper>

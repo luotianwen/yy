@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 店铺续费表(s_shopinfo_pay)Mapper -->
+<mapper namespace="shopinfopayMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	s_merchants_id,userid ,orderId ,pay_serial_number ,payAmount ,note ,status ,subTime ,remark ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.ShopinfoPay" id="ShopinfoPayReturnMap">
+	  <!-- 入驻id -->
+      <id column="s_merchants_id" property="s_merchants_id"/>
+	  <!-- 用户id -->
+      <result column="userid" property="userid"/>
+	  <!-- 订单id -->
+      <result column="orderId" property="orderId"/>
+	  <!-- 支付码 -->
+      <result column="pay_serial_number" property="pay_serial_number"/>
+	  <!-- 支付金额 -->
+      <result column="payAmount" property="payAmount"/>
+	  <!-- 说明 -->
+      <result column="note" property="note"/>
+	  <!-- 状态 -->
+      <result column="status" property="status"/>
+	  <!-- 提交时间 -->
+      <result column="subTime" property="subTime"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+
+	<!-- 修改表 -->
+	<update id="updateShopinfoPay" parameterType="com.shifeng.mall.settled.dto.ShopDTO">
+		update 
+			s_shopinfo_pay 
+		set
+	      	userid = #{userid},
+	      	orderId = #{orderId},
+	      	pay_serial_number = #{pay_serial_number},
+	      	payAmount = #{payAmount},
+	      	note = #{note},
+	      	status = #{status},
+	      	subTime = #{subTime},
+	      	remark = #{remark},
+	      	lasttime = #{lasttime},
+	      	updatename = #{updatename}
+		 where
+			id = #{s_merchants_id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveShopinfoPay" parameterType="java.util.Map">
+		insert into s_shopinfo_pay
+			(
+		      s_merchants_id, userid, orderId, pay_serial_number, payAmount, note, status, subTime, remark
+			)
+		values
+			<foreach collection="shopinfoPays" item="item" separator=",">
+			    (
+				  #{item.s_merchants_id},
+			      #{item.userid},
+			      #{item.orderId},
+			      #{item.pay_serial_number},
+			      #{item.payAmount},
+			      #{item.note},
+			      #{item.status},
+			      now(),
+			      #{item.remark}
+				)
+			</foreach>
+	</insert>
+  	
+	<!-- 查询店铺订单 -->
+	<select id="findShopinfoPay" parameterType="String" resultMap="ShopinfoPayReturnMap">
+		select
+	    	sp.s_merchants_id ,sp.userid ,sp.orderId ,sp.pay_serial_number ,sp.payAmount,
+	    	sp.note ,sp.status ,sp.subTime ,sp.remark
+	    from s_shopinfo_pay sp,s_merchants_settled m
+	    where sp.s_merchants_id = m.id and m.userId = #{userId}
+	</select>
+	
+</mapper>

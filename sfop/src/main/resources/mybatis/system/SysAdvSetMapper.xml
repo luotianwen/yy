@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 系统广告费用设置(sys_adv_set)Mapper -->
+<mapper namespace="sysadvsetMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,row ,column ,period ,cost ,cdate ,updatename ,lasttime 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.system.SysAdvSet" id="SysAdvSetReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 行 -->
+      <result column="row" property="row"/>
+	  <!-- 列 -->
+      <result column="column" property="column"/>
+	  <!-- 周 -->
+      <result column="period" property="period"/>
+	  <!-- 费用 -->
+      <result column="cost" property="cost"/>
+	  <!-- 创建时间 -->
+      <result column="cdate" property="cdate"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllSysAdvSetPage" parameterType="Page" resultMap="SysAdvSetReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			sys_adv_set
+		where 1=1
+			<if test="t.row!=null and t.row!=''">
+				and row = #{t.row}
+			</if>
+			<if test="t.column!=null and t.column!=''">
+				and column = #{t.column}
+			</if>
+			<if test="t.period!=null and t.period!=''">
+				and period = #{t.period}
+			</if>
+			<if test="t.cost!=null and t.cost!=''">
+				and cost = #{t.cost}
+			</if>
+			<if test="t.cdate!=null and t.cdate!=''">
+				and cdate = #{t.cdate}
+			</if>
+			<if test="t.updatename!=null and t.updatename!=''">
+				and updatename = #{t.updatename}
+			</if>
+			<if test="t.lasttime!=null and t.lasttime!=''">
+				and lasttime = #{t.lasttime}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findSysAdvSetById" parameterType="String" resultMap="SysAdvSetReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			sys_adv_set
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateSysAdvSet" parameterType="com.shifeng.entity.system.SysAdvSet">
+		update 
+			sys_adv_set 
+		set
+	      	row = #{row},
+	      	column = #{column},
+	      	period = #{period},
+	      	cost = #{cost},
+	      	cdate = #{cdate},
+	      	updatename = #{updatename},
+	      	lasttime = #{lasttime}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveSysAdvSet" parameterType="com.shifeng.entity.system.SysAdvSet">
+		insert into sys_adv_set
+			(
+		      row, column, period, cost, cdate, updatename, lasttime 
+			)
+		values
+			(
+		      #{row},
+		      #{column},
+		      #{period},
+		      #{cost},
+		      #{cdate},
+		      #{updatename},
+		      #{lasttime}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteSysAdvSet" parameterType="String">
+  		delete from sys_adv_set
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

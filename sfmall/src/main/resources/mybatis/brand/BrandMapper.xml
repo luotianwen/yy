@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 品牌表(b_brand)Mapper -->
+<mapper namespace="brandMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<!-- 根据ID查询表 -->
+	<select id="findBrandById" parameterType="String" resultType="com.shifeng.entity.brand.Brand">
+		select
+            id,logo,descript
+		from 
+			b_brand
+		where
+		     state=1
+		  and
+			id = #{bandid}
+	</select>
+
+	
+</mapper>

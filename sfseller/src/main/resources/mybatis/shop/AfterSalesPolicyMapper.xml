@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 售后政策(s_after_sales_policy)Mapper -->
+<mapper namespace="aftersalespolicyMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,title ,descript ,shopid ,state ,remark 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.AfterSalesPolicy" id="AfterSalesPolicyReturnMap">
+	  <!-- 编号 -->
+      <id column="id" property="id"/>
+	  <!-- 售后标题 -->
+      <result column="title" property="title"/>
+	  <!-- 描述 -->
+      <result column="descript" property="descript"/>
+	  <!-- 店铺id -->
+      <result column="shopid" property="shopid"/>
+	  <!-- 状态 -->
+      <result column="state" property="state"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+   </resultMap>
+   
+   	<!-- 根据店铺ID查询所有表 -->
+	<select id="findAllAfterSalesPolicyByShopId" parameterType="String" resultMap="AfterSalesPolicyReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_after_sales_policy
+		where shopid = #{shopId} and state = 1
+	</select>
+	
+	<!-- 查询所有表 -->
+	<select id="findAllAfterSalesPolicyPage" parameterType="Page" resultMap="AfterSalesPolicyReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_after_sales_policy
+		where shopid = #{t}
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findAfterSalesPolicyById" parameterType="String" resultMap="AfterSalesPolicyReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_after_sales_policy
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateAfterSalesPolicy" parameterType="com.shifeng.entity.shop.AfterSalesPolicy">
+		update 
+			s_after_sales_policy 
+		set
+	      	title = #{title},
+	      	descript = #{descript},
+	      	shopid = #{shopid},
+	      	state = #{state},
+	      	remark = #{remark}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveAfterSalesPolicy" parameterType="com.shifeng.entity.shop.AfterSalesPolicy">
+		insert into s_after_sales_policy
+			(
+		      title, descript, shopid, state, remark 
+			)
+		values
+			(
+		      #{title},
+		      #{descript},
+		      #{shopid},
+		      #{state},
+		      #{remark}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteAfterSalesPolicy" parameterType="String">
+  		delete from s_after_sales_policy
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 意见反馈(mall_feedback)Mapper -->
+<mapper namespace="mallfeedbackMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	feedback_id,feedback_type ,feedback_content ,user_id ,feedback_time ,source ,operator_name ,operate_time ,opinion ,operate_type 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.mall.MallFeedback" id="MallFeedbackReturnMap">
+	  <!-- ID -->
+      <id column="feedback_id" property="feedback_id"/>
+	  <!-- 反馈问题类型 -->
+      <result column="feedback_type" property="feedback_type"/>
+	  <!-- 内容 -->
+      <result column="feedback_content" property="feedback_content"/>
+	  <!-- 反馈用户ID -->
+      <result column="user_id" property="user_id"/>
+	  <!-- 反馈时间 -->
+      <result column="feedback_time" property="feedback_time"/>
+	  <!-- 反馈来源 -->
+      <result column="source" property="source"/>
+	  <!-- 处理人 -->
+      <result column="operator_name" property="operator_name"/>
+	  <!-- 处理时间 -->
+      <result column="operate_time" property="operate_time"/>
+	  <!-- 处理意见 -->
+      <result column="opinion" property="opinion"/>
+	  <!-- 处理状态 -->
+      <result column="operate_type" property="operate_type"/>
+   </resultMap>
+   
+   
+	<!-- 新增表 -->
+	<insert id="saveMallFeedback" parameterType="com.shifeng.entity.mall.MallFeedback" keyColumn="feedback_id" 
+	 keyProperty="feedback_id"  useGeneratedKeys="true">
+		insert into mall_feedback
+			(
+		      feedback_type, feedback_content, user_id, feedback_time, source, operate_type 
+			)
+		values
+			(
+		      #{feedback_type},
+		      #{feedback_content},
+		      #{user_id},
+		      NOW(),
+		      #{source},
+		      1
+			)
+	</insert>
+  
+  	 
+	
+</mapper>

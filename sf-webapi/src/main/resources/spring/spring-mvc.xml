@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd   
+    http://www.springframework.org/schema/aop 
+     http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+
+
+	<!-- 防止@ResponseBody中文乱码  处理JSON数据转换的 --> 
+	<!-- 启用MVC注解 --> 
+	<!-- <mvc:annotation-driven  content-negotiation-manager="contentNegotiationManager" >   
+		<mvc:message-converters>   
+			  为了处理返回的JSON数据的编码，默认是ISO-88859-1的，这里把它设置为UTF-8,解决有乱码的情况  
+				<bean id="mappingJackson2HttpMessageConverter"
+					class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+					处理responseBody 里面日期类型  
+					<property name="objectMapper">  
+	                    <bean class="com.fasterxml.jackson.databind.ObjectMapper">  
+	                        <property name="dateFormat">  
+	                            <bean class="java.text.SimpleDateFormat">  
+	                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />  
+	                            </bean>  
+	                        </property>  
+	                    </bean>  
+	                </property>
+				</bean>
+		 </mvc:message-converters>   
+	 </mvc:annotation-driven>  -->
+	 
+	 
+   <!-- 启动Springmvc注解驱动 -->
+   <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <ref bean="stringHttpMessageConverter" />  
+            <ref bean="fastJsonHttpMessageConverter" />  
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    
+    <bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">  
+        <constructor-arg value="UTF-8" index="0"></constructor-arg>
+        <property name="supportedMediaTypes">  
+            <list>  
+                <value>text/plain;charset=UTF-8</value>  
+            </list>  
+        </property>  
+    </bean>
+    
+    <bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4">
+        <property name="supportedMediaTypes">
+            <list>
+            	<!-- 这里顺序不能反，一定先写text/html,不然ie下出现下载提示 -->
+                <!-- <value>text/html;charset=UTF-8</value> -->
+                <value>application/json;charset=UTF-8</value> 
+            </list>
+        </property>
+        <property name="fastJsonConfig"> <bean class="com.alibaba.fastjson.support.config.FastJsonConfig">
+        		<property name="features">
+	        		<list>
+	        			<!-- 允许任意逗号 -->
+		                <value>AllowArbitraryCommas</value>
+		                <!-- 允许未引用字段名称 -->
+		                <value>AllowUnQuotedFieldNames</value>
+		                <!-- 禁用循环引用检测 -->
+		                <value>DisableCircularReferenceDetect</value>
+		               <!--  <value>InitStringFieldAsEmpty</value> -->
+		            </list>
+        		</property>
+			    <property name="serializerFeatures">
+			        <list>
+			           <!-- 输出key时是否使用双引号 -->
+			           <!-- <value>QuoteFieldNames</value> -->
+			           <!-- 是否输出值为null的字段 -->
+			           <value>WriteMapNullValue</value>
+			           <!-- 数值字段如果为null,输出为0,而非null -->
+			           <!-- <value>WriteNullNumberAsZero</value> -->
+			           <!-- List字段如果为null,输出为[],而非null -->
+			           <!-- <value>WriteNullListAsEmpty</value> -->
+			           <!-- 字符类型字段如果为null,输出为"",而非null -->
+			           <!-- <value>WriteNullStringAsEmpty</value> -->
+			           <!-- Boolean字段如果为null,输出为false,而非null -->
+			           <!-- <value>WriteNullBooleanAsFalse</value> -->
+			           <!-- null String不输出  -->
+			           <!-- <value>WriteNullStringAsEmpty</value> -->
+			           <!-- null String也要输出  -->
+			           <!-- <value>WriteMapNullValue</value> -->
+			           <!-- Date的日期转换器  设置使用文本方式输出日期，fastjson默认是long-->
+			           <!--  <value>WriteDateUseDateFormat</value> -->
+			        </list>
+			    </property>
+        		<property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"></property>
+        	</bean>
+        </property>
+    </bean>
+	 
+	 
+
+		<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">   
+		    <property name="favorPathExtension" value="false" />  
+		    <property name="favorParameter" value="false" />   
+		    <property name="ignoreAcceptHeader" value="false" />   
+		    <property name="mediaTypes" >   
+		        <value>  
+		            atom=application/atom+xml  
+		            html=text/html  
+		            json=application/json  
+		            *=*/*  
+		        </value>   
+		    </property>  
+		 </bean> 
+
+	  <mvc:default-servlet-handler/> 
+
+
+	<!-- 对静态资源文件的访问  restful-->     
+	<!-- <mvc:resources mapping="/static/**" location="/,/static/" />
+	<mvc:resources mapping="/css/**" location="/,/css/" />
+	<mvc:resources mapping="/img/**" location="/,/img/" />
+	<mvc:resources mapping="/js/**" location="/,/js/" /> -->
+
+	<!--  <mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="com.shifeng.interceptor.LoginInterceptor"/>
+		</mvc:interceptor>
+	 </mvc:interceptors> -->
+	
+	
+<!-- 	
+	<mvc:interceptors>
+        使用bean定义一个Interceptor，直接定义在mvc:interceptors根下面的Interceptor将拦截所有的请求
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>            
+            需排除拦截的地址  
+            <mvc:exclude-mapping path="/" />
+            定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的
+            <bean class="com.shifeng.webapi.interceptor.TimeCostInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+	   -->  
+	
+    <context:component-scan base-package="com.shifeng.webapi.controller" >
+		<!-- 这里只扫描Controller，不可重复加载Service -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    
+    
+	
+	<bean id="ResponseBodyAdviceImp" class="com.shifeng.webapi.interceptor.ResponseBodyAdviceImpl" />
+
+       
+	<!-- 配置SpringMVC的视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+	 
+	 
+	 
+	    <!-- 配置验证码 -->
+    <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+        <property name="config">
+            <bean class="com.google.code.kaptcha.util.Config">
+                <constructor-arg>
+                    <props>
+                        <!-- 图片边框 -->
+                        <prop key="kaptcha.border">no</prop>
+                        <!-- 图片宽度 -->
+                        <prop key="kaptcha.image.width">120</prop>
+                        <!-- 图片高度 -->
+                        <prop key="kaptcha.image.height">45</prop>
+                        <!-- 验证码背景颜色渐变，开始颜色 -->
+                        <prop key="kaptcha.background.clear.from">248,248,248</prop>
+                        <!-- 验证码背景颜色渐变，结束颜色 -->
+                        <prop key="kaptcha.background.clear.to">248,248,248</prop>
+                        <!-- 验证码的字符 -->
+                        <prop key="kaptcha.textproducer.char.string">23456789abcdefghigkmnpqrstuvwxyzABCDEFGHIGKLMNPQRSTUVWXYZ</prop>
+                        <!-- 验证码字体颜色 -->
+                        <prop key="kaptcha.textproducer.font.color">0,0,255</prop>
+                        <!-- 验证码的效果，
+                        水纹 com.google.code.kaptcha.impl.WaterRipple 
+						鱼眼 com.google.code.kaptcha.impl.FishEyeGimpy
+						阴影 com.google.code.kaptcha.impl.ShadowGimpy-->
+                        <prop key="kaptcha.obscurificator.impl">com.google.code.kaptcha.impl.ShadowGimpy</prop>
+                        <!-- 验证码字体大小 -->
+                        <prop key="kaptcha.textproducer.font.size">30</prop>
+                        <!-- 验证码长度 -->
+                        <prop key="kaptcha.textproducer.char.length">5</prop>
+                        <!-- 验证码文字间距 -->
+                        <prop key="kaptcha.textproducer.char.space">2</prop>
+                        <!-- 验证码字体 -->
+                        <prop key="kaptcha.textproducer.font.names">new Font("Arial", 1, fontSize), new Font("Courier", 1, fontSize)</prop>
+                        <!-- 干扰线  com.google.code.kaptcha.impl.DefaultNoise           com.google.code.kaptcha.impl.NoNoise -->
+                        <prop key="kaptcha.noise.impl">com.google.code.kaptcha.impl.DefaultNoise</prop>
+                        <!-- 干扰 颜色，合法值： r,g,b 或者 white,black,blue -->
+                        <prop key="kaptcha.noise.color">blue</prop>
+                    </props>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
+	 
+	 <!-- 全局跨域请求配置 -->
+	 <mvc:cors>
+	    <mvc:mapping path="/**"
+	        allowed-origins="*"
+	        allowed-methods="POST, GET, OPTIONS, DELETE, PUT"
+	        allowed-headers="Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+	        allow-credentials="true" />
+	 </mvc:cors>
+	 
+	  <!-- 
+	  允许向该服务器提交请求的URI，*表示全部允许 
+	  allowed-origins="http://localhost:7777,http://192.168.1.177:7777" 
+	  -->
+	
+ 	 
+    
+</beans>

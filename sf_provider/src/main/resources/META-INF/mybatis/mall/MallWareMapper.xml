@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mallWareMapper">
+
+	<resultMap type="com.shifeng.dto.mall.ware.WareSkuDTO" id="MallWareDTOMap">
+	  <!-- 商品编号 -->
+      <id column="id" property="id"/>
+	  <!-- 店铺编号 -->
+      <result column="shopid" property="shopid"/>
+	  <!-- 店铺名称 -->
+      <result column="shopName" property="shopName"/>
+	  <!-- 店铺logo -->
+      <result column="shopLogo" property="shopLogo"/>
+	  <!-- 品牌编号 -->
+      <result column="brandid" property="brandid"/>
+	  <!-- 商品名称 -->
+      <result column="name" property="name"/>
+	  <!-- 店内推荐(1正常 2冻结) -->
+      <result column="recommend" property="recommend"/>
+	  <!-- 包装清单 -->
+      <result column="listing" property="listing"/>
+	  <!-- 商品参数 -->
+      <result column="parameter" property="parameter"/>
+	  <!-- 商品状态(1在售2下架3删除) -->
+      <result column="state" property="state"/>
+	  <!-- 售后服务 -->
+      <result column="after_service" property="after_service"/>
+	  <!-- 运费模板 -->
+      <result column="freight_master" property="freight_master"/>
+	  <!-- 副标题 -->
+      <result column="goods_subtitle" property="goods_subtitle"/>
+	  <!-- 商品主图 -->
+      <result column="logo" property="logo"/>
+	  <!-- 商品长度 -->
+      <result column="length" property="length"/>
+	  <!-- 商品宽度 -->
+      <result column="width" property="width"/>
+	  <!-- 商品高度 -->
+      <result column="highly" property="highly"/>
+	  <!-- 是否支持7天退换货 -->
+      <result column="is_seven_return" property="is_seven_return"/>
+	  <!-- 电脑描述 -->
+      <result column="description" property="description"/>
+	  <!-- 手机版描述 -->
+      <result column="phone_describe" property="phone_describe"/>
+      
+      
+      
+	  <!-- sku -->
+      <result column="sku" property="sku"/>
+	  <!-- 库存 -->
+      <result column="stocks" property="stocks"/>
+	  <!-- 重量 -->
+      <result column="weight" property="weight"/>
+	  <!-- 市场价 -->
+      <result column="marketprice" property="marketprice"/>
+	  <!-- 世峰价 -->
+      <result column="price" property="price"/>
+	  <!-- 颜色 -->
+      <result column="colorid" property="colorid"/>
+	  <!-- 颜色名称 -->
+      <result column="colorName" property="colorName"/>
+	  <!-- 规格 -->
+      <result column="specid" property="specid"/>
+	  <!-- 规格名称 -->
+      <result column="specName" property="specName"/>
+	  <!-- 开始时间 -->
+      <result column="starttime" property="starttime"/>
+	  <!-- 结束时间 -->
+      <result column="endtime" property="endtime"/>
+	  <!-- 活动类型 -->
+      <result column="activitytype" property="activitytype"/>
+	  <!-- 活动价 -->
+      <result column="activityprice" property="activityprice"/>
+	  <!-- 活动数量 -->
+      <result column="activitystocks" property="activitystocks"/>
+        <!-- 货号 -->
+       <result column="number" property="number"/>
+
+	  <collection property="imgList" ofType="String" column="{colorid=colorid,pid=id}" select="mallWareMapper.getColorImgsByid"></collection>
+		
+	</resultMap>
+	
+	<!-- 根据SKU获取商品基本信息和SKU信息 -->
+	<select id="getWareSku" parameterType="String" resultMap="MallWareDTOMap">
+		SELECT
+		  p.id,shopid, p.logo  AS shopLogo,s.name AS shopName,brandid,p.name,recommend,
+		  listing,parameter,p.state,after_service,goods_subtitle,p.logo,is_seven_return
+		  ,description,phone_describe,pr.number
+		  ,pr.sku,pr.stocks,pr.weight,pr.marketprice,pr.price,pr.colorid,pr.specid,c.name AS colorName,sp.name AS specName,pr.starttime,pr.endtime,pr.activitytype
+		  ,pr.activityprice,pr.activitystocks
+		FROM  p_product p
+		LEFT JOIN s_shopinfo s ON p.shopid = s.s_merchants_id
+		LEFT JOIN p_pro_rules pr ON p.id = pr.pid
+		LEFT JOIN p_color c ON pr.colorid = c.id
+		LEFT JOIN p_spec sp ON pr.specid = sp.id
+		WHERE
+		pr.sku = #{sku}
+	</select>
+	<!-- 根据颜色ID获取颜色图片列表 -->
+	<select id="getColorImgsByid" parameterType="java.util.Map" resultType="String">
+		SELECT
+		  ipath
+		FROM p_sku_images
+		WHERE
+		colorid = #{colorid} AND pid = #{pid}
+		ORDER BY sort ASC
+	</select>
+	
+
+	<resultMap type="com.shifeng.dto.mall.ware.SkusDTO" id="skusDTOMap">
+		<!-- 主键 -->
+		<id column="id" property="id" />
+		<!-- 名称 -->
+		<result column="descript" property="descript" />
+		<!-- url链接路径 -->
+		<result column="url" property="url" />
+		<!-- 图片 -->
+		<result column="image" property="image" />
+	</resultMap>
+	
+	
+	
+	
+	<select id="getSettlementWareSku" parameterType="java.util.List" resultType="com.shifeng.provide.entity.ware.WareSKU">
+	
+		SELECT
+			p.id ,pr.sku,pr.costprice,pr.marketprice,pr.price,pr.stocks,pr.colorid,pr.specid,pr.activitytype,pr.activityprice,pr.activitystocks
+			,c.name AS colorName,sp.name AS specName,si.ipath AS colorPic ,pr.lasttime,pr.starttime,pr.endtime
+			,weight,number
+			,shopid,brandid,pcid,cid,p.name AS pName,p.state,p.logo
+		FROM
+		    p_pro_rules pr
+		LEFT JOIN p_color c ON pr.colorid = c.id
+		LEFT JOIN p_sku_images si ON pr.colorid = si.colorid AND ismain = 1 AND pr.pid = si.pid
+		LEFT JOIN p_spec sp ON pr.specid = sp.id AND pr.pid = sp.pid
+		LEFT JOIN p_product p ON pr.pid = p.id
+		WHERE
+		    pr.sku IN 
+			<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+				 #{item.sku}
+			</foreach> 
+	
+	
+	</select>
+	
+	<!-- 更新sku库存（购买） -->
+	<update id="updateSkuStockFoeBuy" parameterType="java.util.Map">
+		update
+			p_pro_rules
+		set
+			stocks = stocks-#{buy_num}
+			,lasttime = NOW()
+			,updatename = '系统'
+		where
+			sku = #{sku}
+	</update>
+	
+	<!-- 更新商品更新时间（购买） -->
+	<update id="updateProductTimeFoeBuy" parameterType="int">
+		update
+			p_product
+		set
+			update_time = NOW()
+			,lasttime = NOW()
+			,updatename = '系统'
+		where
+			id = #{id}
+	</update>
+	
+	
+	
+	
+
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 店铺续费表(s_shopinfo_pay)Mapper -->
+<mapper namespace="shopinfopayMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	s_merchants_id,userid ,orderId ,pay_serial_number ,payAmount ,note ,status ,subTime ,remark ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.ShopinfoPay" id="ShopinfoPayReturnMap">
+	  <!-- 入驻id -->
+      <id column="s_merchants_id" property="s_merchants_id"/>
+	  <!-- 用户id -->
+      <result column="userid" property="userid"/>
+	  <!-- 订单id -->
+      <result column="orderId" property="orderId"/>
+	  <!-- 支付码 -->
+      <result column="pay_serial_number" property="pay_serial_number"/>
+	  <!-- 支付金额 -->
+      <result column="payAmount" property="payAmount"/>
+	  <!-- 说明 -->
+      <result column="note" property="note"/>
+	  <!-- 状态 -->
+      <result column="status" property="status"/>
+	  <!-- 提交时间 -->
+      <result column="subTime" property="subTime"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllShopinfoPayPage" parameterType="Page" resultMap="ShopinfoPayReturnMap">
+		select
+		p.s_merchants_id,p.userid ,p.orderId ,p.pay_serial_number ,p.payAmount ,p.note ,p.status ,p.subTime ,p.remark ,p.lasttime ,
+		p.updatename,s.name as shopname ,m.name
+		from 
+			s_shopinfo_pay p,s_shopinfo s,s_merchants_settled m
+		where p.s_merchants_id=m.id and s.s_merchants_id=m.id
+			<if test="t.shopname!=null and t.shopname!=''">
+				and s.name LIKE CONCAT(CONCAT('%', #{t.shopname}),'%')
+			</if>
+			<if test="t.name!=null and t.name!=''">
+				and m.name LIKE CONCAT(CONCAT('%', #{t.name}),'%')
+			</if>
+		order by subTime desc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findShopinfoPayById" parameterType="String" resultMap="ShopinfoPayReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_shopinfo_pay
+		where 
+			orderId = #{orderId}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateShopinfoPay" parameterType="com.shifeng.entity.shop.ShopinfoPay">
+		update 
+			s_shopinfo_pay 
+		set
+	      	payAmount = #{payAmount},
+	      	remark = #{remark},
+	      	reason = #{reason},
+	      	<if test="payAmount==0">
+	      	    status = 1,
+	      	</if>
+	      	lasttime = now(),
+	      	updatename = #{updatename}
+		 where
+			orderId = #{orderId}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveShopinfoPay" parameterType="com.shifeng.entity.shop.ShopinfoPay">
+		insert into s_shopinfo_pay
+			(
+		      userid, orderId, pay_serial_number, payAmount, note, status, subTime, remark, lasttime, updatename 
+			)
+		values
+			(
+		      #{userid},
+		      #{orderId},
+		      #{pay_serial_number},
+		      #{payAmount},
+		      #{note},
+		      #{status},
+		      #{subTime},
+		      #{remark},
+		      #{lasttime},
+		      #{updatename}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteShopinfoPay" parameterType="String">
+  		delete from s_shopinfo_pay
+  		where s_merchants_id = #{s_merchants_id}
+  	</delete>
+	
+</mapper>

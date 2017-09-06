@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 订单折扣表(o_orderInfo_discount)Mapper -->
+<mapper namespace="orderInfodiscountMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	orderId,type ,number ,discountMoney 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.order.OrderInfoDiscount" id="OrderInfoDiscountReturnMap">
+	  <!-- 订单编号 -->
+      <id column="orderId" property="orderId"/>
+	  <!-- 折扣类型（1为优惠券2世峰e卡） -->
+      <result column="type" property="type"/>
+	  <!-- 序号（者优惠券id或卡号） -->
+      <result column="number" property="number"/>
+	  <!-- 金额 -->
+      <result column="discountMoney" property="discountMoney"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllOrderInfoDiscountPage" parameterType="Page" resultMap="OrderInfoDiscountReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_orderInfo_discount
+		where 1=1
+			<if test="t.type!=null and t.type!=''">
+				and type = #{t.type}
+			</if>
+			<if test="t.number!=null and t.number!=''">
+				and number = #{t.number}
+			</if>
+			<if test="t.discountMoney!=null and t.discountMoney!=''">
+				and discountMoney = #{t.discountMoney}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findOrderInfoDiscountById" parameterType="String" resultMap="OrderInfoDiscountReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_orderInfo_discount
+		where 
+			orderId = #{orderId}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateOrderInfoDiscount" parameterType="com.shifeng.entity.order.OrderInfoDiscount">
+		update 
+			o_orderInfo_discount 
+		set
+	      	type = #{type},
+	      	number = #{number},
+	      	discountMoney = #{discountMoney}
+		 where
+			id = #{orderId}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveOrderInfoDiscount" parameterType="com.shifeng.entity.order.OrderInfoDiscount">
+		insert into o_orderInfo_discount
+			(
+		      type, number, discountMoney 
+			)
+		values
+			(
+		      #{type},
+		      #{number},
+		      #{discountMoney}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteOrderInfoDiscount" parameterType="String">
+  		delete from o_orderInfo_discount
+  		where id = #{orderId}
+  	</delete>
+	
+</mapper>

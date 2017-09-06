@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 产品表(p_product)Mapper -->
+<mapper namespace="productMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,shopid ,brandid ,pcid ,cid ,name ,recommend ,listing ,submit_time ,parameter ,
+    	state ,after_service ,rank ,freight_master ,goods_subtitle ,logo ,length ,width ,
+    	highly ,is_seven_return ,update_time ,upshelf_time ,downshelf_time ,keywords ,
+    	description ,phone_describe ,lasttime ,updatename ,remark ,origin,upc
+    </sql>
+
+    <resultMap type="com.shifeng.entity.product.Product" id="ProductReturnMap">
+	  <!-- 商品编号 -->
+      <id column="id" property="id"/>
+	  <!-- 店铺编号 -->
+      <result column="shopid" property="shopid"/>
+	  <!-- 品牌编号 -->
+      <result column="brandid" property="brandid"/>
+	  <!-- 父分类属性编号 -->
+      <result column="pcid" property="pcid"/>
+	  <!-- 分类属性编号 -->
+      <result column="cid" property="cid"/>
+	  <!-- 商品名称 -->
+      <result column="name" property="name"/>
+	  <!-- 店内推荐(1正常 2冻结) -->
+      <result column="recommend" property="recommend"/>
+	  <!-- 包装清单 -->
+      <result column="listing" property="listing"/>
+	  <!-- 提交时间 -->
+      <result column="submit_time" property="submit_time"/>
+	  <!-- 商品参数 -->
+      <result column="parameter" property="parameter"/>
+	  <!-- 商品状态(1在售2下架3删除) -->
+      <result column="state" property="state"/>
+	  <!-- 售后服务 -->
+      <result column="after_service" property="after_service"/>
+	  <!-- 排序 -->
+      <result column="rank" property="rank"/>
+	  <!-- 运费模板 -->
+      <result column="freight_master" property="freight_master"/>
+	  <!-- 副标题 -->
+      <result column="goods_subtitle" property="goods_subtitle"/>
+	  <!-- 商品主图 -->
+      <result column="logo" property="logo"/>
+	  <!-- 商品长度 -->
+      <result column="length" property="length"/>
+	  <!-- 商品宽度 -->
+      <result column="width" property="width"/>
+	  <!-- 商品高度 -->
+      <result column="highly" property="highly"/>
+	  <!-- 是否支持7天退换货 -->
+      <result column="is_seven_return" property="is_seven_return"/>
+	  <!-- 更新时间 -->
+      <result column="update_time" property="update_time"/>
+	  <!-- 上架时间 -->
+      <result column="upshelf_time" property="upshelf_time"/>
+	  <!-- 下架时间 -->
+      <result column="downshelf_time" property="downshelf_time"/>
+	  <!-- 关键字 -->
+      <result column="keywords" property="keywords"/>
+	  <!-- 电脑描述 -->
+      <result column="description" property="description"/>
+	  <!-- 手机版描述 -->
+      <result column="phone_describe" property="phone_describe"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+      <!-- 产地 -->
+      <result column="origin" property="origin"/>
+      <!-- upc编码 -->
+      <result column="upc" property="upc"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllProductPage" parameterType="Page" resultType="com.shifeng.op.dto.product.ProductDTO">
+		select
+			<include refid="Base_Column_List"></include>
+        ,(select name from b_brand where id=p.brandid)as brandName,
+        (select name from s_shopinfo where s_merchants_id=p.shopid)as shopName,
+        (select descript from c_category where id=p.cid)as categoryName
+		from 
+			p_product p
+
+		where 1=1
+			<if test="t.shopid!=null and t.shopid!=''">
+				and shopid = #{t.shopid}
+			</if>
+			<if test="t.brandid!=null and t.brandid!=''">
+				and brandid = #{t.brandid}
+			</if>
+			<if test="t.pcid!=null and t.pcid!=''">
+				and pcid = #{t.pcid}
+			</if>
+			<if test="t.cid!=null and t.cid!=''">
+				and cid = #{t.cid}
+			</if>
+			<if test="t.name!=null and t.name!=''">
+				and name LIKE CONCAT(CONCAT('%', #{t.name}),'%')
+			</if>
+			<if test="t.id!=null and t.id!=''">
+				and id = #{t.id}
+			</if>
+			<if test="t.listing!=null and t.listing!=''">
+				and listing = #{t.listing}
+			</if>
+			<if test="t.submit_time!=null and t.submit_time!=''">
+				and submit_time = #{t.submit_time}
+			</if>
+			<if test="t.parameter!=null and t.parameter!=''">
+				and parameter = #{t.parameter}
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and state = #{t.state}
+			</if>
+			<if test="t.after_service!=null and t.after_service!=''">
+				and after_service = #{t.after_service}
+			</if>
+			<if test="t.rank!=null and t.rank!=''">
+				and rank = #{t.rank}
+			</if>
+			<if test="t.freight_master!=null and t.freight_master!=''">
+				and freight_master = #{t.freight_master}
+			</if>
+			<if test="t.goods_subtitle!=null and t.goods_subtitle!=''">
+				and goods_subtitle = #{t.goods_subtitle}
+			</if>
+			<if test="t.logo!=null and t.logo!=''">
+				and logo = #{t.logo}
+			</if>
+			<if test="t.length!=null and t.length!=''">
+				and length = #{t.length}
+			</if>
+			<if test="t.width!=null and t.width!=''">
+				and width = #{t.width}
+			</if>
+			<if test="t.highly!=null and t.highly!=''">
+				and highly = #{t.highly}
+			</if>
+			<if test="t.is_seven_return!=null and t.is_seven_return!=''">
+				and is_seven_return = #{t.is_seven_return}
+			</if>
+			<if test="t.update_time!=null and t.update_time!=''">
+				and update_time = #{t.update_time}
+			</if>
+			<if test="t.upshelf_time!=null and t.upshelf_time!=''">
+				and upshelf_time = #{t.upshelf_time}
+			</if>
+			<if test="t.downshelf_time!=null and t.downshelf_time!=''">
+				and downshelf_time = #{t.downshelf_time}
+			</if>
+			<if test="t.keywords!=null and t.keywords!=''">
+				and keywords = #{t.keywords}
+			</if>
+			<if test="t.description!=null and t.description!=''">
+				and description = #{t.description}
+			</if>
+			<if test="t.phone_describe!=null and t.phone_describe!=''">
+				and phone_describe = #{t.phone_describe}
+			</if>
+			<if test="t.lasttime!=null and t.lasttime!=''">
+				and lasttime = #{t.lasttime}
+			</if>
+			<if test="t.updatename!=null and t.updatename!=''">
+				and updatename = #{t.updatename}
+			</if>
+			<if test="t.remark!=null and t.remark!=''">
+				and remark = #{t.remark}
+			</if>
+		order by lasttime desc ,submit_time desc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findProductById" parameterType="String" resultMap="ProductReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_product
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateProduct" parameterType="com.shifeng.entity.product.Product">
+		update 
+			p_product 
+		set
+	      	shopid = #{shopid},
+	      	brandid = #{brandid},
+	      	pcid = #{pcid},
+	      	cid = #{cid},
+	      	name = #{name},
+	      	recommend = #{recommend},
+	      	listing = #{listing},
+	      	submit_time = #{submit_time},
+	      	parameter = #{parameter},
+	      	state = #{state},
+	      	after_service = #{after_service},
+	      	rank = #{rank},
+	      	freight_master = #{freight_master},
+	      	goods_subtitle = #{goods_subtitle},
+	      	logo = #{logo},
+	      	length = #{length},
+	      	width = #{width},
+	      	highly = #{highly},
+	      	is_seven_return = #{is_seven_return},
+	      	update_time = #{update_time},
+	      	upshelf_time = #{upshelf_time},
+	      	downshelf_time = #{downshelf_time},
+	      	keywords = #{keywords},
+	      	description = #{description},
+	      	phone_describe = #{phone_describe},
+	      	lasttime = #{lasttime},
+	      	updatename = #{updatename},
+	      	remark = #{remark},
+	      	origin = #{origin},
+	      	upc = #{upc}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveProduct" parameterType="com.shifeng.entity.product.Product">
+		insert into p_product
+			(
+		      shopid, brandid, pcid, cid, name, recommend, listing, submit_time, parameter, state, after_service, rank, freight_master, goods_subtitle, logo, length, width, highly, is_seven_return, update_time, upshelf_time, downshelf_time, keywords, description, phone_describe, lasttime, updatename, remark ,origin,upc
+			)
+		values
+			(
+		      #{shopid},
+		      #{brandid},
+		      #{pcid},
+		      #{cid},
+		      #{name},
+		      #{recommend},
+		      #{listing},
+		      #{submit_time},
+		      #{parameter},
+		      #{state},
+		      #{after_service},
+		      #{rank},
+		      #{freight_master},
+		      #{goods_subtitle},
+		      #{logo},
+		      #{length},
+		      #{width},
+		      #{highly},
+		      #{is_seven_return},
+		      #{update_time},
+		      #{upshelf_time},
+		      #{downshelf_time},
+		      #{keywords},
+		      #{description},
+		      #{phone_describe},
+		      #{lasttime},
+		      #{updatename},
+		      #{remark},
+		      #{origin},
+		      #{upc}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteProduct" parameterType="String">
+  		delete from p_product
+  		where id = #{id}
+  	</delete>
+	<update id="updateProductState" parameterType="map">
+        update p_product set state=#{state},updatename=#{updatename},lasttime=now()
+        where id in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

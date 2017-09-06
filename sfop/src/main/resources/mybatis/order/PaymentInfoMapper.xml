@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 支付表(o_paymentInfo)Mapper -->
+<mapper namespace="paymentInfoMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,pay_serial_number ,paymentType ,businessName ,totalMoney ,userId ,tradeNo ,notifyTime ,subTime ,tradeStatus 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.order.PaymentInfo" id="PaymentInfoReturnMap">
+	  <!-- 主键 -->
+      <id column="id" property="id"/>
+	  <!-- 支付码 -->
+      <result column="pay_serial_number" property="pay_serial_number"/>
+	  <!-- 支付方式 -->
+      <result column="paymentType" property="paymentType"/>
+	  <!-- 支付方式名称 -->
+      <result column="businessName" property="businessName"/>
+	  <!-- 金额 -->
+      <result column="totalMoney" property="totalMoney"/>
+	  <!-- 购买者编号 -->
+      <result column="userId" property="userId"/>
+	  <!-- 支付流水号 -->
+      <result column="tradeNo" property="tradeNo"/>
+	  <!-- 支付时间 -->
+      <result column="notifyTime" property="notifyTime"/>
+	  <!-- 提交时间 -->
+      <result column="subTime" property="subTime"/>
+	  <!-- 支付状态 -->
+      <result column="tradeStatus" property="tradeStatus"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllPaymentInfoPage" parameterType="Page" resultMap="PaymentInfoReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_paymentInfo
+		where 1=1
+			<if test="t.pay_serial_number!=null and t.pay_serial_number!=''">
+				and pay_serial_number = #{t.pay_serial_number}
+			</if>
+			<if test="t.paymentType!=null and t.paymentType!=''">
+				and paymentType = #{t.paymentType}
+			</if>
+			<if test="t.businessName!=null and t.businessName!=''">
+				and businessName = #{t.businessName}
+			</if>
+			<if test="t.totalMoney!=null and t.totalMoney!=''">
+				and totalMoney = #{t.totalMoney}
+			</if>
+			<if test="t.userId!=null and t.userId!=''">
+				and userId = #{t.userId}
+			</if>
+			<if test="t.tradeNo!=null and t.tradeNo!=''">
+				and tradeNo = #{t.tradeNo}
+			</if>
+			<if test="t.notifyTime!=null and t.notifyTime!=''">
+				and notifyTime = #{t.notifyTime}
+			</if>
+			<if test="t.subTime!=null and t.subTime!=''">
+				and subTime = #{t.subTime}
+			</if>
+			<if test="t.tradeStatus!=null and t.tradeStatus!=''">
+				and tradeStatus = #{t.tradeStatus}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findPaymentInfoById" parameterType="String" resultMap="PaymentInfoReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_paymentInfo
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updatePaymentInfo" parameterType="com.shifeng.entity.order.PaymentInfo">
+		update 
+			o_paymentInfo 
+		set
+	      	pay_serial_number = #{pay_serial_number},
+	      	paymentType = #{paymentType},
+	      	businessName = #{businessName},
+	      	totalMoney = #{totalMoney},
+	      	userId = #{userId},
+	      	tradeNo = #{tradeNo},
+	      	notifyTime = #{notifyTime},
+	      	subTime = #{subTime},
+	      	tradeStatus = #{tradeStatus}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="savePaymentInfo" parameterType="com.shifeng.entity.order.PaymentInfo">
+		insert into o_paymentInfo
+			(
+		      pay_serial_number, paymentType, businessName, totalMoney, userId, tradeNo, notifyTime, subTime, tradeStatus 
+			)
+		values
+			(
+		      #{pay_serial_number},
+		      #{paymentType},
+		      #{businessName},
+		      #{totalMoney},
+		      #{userId},
+		      #{tradeNo},
+		      #{notifyTime},
+		      #{subTime},
+		      #{tradeStatus}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deletePaymentInfo" parameterType="String">
+  		delete from o_paymentInfo
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/order.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/validate/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/static/js/validate/messages_zh.min.js"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/validate/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="/static/js/validate/messages_zh.min.js"></script>
+    <script src="/static/js/order/cartorder.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'结算页'}){}%>
+<% include("/detailnav.btl"){}%>
+    <div class="boxw clearfix">
+        <div class=" box-title">
+            <h2>选择收货地址</h2>
+            <div class="fr"><a style="cursor: pointer" class="btn-edit" href="/my/address.html"  target="_blank" ><i class="icon-edit"></i>管理收货地址</a><a href="javascript:void(0)" class="btn-add"><i class="icon-add"></i>新增收货地址</a></div>
+        </div>
+        <form id="addressform">
+            <input type="hidden" name="first" value="2">
+        <div class="form-address" style="display:none;">
+            <dl>
+                <dd style="padding-left:30px;">
+                	省：<select class="form-control" required id="province" name="province">
+						<option value="">请选择</option>
+						<%if(!isEmpty(provinces))
+							for(province in provinces){
+						%>
+							<option value="${province.id}">${province.name}</option>
+						<%}%>
+                    </select>
+					市：<select  class="form-control" required id="city" name="city">
+						<option value="">请选择</option>
+					</select>
+					区：<select class="form-control" required id="area" name="area">
+						<option value="">请选择</option>
+					</select>
+				</dd>
+			</dl>
+            <dl><dt>详细地址：</dt><dd><textarea class="form-control" style="width:1000px" required name="address" id="address"></textarea></dd></dl>
+            <dl><dt>收货人：</dt><dd><input name="contacts" id="contacts" type="text" class="form-control w120" required/></dd></dl>
+            <dl><dt>手机号码：</dt><dd><input name="phone" id="phone" type="text" class="form-control w120" required/></dd></dl>
+            <div class="btn-area"><a href="javascript:void(0)" class="btn-confirm" id="addressbtn">确认地址</a><a href="javascript:void(0)" class="btn-cancel">取消</a></div>
+        </div>
+        </form>
+
+        <div class="address-list clearfix">
+
+
+        </div>
+        <div class="address-more"><a href="javascript:void(0)">显示全部地址<i class="arrow-down"></i></a></div>
+        <div class="box-title">
+            <h2>确认商品信息</h2>
+            <input type="hidden" id="skucheck" value="${skuchecks}"/>
+        	<input type="hidden" id="goodsNumberInput" value="${goodsNumberInputs}"/>
+        	<input type="hidden" id="cart" value="${carts}"/>
+        </div>
+
+        <div class="goods-list clearfix">
+        </div>
+        <div class="box-title">
+            <h2>发票信息</h2>
+        </div>
+        <div class="invoice-info">
+            <span id="type" data_id="1">普通发票（纸质）</span> <span id="paymentsUnit" data_id="0">个人</span> <span>明细</span>
+            <a style="cursor: pointer" class="link-edit">修改</a>
+        </div>
+        <div class="box-title">
+            <h2>优惠方式</h2>
+        </div>
+        <div class="coupons">优惠券<i class="arrow-down"></i></div>
+        <div class="coupons-list clearfix">
+            <!--<div class="item">
+                <div class="c-txt"><span class="num">¥30</span><span>满¥199</span></div>
+                <div class="c-date">有效期至2017.5.31</div>
+            </div>
+            <div class="item">
+                <div class="c-txt"><span class="num">¥30</span><span>满¥199</span></div>
+                <div class="c-date">有效期至2017.5.31</div>
+            </div>
+            <div class="item">
+                <div class="c-txt"><span class="num">¥30</span><span>满¥199</span></div>
+                <div class="c-date">有效期至2017.5.31</div>
+            </div>
+            <div class="item">
+                <div class="c-txt"><span class="num">¥30</span><span>满¥199</span></div>
+                <div class="c-date">有效期至2017.5.31</div>
+            </div>-->
+        </div>
+        <div class="card-e">世峰E卡<i class="arrow-down"></i></div>
+        <div class="card-e-list clearfix">
+           <!-- <div class="item">
+                <ins>RMB</ins><span>80</span>
+            </div>
+            <div class="item">
+                <ins>RMB</ins><span>80</span>
+            </div>
+            <div class="item">
+                <ins>RMB</ins><span>80</span>
+            </div>
+            <div class="item">
+                <ins>RMB</ins><span>80</span>
+            </div>-->
+        </div>
+        <div class="order-summary clearfix">
+            <div class="statistic fr">
+                <div class="list">
+                    <span id="allnum"></span>
+                    <em class="price" id="allprice"> </em>
+                </div>
+                <div class="list">
+                    <span>优惠券抵扣：</span>
+                    <em class="price">¥0.00</em>
+                </div>
+                <div class="list">
+                    <span>世峰E卡抵扣：</span>
+                    <em class="price">¥0.00</em>
+                </div>
+                <div class="list">
+                    <span>运费：</span>
+                    <em class="price" id="allfreight"> </em>
+                </div>
+            </div>
+        </div>
+        <div class="order-toolbar">
+            <div class="fl"><a href="/my/cart" class="btn-return"><i class="icon-return"></i>返回购物车</a></div>
+            <div class="fr"><span id="allnums"></span><span class="total">总计：<b class="txt-red-24" id="allPriceFreight"></b></span><a style="cursor: pointer" class="btn-pay">确认并支付</a></div>
+        </div>
+    </div>
+    <!--弹出框 -->
+    <div class="pop-box" style="display: none">
+        <div class="mt"><h1>发票信息</h1><a style="cursor: pointer" class="close closessss" title="关闭"></a></div>
+        <div class="mc">
+            <dl class="clearfix" id="invoice_type">
+                <dt>发票类型：</dt>
+                <dd><a class="options selected" data_type="1">普通发票<i></i></a></dd>
+                <dd><a class="options" data_type="2">增值税发票<i></i></a></dd>
+            </dl>
+        	<dl class="clearfix" id="invoice_title">
+                <dt>发票抬头：</dt>
+                <div id="allinvoice" style="max-height:140px;overflow-x: auto;">
+                	<dd class="invoice">
+	                    <a data_id="0" class="options width selected">
+	                    	<input readonly="true" style="margin-left: 10px;" value="个人"/>
+	                    	<i></i>
+	                    </a>
+	                </dd>
+	                
+	                <%
+	                	var vatinvoice;
+	                	if(!isEmpty(invoices)){
+							for(invoice in invoices){
+								if(invoice.type=="1"){
+					%>
+						<dd class="invoice">
+		                    <a data_id="${invoice.id}" class="options width">
+		                    	<input readonly="true" value="${invoice.paymentsUnit}"/>
+		                    	<span id="updateinvoice">编辑</span>
+		                    	<span id="deleteinvoice">删除</span>
+		                    	<i></i>
+		                    </a>
+		                </dd>
+					<%
+								}else{
+									vatinvoice = invoice;
+								}
+							}
+						}
+					%>
+	                
+                </div>
+            	<dd class="invoice" style="margin-left: 90px;">
+                    <span id="addinvoice">新增单位发票</span>
+                </dd>
+            </dl>
+            
+            <div id="invoice_adv" style="display:none;">
+	            <dl class="clearfix">
+	                <dt>开票方式：</dt>
+	                <dd>
+	                	<a class="options selected" style="width: 110px;">订单完成后开票<i></i></a>
+	                </dd>
+	            </dl>
+            	
+            	<dl class="clearfix">
+	                <dt>发票内容：</dt>
+	                <dd>
+	                	<a class="options selected">明细<i></i></a>
+	                </dd>
+	            </dl>
+	            
+	            <!-- <ul class="invoice-status ml40">
+        			<li data="1" class="fore curr">1.选择开票方式</li>
+        			<li class="gap curr"></li>
+        			<li data="2" class="fore">2.填写或核对公司信息</li>
+        			<li class="gap"></li>
+        			<li data="3" class="fore">3.填写收票人信息</li>
+      			</ul> -->
+	            
+	            <div class="adv_content">
+					<form id="advform">
+		            	<input type="hidden" id="vatid" name="id">
+		            	
+						<dl class="clearfix">
+			                <dt><em style="color:red;">*</em>单位名称：</dt>
+			                <dd>
+			                	<input type="text" id="vat_companyName" name="vat_companyName" value="<%if(!isEmpty(vatinvoice)){%>${vatinvoice.vat_companyName}<%}%>"/>
+			                </dd>
+			            </dl>
+			            <dl class="clearfix">
+			                <dt><em style="color:red;">*</em>纳税人识别码：</dt>
+			                <dd>
+			                	<input type="text" id="vat_code" name="vat_code" value="<%if(!isEmpty(vatinvoice)){%>${vatinvoice.vat_code}<%}%>"/>
+			                </dd>
+			            </dl>
+			            <dl class="clearfix">
+			                <dt><em style="color:red;">*</em>注册地址：</dt>
+			                <dd>
+			                	<input type="text" id="vat_address" name="vat_address" value="<%if(!isEmpty(vatinvoice)){%>${vatinvoice.vat_address}<%}%>"/>
+			                </dd>
+			            </dl>
+			            <dl class="clearfix">
+			                <dt><em style="color:red;">*</em>注册电话：</dt>
+			                <dd>
+			                	<input type="text" id="vat_phone" name="vat_phone" value="<%if(!isEmpty(vatinvoice)){%>${vatinvoice.vat_phone}<%}%>"/>
+			                </dd>
+			            </dl>
+			            <dl class="clearfix">
+			                <dt><em style="color:red;">*</em>开户银行：</dt>
+			                <dd>
+			                	<input type="text" id="vat_bankName" name="vat_bankName" value="<%if(!isEmpty(vatinvoice)){%>${vatinvoice.vat_bankName}<%}%>"/>
+			                </dd>
+			            </dl>
+			            <dl class="clearfix">
+			                <dt><em style="color:red;">*</em>银行账户：</dt>
+			                <dd>
+			                	<input type="text" id="vat_bankAccount" name="vat_bankAccount" value="<%if(!isEmpty(vatinvoice)){%>${vatinvoice.vat_bankAccount}<%}%>"/>
+			                </dd>
+			            </dl>
+					</form>
+				</div>
+            </div>
+            
+            <div class="btns" id="btn_title">
+            	<a class="btn-confirm submiti" style="cursor: pointer">确认</a>
+                <a class="btn-cancel closessss" style="cursor: pointer">取消</a>
+            </div>
+            
+            <div class="tips">注：开票金额不包括优惠券、世峰E卡等支付部分。</div>
+        </div>
+    </div>
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+</body>
+</html>

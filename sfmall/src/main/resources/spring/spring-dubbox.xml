@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://code.alibabatech.com/schema/dubbo
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+	<dubbo:application name="sfop"  owner="WinZhong" organization="dubbox"/>
+	<!-- 使用multicast广播注册中心暴露发现服务地址 -->
+	<dubbo:registry address="${zk.address}"  />
+	<!-- 生成远程服务代理，可以和本地bean一样使用Service -->
+	<dubbo:reference id="sysUserService" interface="com.shifeng.provide.sysuser.service.SysUserService" check="false" />
+	
+		<!-- 阿里服务-->
+	<dubbo:reference id="aliService" interface="com.shifeng.provide.ali.service.AliService" check="false" />
+	<!-- 系统Service -->
+	<dubbo:reference id="systemService" interface="com.shifeng.provide.system.service.SystemService" check="false"  />
+	<!-- 商城商品Service -->
+	<dubbo:reference id="mallWareService" interface="com.shifeng.provide.mall.service.MallWareService" check="false" />
+	<!-- 导航服务 -->
+	<dubbo:reference id="navigationService" interface="com.shifeng.provide.navigation.service.NavigationService" check="false" />
+	<!-- 商城搜索Service -->
+	<dubbo:reference id="mallSearchService" interface="com.shifeng.provide.search.MallSearchService" check="false" />
+	<!-- 商城商品评价Service -->
+	<dubbo:reference id="mallWareCommentService" interface="com.shifeng.provide.mall.service.MallWareCommentService" check="false" />
+	<!-- 优惠券Service -->
+	<dubbo:reference id="couponService" interface="com.shifeng.provide.coupon.service.CouponService" check="false" />
+	<!-- 商城购物车Service -->
+	<dubbo:reference id="mallCartService" interface="com.shifeng.provide.mall.service.MallCartService" check="false" />
+	<!-- 意见反馈Service -->
+	<dubbo:reference id="mallFeedbackService" interface="com.shifeng.provide.mall.service.MallFeedbackService" check="false" />
+
+	<!-- 关注商品Service -->
+	<dubbo:reference id="mallFollowWareService" interface="com.shifeng.provide.mall.service.MallFollowWareService" check="false" />
+
+	<!-- 关注店铺Service -->
+	<dubbo:reference id="mallFollowVenderService" interface="com.shifeng.provide.mall.service.MallFollowVenderService" check="false" />
+
+	<!-- 收货地址服务-->
+	<dubbo:reference id="buyAddressService" interface="com.shifeng.provide.usercenter.service.BuyAddressService" />
+	<!-- 商城订单Service -->
+	<dubbo:reference id="mallOrderService" interface="com.shifeng.provide.mall.service.MallOrderService" check="false" />
+	<!-- 商城运费Service -->
+	<dubbo:reference id="mallFreightService" interface="com.shifeng.provide.mall.service.MallFreightService" check="false" />
+	<!-- 商城发票Service -->
+	<dubbo:reference id="mallUserInvoiceService" interface="com.shifeng.provide.mall.service.MallUserInvoiceService" check="false" />
+
+	<!-- 快递查询Service -->
+	<dubbo:reference id="expressService" interface="com.shifeng.provide.express.ExpressService" check="false" />
+	<!-- 店铺Service -->
+	<dubbo:reference id="mallShopService" interface="com.shifeng.provide.mall.service.MallShopService" check="false" />
+
+	<!-- 分销Service -->
+	<dubbo:reference id="distributorService" interface="com.shifeng.provide.distributor.service.DistributorService" check="false" />
+	<!-- 分销Service -->
+	<dubbo:reference id="mallFxService" interface="com.shifeng.provide.mall.service.MallFxService" check="false" />
+	
+</beans>

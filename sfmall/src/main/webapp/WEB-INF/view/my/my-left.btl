@@ -1,0 +1,76 @@
+	<div class="fl leftbar">
+		<dl>
+			<dt class="one">
+				<i class="t7"></i>订单管理
+			</dt>
+			<dd <%if(type=="我的订单"){%>class="current"<%}%>>
+				<a href="/my/order.html">我的订单</a>
+			</dd>
+			<!-- <dd>
+				<a href="#">团购订单</a>
+			</dd> -->
+			<dd <%if(type=="我的关注"){%>class="current"<%}%>>
+				<a href="/my/goodscollect.html">我的关注</a>
+			</dd>
+			<!-- <dd>
+				<a href="#">浏览记录</a>
+			</dd>
+			<dd>
+				<a href="#">为我推荐</a>
+			</dd> -->
+		</dl>
+		<dl>
+			<dt>
+				<i class="t8"></i>账户中心
+			</dt>
+			<dd <%if(type=="我的世峰"){%>class="current"<%}%>>
+				<a href="/my/index.html">我的世峰</a>
+			</dd>
+			<dd <%if(type=="账户信息"){%>class="current"<%}%>>
+				<a href="/my/userInfo.html">账户信息</a>
+			</dd>
+			<dd <%if(type=="账户安全"){%>class="current"<%}%>>
+				<a href="/my/userSecurity.html">账户安全</a>
+			</dd>
+			<!-- <dd>
+				<a href="#">消费记录</a>
+			</dd>
+			<dd>
+				<a href="#">我的积分</a>
+			</dd>
+			<dd>
+				<a href="#">优惠券</a>
+			</dd> -->
+			<dd <%if(type=="收货地址"){%>class="current"<%}%>>
+				<a href="/my/address.html">收货地址</a>
+			</dd>
+		</dl>
+		<dl>
+			<dt>
+				<i class="t9"></i>我的分销
+			</dt>
+			<dd <%if(type=="分销订单"){%>class="current"<%}%>>
+				<a href="/my/distributorOrder.html">分销订单</a>
+			</dd>
+			<dd <%if(type=="提现"){%>class="current"<%}%>>
+				<a href="/my/withdraw.html">提现</a>
+			</dd>
+			<dd <%if(type=="我的分销商"){%>class="current"<%}%>>
+				<a href="/my/distributor.html">我的分销商</a>
+			</dd>
+		</dl>
+		<!-- <dl>
+			<dt>
+				<i class="t10"></i>客户服务
+			</dt>
+			<dd>
+				<a href="#">返修/退换货</a>
+			</dd>
+			<dd>
+				<a href="#">我的留言</a>
+			</dd>
+			<dd>
+				<a href="#">我的挑错</a>
+			</dd>
+		</dl> -->
+	</div>

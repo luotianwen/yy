@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 系统banner(sys_banner)Mapper -->
+<mapper namespace="sysbannerMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,name ,imgPath ,imgLink ,module ,sort ,state ,lasttime ,updatename ,remark 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.system.SysBanner" id="SysBannerReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 名称 -->
+      <result column="name" property="name"/>
+	  <!-- 图片地址 -->
+      <result column="imgPath" property="imgPath"/>
+	  <!-- 链接 -->
+      <result column="imgLink" property="imgLink"/>
+	  <!-- 类型 -->
+      <result column="module" property="module"/>
+	  <!-- 序号 -->
+      <result column="sort" property="sort"/>
+	  <!-- 状态 -->
+      <result column="state" property="state"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+   </resultMap>
+   
+   	<!-- 获取banner列表 -->
+	<select id="getBannerList" resultType="com.shifeng.webapi.dto.homepage.BannerDTO">
+		select
+			name,imgPath,imgLink,sort
+		from 
+			sys_banner
+		where  
+			module = 2
+		and
+			state = 1	
+		order by sort asc	 
+	</select>
+
+	 
+	
+</mapper>

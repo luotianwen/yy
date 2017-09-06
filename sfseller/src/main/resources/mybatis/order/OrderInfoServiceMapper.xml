@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 订单售后(o_orderInfo_service)Mapper -->
+<mapper namespace="orderInfoserviceMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,orderId ,userId ,receiveName ,address ,productName ,productImage ,
+    	color ,spec ,sku ,state ,type ,cexpressId ,cnumber ,cnote ,creason ,
+    	description ,expressId ,number ,note ,phone ,subTime ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.order.OrderInfoService" id="OrderInfoServiceReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- orderId -->
+      <result column="orderId" property="orderId"/>
+	  <!-- 用户编号 -->
+      <result column="userId" property="userId"/>
+	  <!-- 买家姓名 -->
+      <result column="receiveName" property="receiveName"/>
+	  <!-- 地址 -->
+      <result column="address" property="address"/>
+	  <!-- 商品名称 -->
+      <result column="productName" property="productName"/>
+	  <!-- 商品图片 -->
+      <result column="productImage" property="productImage"/>
+	  <!-- 颜色 -->
+      <result column="color" property="color"/>
+	  <!-- 规格 -->
+      <result column="spec" property="spec"/>
+	  <!-- sku -->
+      <result column="sku" property="sku"/>
+	  <!-- 状态 -->
+      <result column="state" property="state"/>
+	  <!-- 类型 -->
+      <result column="type" property="type"/>
+	  <!-- 客户发货快递编号 -->
+      <result column="cexpressId" property="cexpressId"/>
+	  <!-- 客户快递单号 -->
+      <result column="cnumber" property="cnumber"/>
+	  <!-- 客户发货备注 -->
+      <result column="cnote" property="cnote"/>
+	  <!-- 客户退换货原因 -->
+      <result column="creason" property="creason"/>
+	  <!-- 问题描述 -->
+      <result column="description" property="description"/>
+	  <!-- 快递编号 -->
+      <result column="expressId" property="expressId"/>
+	  <!-- 快递单号 -->
+      <result column="number" property="number"/>
+	  <!-- 审核备注 -->
+      <result column="note" property="note"/>
+	  <!-- 收货人电话 -->
+      <result column="phone" property="phone"/>
+      <!-- 提交时间 -->
+      <result column="subTime" property="subTime"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllOrderInfoServicePage" parameterType="Page" resultMap="OrderInfoServiceReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_orderInfo_service
+		where 1=1
+			<if test="t.state>0 and t.state!=4 and t.state!=8">
+			    and state = #{t.state}
+			</if>
+			<if test="t.state == 4">
+			    and (state = 4 or state = 5)
+			</if>
+			<if test="t.state == 8">
+			    and state != 2 and state !=7
+			</if>
+		order by id desc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findOrderInfoServiceById" parameterType="String" resultMap="OrderInfoServiceReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_orderInfo_service
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateOrderInfoService" parameterType="com.shifeng.entity.order.OrderInfoService">
+		update 
+			o_orderInfo_service 
+		set
+			<if test="state>0">
+			    state = #{state},
+			</if>
+	      	<if test="address!=null and address!=''">
+	      	    address = #{address},
+	      	</if>
+	      	<if test="note!=null and note!=''">
+	      	    note = #{note},
+	      	</if>
+	      	lasttime = now(),
+	      	updatename = #{updatename}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveOrderInfoService" parameterType="com.shifeng.entity.order.OrderInfoService">
+		insert into o_orderInfo_service
+			(
+				orderId, userId, receiveName, address, productName, productImage, color, spec, sku, state, type, cexpressId, cnumber, cnote, creason, description, expressId, number, note, phone, subTime, lasttime, updatename 
+			)
+		values
+			(
+		      #{orderId},
+		      #{userId},
+		      #{receiveName},
+		      #{address},
+		      #{productName},
+		      #{productImage},
+		      #{color},
+		      #{spec},
+		      #{sku},
+		      #{state},
+		      #{type},
+		      #{cexpressId},
+		      #{cnumber},
+		      #{cnote},
+		      #{creason},
+		      #{description},
+		      #{expressId},
+		      #{number},
+		      #{note},
+		      #{phone},
+		      now(),
+		      now(),
+		      #{updatename}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteOrderInfoService" parameterType="String">
+  		delete from o_orderInfo_service
+  		where id = #{id}
+  	</delete>
+	
+  	<!-- 修改快递信息 -->
+	<update id="updateShipments" parameterType="java.util.Map">
+		update 
+			o_orderInfo_service 
+		set
+			<if test="type==1">
+			    state = 4,
+			    cexpressId = #{expressId},
+			    cnumber = #{number},
+			</if>
+			<if test="type==2">
+			    state = 6,
+			    expressId = #{expressId},
+			    number = #{number},
+			</if>
+	      	lasttime = now(),
+	      	updatename = #{updatename}
+		 where
+			id = #{id}
+	</update>
+  	
+</mapper>

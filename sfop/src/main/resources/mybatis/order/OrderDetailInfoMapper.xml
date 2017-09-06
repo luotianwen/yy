@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 订单明细表(o_orderDetailInfo)Mapper -->
+<mapper namespace="orderDetailInfoMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,orderId ,pid ,sku ,productNumber ,productName ,productImage ,category ,productType ,giftPoints ,productStatus ,discount ,initialPrice ,soldPrice ,quantity ,totalMoney ,color ,specification ,freeShipment ,perentId ,commission
+    </sql>
+
+    <resultMap type="com.shifeng.entity.order.OrderDetailInfo" id="OrderDetailInfoReturnMap">
+	  <!-- 主键 -->
+      <id column="id" property="id"/>
+	  <!-- 订单编号 -->
+      <result column="orderId" property="orderId"/>
+	  <!-- 商品id -->
+      <result column="pid" property="pid"/>
+	  <!-- Sku -->
+      <result column="sku" property="sku"/>
+	  <!-- 商品货号 -->
+      <result column="productNumber" property="productNumber"/>
+	  <!-- 商品名称 -->
+      <result column="productName" property="productName"/>
+	  <!-- 商品图片 -->
+      <result column="productImage" property="productImage"/>
+	  <!-- 分类 -->
+      <result column="category" property="category"/>
+	  <!-- 商品类型 -->
+      <result column="productType" property="productType"/>
+	  <!-- 积分 -->
+      <result column="giftPoints" property="giftPoints"/>
+	  <!-- 商品状态 -->
+      <result column="productStatus" property="productStatus"/>
+	  <!-- 折扣 -->
+      <result column="discount" property="discount"/>
+	  <!-- 市场价 -->
+      <result column="initialPrice" property="initialPrice"/>
+	  <!-- 销售价格 -->
+      <result column="soldPrice" property="soldPrice"/>
+	  <!-- 购买数量 -->
+      <result column="quantity" property="quantity"/>
+	  <!-- 总金额 -->
+      <result column="totalMoney" property="totalMoney"/>
+	  <!-- 颜色 -->
+      <result column="color" property="color"/>
+	  <!-- 规格 -->
+      <result column="specification" property="specification"/>
+	  <!-- 免运费(1：是；2：否) -->
+      <result column="freeShipment" property="freeShipment"/>
+	  <!-- 父订单号 -->
+      <result column="perentId" property="perentId"/>
+      <!-- 佣金 -->
+      <result column="commission" property="commission"/>
+      
+   </resultMap>
+   
+	<!-- 查询所有表 -->
+	<select id="findAllOrderDetailInfo" parameterType="String" resultMap="OrderDetailInfoReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_orderDetailInfo
+		where orderId = #{orderId}
+	</select>
+	
+</mapper>

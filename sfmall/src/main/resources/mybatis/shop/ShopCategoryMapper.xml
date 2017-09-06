@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 店铺经营类目(s_shop_category)Mapper -->
+<mapper namespace="shopcategoryMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	s_merchants_id,c_category_id ,categoryName ,deposit ,platformfee ,points ,consignmentpoints 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.ShopCategory" id="ShopCategoryReturnMap">
+	  <!-- 入驻id -->
+      <id column="s_merchants_id" property="s_merchants_id"/>
+	  <!-- 类目id -->
+      <result column="c_category_id" property="c_category_id"/>
+	  <!-- 类目名称 -->
+      <result column="categoryName" property="categoryName"/>
+	  <!-- 类目保证金标准（元） -->
+      <result column="deposit" property="deposit"/>
+	  <!-- 平台使用费 -->
+      <result column="platformfee" property="platformfee"/>
+	  <!-- 扣点 -->
+      <result column="points" property="points"/>
+	  <!-- 代销店铺扣点 -->
+      <result column="consignmentpoints" property="consignmentpoints"/>
+   </resultMap>
+   
+	<!-- 根据ID查询表 -->
+	<select id="findShopCategoryById" parameterType="String" resultMap="ShopCategoryReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_shop_category
+		where 
+			s_merchants_id = #{s_merchants_id}
+	</select>
+
+	<!-- 新增表 -->
+	<insert id="saveShopCategory" parameterType="com.shifeng.mall.settled.dto.ShopDTO">
+		insert into s_shop_category
+			(
+		      s_merchants_id, c_category_id, categoryName, deposit, platformfee, points, consignmentpoints 
+			)
+		values
+			<foreach collection="shopCategorys" item="item" separator=",">
+			    (
+				  #{item.s_merchants_id},
+			      #{item.c_category_id},
+			      #{item.categoryName},
+			      #{item.deposit},
+			      #{item.platformfee},
+			      #{item.points},
+			      #{item.consignmentpoints}
+				)
+			</foreach>
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteShopCategory" parameterType="String">
+  		delete from s_shop_category
+  		where s_merchants_id = #{s_merchants_id}
+  	</delete>
+	
+  	<!-- 查询所有 -->
+  	<select id="findShopCategory" parameterType="String" resultType="com.shifeng.mall.settled.dto.ShopCategoryDTO">
+  	    SELECT sc.*,parentid,parentname,cooperation
+  	    FROM s_shop_category sc
+  	    LEFT JOIN s_merchants_settled m ON sc.s_merchants_id = m.id
+  	    LEFT JOIN c_category c ON sc.c_category_id = c.id
+  	    WHERE  m.userId = #{id}
+  	    ORDER BY c.parentid
+  	</select>
+  	
+</mapper>

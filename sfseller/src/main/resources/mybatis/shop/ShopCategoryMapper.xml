@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 店铺经营类目(s_shop_category)Mapper -->
+<mapper namespace="shopcategoryMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	s_merchants_id,c_category_id ,categoryName ,deposit ,platformfee ,points ,consignmentpoints 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.ShopCategory" id="ShopCategoryReturnMap">
+	  <!-- 入驻id -->
+      <id column="s_merchants_id" property="s_merchants_id"/>
+	  <!-- 类目id -->
+      <result column="c_category_id" property="c_category_id"/>
+	  <!-- 类目名称 -->
+      <result column="categoryName" property="categoryName"/>
+	  <!-- 类目保证金标准（元） -->
+      <result column="deposit" property="deposit"/>
+	  <!-- 平台使用费 -->
+      <result column="platformfee" property="platformfee"/>
+	  <!-- 扣点 -->
+      <result column="points" property="points"/>
+	  <!-- 代销店铺扣点 -->
+      <result column="consignmentpoints" property="consignmentpoints"/>
+   </resultMap>
+   
+	<!-- 根据店铺ID查询表 -->
+	<select id="findShopCategoryByMid" parameterType="String" resultType="com.shifeng.seller.shop.dto.ShopCategoryDTO">
+		select
+			s_merchants_id,c_category_id ,categoryName ,parentid ,parentname
+		from 
+			s_shop_category sc
+		left join c_category cc on sc.c_category_id = cc.id
+		where 
+			s_merchants_id = #{id}
+	</select>
+
+	<!-- 根据用户ID查询父分类 -->
+	<select id="findAllParentCategoryByShopId" parameterType="String" resultType="com.shifeng.seller.shop.dto.ShopCategoryDTO">
+	    select
+	    	DISTINCT(parentid) parentid,parentname
+	    from s_shop_category sc
+	    left join c_category cc on sc.c_category_id = cc.id
+	    where cc.parentid != 0 and sc.s_merchants_id = #{shopId}
+	</select>
+	
+	<!-- 根据父分类ID查询 -->
+	<select id="findShopCategoryByPid" parameterType="java.util.Map" resultType="com.shifeng.seller.shop.dto.ShopCategoryDTO">
+	    select
+	    	s_merchants_id,c_category_id ,categoryName ,parentid ,parentname
+	    from s_shop_category sc
+	    left join c_category cc on sc.c_category_id = cc.id
+	    where cc.parentid = #{id} and sc.s_merchants_id = #{shopId}
+	</select>
+	
+</mapper>

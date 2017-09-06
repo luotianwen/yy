@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- SKU表(p_pro_rules)Mapper -->
+<mapper namespace="prorulesMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+   
+   	<!-- 大家都在买 -->
+	<select id="everybodybuy" parameterType="Map" resultType="com.shifeng.entity.search.WareSkuInfo">
+		select
+		pr.sku,pr.price,
+		psi.ipath as logo
+		from
+		p_product p,
+		p_pro_rules pr,
+		p_sku_images psi
+		where p.id=pr.pid
+		and   p.id=psi.pid and  psi.colorid=pr.colorid and psi.ismain=1 and psi.ipath is not null
+		<if test="pcid!=null and pcid!=''">
+			and p.pcid = #{pcid}
+		</if>
+		<if test="cid!=null and cid!=''">
+			and p.cid = #{cid}
+		</if>
+		<if test="pid!=null and pid!=''">
+			and pr.pid != #{pid}
+		</if>
+		group by p.id
+		order by pr.price desc
+		limit 0,6
+
+	</select>
+
+	<!-- 猜你喜欢 -->
+	<select id="guessyoulike" parameterType="Map" resultType="com.shifeng.entity.search.WareSkuInfo">
+		select
+		pr.sku,pr.price,p.name as pName,
+		psi.ipath as logo
+		from
+		p_product p,
+		p_pro_rules pr,
+		p_sku_images psi
+		where p.id=pr.pid
+		and   p.id=psi.pid and  psi.colorid=pr.colorid and psi.ismain=1 and psi.ipath is not null
+		<if test="pcid!=null and pcid!=''">
+			and p.pcid = #{pcid}
+		</if>
+		<if test="cid!=null and cid!=''">
+			and p.cid = #{cid}
+		</if>
+		<if test="pid!=null and pid!=''">
+			and pr.pid != #{pid}
+		</if>
+		group by p.id
+		order by pr.price desc
+		limit 0,6
+	</select>
+  	
+</mapper>

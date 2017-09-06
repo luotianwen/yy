@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 关注的店铺(mall_followVender)Mapper -->
+<mapper namespace="mallfollowVenderMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	fid,user_id ,shop_id ,follow_time 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.mall.MallFollowVender" id="MallFollowVenderReturnMap">
+	  <!-- 关注ID  -->
+      <id column="fid" property="fid"/>
+	  <!-- 用户ID  -->
+      <result column="user_id" property="userId"/>
+	  <!-- 店铺ID  -->
+      <result column="shop_id" property="shopId"/>
+	  <!-- 关注时间  -->
+      <result column="follow_time" property="followTime"/>
+   </resultMap>
+   
+   	<!-- 根据用户ID获取用户关注店铺列表 -->
+	<select id="getFollowVenderListPage" parameterType="Page" resultType="com.shifeng.dto.mall.MallFollowVenderDTO">
+		SELECT
+			fid,shop_id AS shopId,follow_time AS followTime,NAME AS shopName,'' AS shopLogo
+		FROM 
+			mall_followVender
+		LEFT JOIN s_shopinfo ON shop_id = s_merchants_id
+		WHERE user_id = #{t}
+	</select>
+
+
+	<!-- 添加关注店铺  -->
+	<insert id="addFollowVender" parameterType="String">
+		insert into mall_followVender
+			(
+		      user_id, shop_id, follow_time 
+			)
+		values
+			(
+		      #{array[0]},
+		      #{array[1]},
+		      NOW()
+			)
+	</insert>
+	
+	
+	
+	<!-- 根据用户ID sku查询是否已关注店铺 -->
+	<select id="isFollowVender" parameterType="String" resultType="int">
+		SELECT
+			count(1)
+		FROM 
+			mall_followVender 
+		WHERE 
+			user_id = #{array[0]}
+			and shop_id = #{array[1]}
+	</select>
+	
+	<!-- 根据用户ID sku删除关注店铺 -->
+	<delete id="deleteFollowVender" parameterType="java.util.Map">
+		DELETE
+		FROM 
+			mall_followVender
+		WHERE 
+			user_id = 	#{user_id}
+		AND 
+		 shop_id in  
+		<foreach collection="shopIds" item="item" index="index" separator="," open="(" close=")">
+			 #{item}
+		</foreach> 
+		 
+	</delete>
+	
+	<!-- 统计关注店铺 -->
+	<select id="getFollowVenderStatistic" parameterType="String" resultType="int" >
+		SELECT
+		  COUNT(1) num
+		FROM  mall_followvender
+		WHERE 
+			user_id = #{user_id}
+	</select>
+	
+	
+  
+	
+</mapper>

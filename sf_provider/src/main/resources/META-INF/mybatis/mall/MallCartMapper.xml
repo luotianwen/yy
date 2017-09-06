@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 购物车(mall_cart)Mapper -->
+<mapper namespace="mallcartMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,userid ,sku ,number ,shopid ,cdate ,price 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.mall.MallCart" id="MallCartReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 用户id -->
+		<result column="userid" property="userid"/>
+		<!-- 用户id -->
+		<result column="uname" property="uname"/>
+	  <!-- sku -->
+      <result column="sku" property="sku"/>
+	  <!-- 数量 -->
+      <result column="number" property="number"/>
+	  <!-- 店铺id -->
+      <result column="shopid" property="shopid"/>
+	  <!-- 创建时间 -->
+      <result column="cdate" property="cdate"/>
+	  <!-- 当时价格 -->
+      <result column="price" property="price"/>
+   </resultMap>
+   
+   
+
+    <resultMap type="com.shifeng.dto.mall.MallCartShopDTO" id="MallCartShopMap">
+	  <!-- 店铺id -->
+      <result column="shopid" property="shopid"/>
+	  <!-- 店铺名称 -->
+      <result column="shopName" property="shopName"/>
+	  <!-- 用户ID -->
+      <result column="userid" property="userid"/>
+	  
+	  <collection property="wareList" ofType="com.shifeng.dto.mall.MallCartWareDTO" column="{shopid=shopid,userid=userid}" 
+	  select="mallcartMapper.getMyCartWareList"></collection>
+	  
+   </resultMap>
+   
+   
+   
+   	<!-- 根据用户ID获取购物车列表 -->
+	<select id="getMyCartList" parameterType="String" resultMap="MallCartShopMap">
+		SELECT
+			c.shopid ,c.userid,s.name AS shopName
+		 FROM
+			mall_cart c
+		LEFT JOIN s_shopinfo s ON c.shopid = s.s_merchants_id
+		WHERE
+			c.userid = #{userid}
+		GROUP BY c.shopid
+		ORDER BY c.cdate DESC
+	</select>
+   
+   
+   
+   	<!-- 根据用户ID获取购物车商品列表 -->
+	<select id="getMyCartWareList" parameterType="java.util.Map" resultType="com.shifeng.dto.mall.MallCartWareDTO">
+		SELECT
+			c.id,c.sku ,c.number ,c.shopid ,cdate ,c.price cartPrice,pr.price,p.name AS pName
+			,co.name AS colorName
+			,sp.name AS specName
+			,si.ipath AS colorPic
+			,p.state AS pState
+			,activityprice
+			,p.logo
+		 FROM
+			mall_cart c
+		LEFT JOIN p_pro_rules pr ON c.sku = pr.sku
+		LEFT JOIN p_product p ON pr.pid = p.id
+		LEFT JOIN p_sku_images si ON pr.colorid = si.colorid AND ismain = 1 AND si.pid = pr.pid
+		LEFT JOIN p_color co ON pr.colorid = co.id
+		LEFT JOIN p_spec sp ON pr.specid = sp.id
+		WHERE
+			c.userid = #{userid} AND c.shopid = #{shopid}
+		GROUP BY c.sku
+	</select>
+   
+      <!--  SKU是否已添加到购物车 -->
+   <select id="isAddMyCartBysku" parameterType="java.util.Map" resultType="int">
+   		select
+   			count(1)
+   		from
+   			mall_cart
+   		where
+   			userid = #{user_id} and  sku = #{sku}
+   
+   </select>
+   
+    <!--  统计我的购物车商品数量 -->
+   <select id="getMyCartNumber" parameterType="String" resultType="int">
+   		select
+   			count(1)
+   		from
+   			mall_cart
+   		where
+   			userid = #{userid}
+   
+   </select>
+   
+   	 
+	<!-- 添加商品到SKU -->
+	<insert id="addCartWare" parameterType="java.util.Map">
+		 insert into 
+		 	mall_cart
+		 	(userid,sku,number,price,shopid,cdate)
+		 SELECT
+		  #{user_id} AS user_id,sku,#{pcount} AS number,price,p.shopid,NOW() AS　cdate
+		FROM p_pro_rules pr
+		LEFT JOIN p_product p ON pr.pid = p.id	
+		where
+			sku = #{sku}
+	</insert>
+	
+	<!-- 更新我的购物车商品数量（自增） -->
+	<update id="updateMyCartSkuNumber" parameterType="java.util.Map">
+		update 
+			mall_cart
+		set
+			number = number+1
+		where
+			userid = #{user_id} and  sku = #{sku}
+	
+	</update>
+	
+	<!-- 更新我的购物车商品数量  -->
+	<update id="updateMyCartSkuNumbers" parameterType="java.util.Map">
+		update 
+			mall_cart
+		set
+			number = #{pcount}	
+		where
+			userid = #{user_id} and  sku = #{sku}
+	
+	</update>
+	
+	<!-- 删除我的购物车商品 -->
+	<delete id="deleteMyCartWare" parameterType="java.util.Map">
+		DELETE
+		FROM 
+			mall_cart
+		WHERE 
+			userid = 	#{user_id}
+		AND 
+		 sku in  
+		<foreach collection="skus" item="item" index="index" separator="," open="(" close=")">
+			 #{item}
+		</foreach> 
+	
+	</delete>
+	
+	<!-- 删除我的购物车商品 -->
+	<delete id="deleteMyCartWareByCartId" parameterType="java.util.Map">
+		DELETE
+		FROM 
+			mall_cart
+		WHERE 
+			userid = 	#{user_id}
+		AND 
+		 id in  
+		<foreach collection="skus" item="item" index="index" separator="," open="(" close=")">
+			 #{item}
+		</foreach> 
+	
+	</delete>
+	
+	
+	
+	
+   
+</mapper>

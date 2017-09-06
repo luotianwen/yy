@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 商品分销价格(fx_product)Mapper -->
+<mapper namespace="fxproductMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+    <resultMap type="com.shifeng.entity.fx.FxProduct" id="FxProductReturnMap">
+        <!-- sku -->
+        <id column="sku" property="sku"/>
+		<id column="sku2" property="sku2"/>
+
+        <!-- 商品名称 -->
+        <result column="name" property="name"/>
+        <!-- 进货价 -->
+        <result column="costprice" property="costprice"/>
+        <!-- 世峰价 -->
+        <result column="price" property="price"/>
+        <!-- 毛利 -->
+        <result column="margin" property="margin"/>
+        <!-- 毛利率 -->
+        <result column="marginrate" property="marginrate"/>
+        <!-- 分销率 -->
+        <result column="distributionrate" property="distributionrate"/>
+        <!-- 佣金 -->
+        <result column="commission" property="commission"/>
+        <!-- 净毛利率 -->
+        <result column="lastmarginrate" property="lastmarginrate"/>
+        <!-- 最后修改时间 -->
+        <result column="lasttime" property="lasttime"/>
+        <!-- 最后修改人 -->
+        <result column="updatename" property="updatename"/>
+        <!-- 款号/货号 -->
+        <result column="snumber" property="snumber"/>
+    </resultMap>
+
+    <!-- 查询所有表 -->
+    <select id="findAllFxProductPage" parameterType="Page" resultMap="FxProductReturnMap">
+        select
+        p.sku,pp.name ,f.costprice ,p.price ,f.margin ,f.marginrate ,f.distributionrate ,f.commission ,f.lastmarginrate
+        ,f.lasttime ,f.updatename ,
+        p.number as snumber
+        from
+        p_pro_rules p LEFT join fx_product f on f.sku=p.sku
+        LEFT join p_product pp on pp.id=p.pid
+        where pp.state=1
+        <if test="t.name!=null and t.name!=''">
+            and pp.name = #{t.name}
+        </if>
+        <if test="t.sku!=null and t.sku!=''">
+            and p.sku = #{t.sku}
+        </if>
+		<if test="t.shopid!=null and t.shopid!=''">
+			and pp.shopid = #{t.shopid}
+		</if>
+        <if test="t.snumber!=null and t.snumber!=''">
+            and p.number = #{t.snumber}
+        </if>
+        order by f.marginrate desc
+    </select>
+
+    <!-- 根据ID查询表 -->
+    <select id="findFxProductById" parameterType="String" resultMap="FxProductReturnMap">
+		select
+		f.sku as sku2,p.sku,pp.name ,p.costprice ,p.price ,f.margin ,f.marginrate ,f.distributionrate ,f.commission ,f.lastmarginrate ,f.lasttime ,f.updatename ,
+		p.number as		snumber
+		from
+		p_pro_rules p LEFT join  fx_product f on f.sku=p.sku
+		LEFT join p_product pp on pp.id=p.pid
+		where pp.state=1
+		and
+			p.sku = #{sku}
+	</select>
+    <!-- 根据Number查询表 -->
+    <select id="findFxProductByNumber" parameterType="String" resultMap="FxProductReturnMap">
+		select
+		f.sku,p.name ,p.costprice ,p.price ,f.margin ,f.marginrate ,f.distributionrate ,f.commission ,f.lastmarginrate ,f.lasttime ,f.updatename ,
+		p.number as		snumber
+		from
+		p_pro_rules p LEFT join  fx_product f on f.sku=p.sku
+		LEFT join p_product pp on pp.id=p.pid
+		where pp.state=1
+			and p.number = #{ snumber}
+	</select>
+    <!-- 修改表 -->
+    <update id="updateFxProduct" parameterType="com.shifeng.entity.fx.FxProduct">
+		update 
+			fx_product 
+		set
+	      	costprice = #{costprice},
+	      	price = #{price},
+	      	margin = #{margin},
+	      	marginrate = #{marginrate},
+	      	distributionrate = #{distributionrate},
+	      	commission = #{commission},
+	      	lastmarginrate = #{lastmarginrate},
+	      	lasttime = now(),
+	      	updatename = #{updatename}
+		 where
+			sku = #{sku}
+	</update>
+
+    <!-- 新增表 -->
+    <insert id="saveFxProduct" parameterType="com.shifeng.entity.fx.FxProduct">
+		insert into fx_product
+			(
+		      sku, costprice, price, margin, marginrate, distributionrate, commission, lastmarginrate, lasttime, updatename
+			)
+		values
+			(
+		      #{sku},
+		      #{costprice},
+		      #{price},
+		      #{margin},
+		      #{marginrate},
+		      #{distributionrate},
+		      #{commission},
+		      #{lastmarginrate},
+		      now(),
+		      #{updatename}
+			)
+	</insert>
+
+    <!-- 删除 -->
+    <delete id="deleteFxProduct" parameterType="String">
+  		delete from fx_product
+  		where sku = #{sku}
+  	</delete>
+
+</mapper>

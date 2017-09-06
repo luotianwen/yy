@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 店铺评价(p_shop_evaluate)Mapper -->
+<mapper namespace="mallShopevaluateMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,userId ,receiveName ,orderid ,shopid ,describe_score ,lservice ,sservice ,state ,cdate 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.ShopEvaluate" id="ShopEvaluateReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 用户编号 -->
+      <result column="userId" property="userId"/>
+	  <!-- 买家姓名 -->
+      <result column="receiveName" property="receiveName"/>
+	  <!-- 订单id -->
+      <result column="orderid" property="orderid"/>
+	  <!-- 店铺编号 -->
+      <result column="shopid" property="shopid"/>
+      <!-- 商品描述评分 -->
+      <result column="describe_score" property="describe_score"/>
+	  <!-- 物流服务 -->
+      <result column="lservice" property="lservice"/>
+	  <!-- 店铺服务 -->
+      <result column="sservice" property="sservice"/>
+	  <!-- 审核状态（1：未审核；2：审核成功；3：审核失败） -->
+      <result column="state" property="state"/>
+	  <!-- 创建时间 -->
+      <result column="cdate" property="cdate"/>
+   </resultMap>
+   
+
+	<!-- 添加店铺评论 -->
+	<insert id="saveShopEvaluate" parameterType="com.shifeng.dto.mall.comments.OrderShopCommentDTO">
+		insert into s_shop_evaluate
+			(
+		      userId, receiveName, orderid, shopid,describe_score ,lservice, sservice, state, cdate 
+			)
+		values
+			(
+		      #{userId},
+		      #{receiveName},
+		      #{orderid},
+		      #{shopid},
+		      #{describe_score},
+		      #{lservice},
+		      #{sservice},
+		      1,
+		      NOW()
+			)
+	</insert>
+   
+	
+</mapper>

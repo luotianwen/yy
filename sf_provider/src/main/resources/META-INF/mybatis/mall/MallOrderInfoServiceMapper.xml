@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 订单售后(o_orderInfo_service)Mapper -->
+<mapper namespace="mallOrderServiceMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+ 
+   
+   
+
+	<!-- 保存申请售后 -->
+	<insert id="saveOrderService" parameterType="com.shifeng.dto.mall.order.ServiceApplyDTO" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into o_orderInfo_service
+			(
+		      orderId, userId, receiveName, address, productName, productImage, 
+		      color, spec, sku, state, type,description,subTime
+			)
+			
+		 SELECT
+		   o.orderId,o.userId,o.receiveName, o.address, productName, productImage 
+		   , color, specification, sku, 1, #{applyType} ,#{questionDesc},NOW()
+		FROM
+		     o_orderDetailInfo od
+		left join o_orderinfo o on od.orderId = o.orderId     
+		WHERE
+			o.userId = #{userId}
+			and
+			o.orderId = #{order_id}
+			and
+			 od.sku = #{wareId}
+	</insert>
+   
+   
+   <!--  获取用户售后订单信息列表 -->
+   <select id="getRepairOrderPageList" parameterType="Page" resultType="com.shifeng.dto.mall.order.OrderServiceDTO">
+		select
+			id serviceNumber,orderId,productName,productImage,color,spec,sku,state,type
+		from
+			o_orderinfo_service
+		where 
+			 userId = #{t.user_id}
+			<if test="t.order_id!=null and t.order_id!=''">
+			  and orderId = #{t.order_id}
+			</if>
+			<if test="t.state!=null and t.state!=''">
+			  and state = #{t.state}
+			</if>
+			<if test="t.type!=null and t.type!=''">
+			  and type = #{t.type}
+			</if>
+			order by id desc	  			
+   			
+   </select>
+   
+   
+       <!-- 统计订单售后状态 -->
+    <select id="getOrderShouhouStatistic" parameterType="String" resultType="int">
+		SELECT
+		     COUNT(1) num
+		FROM
+		     o_orderinfo_service 
+		WHERE
+			userId = #{userId}
+			AND state <![CDATA[ < ]]> 7
+    </select>
+   
+   
+   
+   
+
+
+    <resultMap type="com.shifeng.dto.mall.order.OrderServiceDetailDTO" id="OrderServiceMap">
+	  <!-- 服务单号 -->
+      <result column="serviceNumber" property="serviceNumber"/>
+	  <!-- 商品名称 -->
+      <result column="productName" property="productName"/>
+	  <!-- 商品图片 -->
+      <result column="productImage" property="productImage"/>
+	  <!-- 颜色 -->
+      <result column="color" property="color"/>
+	  <!-- 规格 -->
+      <result column="spec" property="spec"/>
+	  <!-- sku -->
+      <result column="sku" property="sku"/>
+	  <!-- 状态 -->
+      <result column="state" property="state"/>
+	  <!-- 类型 -->
+      <result column="type" property="type"/>
+	  <!-- 客户发货快递编号 -->
+      <result column="cexpressId" property="cexpressId"/>
+	  <!-- 客户快递单号 -->
+      <result column="cnumber" property="cnumber"/>
+	  <!-- 客户发货备注 -->
+      <result column="cnote" property="cnote"/>
+	  <!-- 客户退换货原因 -->
+      <result column="creason" property="creason"/>
+	  <!-- 问题描述 -->
+      <result column="description" property="description"/>
+	  <!-- 快递编号 -->
+      <result column="expressId" property="expressId"/>
+	  <!-- 快递单号 -->
+      <result column="number" property="number"/>
+	  <!-- 审核备注 -->
+      <result column="note" property="note"/>
+	  <!-- 提交时间 -->
+      <result column="subTime" property="subTime"/>
+      
+        <collection property="progress" ofType="com.shifeng.dto.mall.order.OrderInfoServiceLogDTO" column="serviceNumber" 
+	  		select="mallOrderServiceMapper.getRepairOrderLog"></collection>
+	  		
+   </resultMap>   
+   
+   
+   
+   <!--  获取用户售后订单信息明细 -->
+   <select id="getRepairOrderDetail" parameterType="java.util.Map" resultMap="OrderServiceMap">
+		select
+			id serviceNumber,orderId,productName,productImage,color,spec,sku,state,type,description,note,subTime
+		from
+			o_orderinfo_service
+		where
+			 userId = #{user_id}
+			 and 
+			 id = #{serviceNumber}
+   </select>
+   
+   
+   
+   
+   <select id="getRepairOrderLog" parameterType="String" resultType="com.shifeng.dto.mall.order.OrderInfoServiceLogDTO">
+		 SELECT
+		  	ptime AS ptime,type 
+		 FROM  
+			o_orderinfo_service_log
+		 WHERE
+			 oosid = #{oosid}
+   </select>
+   
+   
+   
+   
+   
+   
+    <resultMap type="com.shifeng.dto.mall.order.service.OrderServiceWareDTO" id="OrderInfoDTOMap">
+		  <id property="orderId" column="orderId"/>
+	      <result column="subTime" property="subTime"/>
+		  <collection property="wareList" ofType="com.shifeng.dto.mall.order.service.OrderServiceWareDetailDTO" 
+		  	column="orderId" select="mallOrderServiceMapper.getOrderWares"></collection>
+	</resultMap>
+   
+  <!--  获取用户售后订单信息列表 -->
+   <select id="getOrderServiceWareList" parameterType="Page" resultMap="OrderInfoDTOMap">
+	   SELECT
+			orderId,subTime
+		FROM
+		o_orderInfo o
+		WHERE
+			userId = #{t.user_id}
+			and orderStatus = 3
+   			order by o.subTime desc
+   </select>
+   
+     <!-- 获取售后订单商品明细 -->
+  	<select id="getOrderWares" parameterType="String" resultType="com.shifeng.dto.mall.order.service.OrderServiceWareDetailDTO">
+	  	SELECT
+		    orderId,pid ,sku ,productName ,productImage ,quantity ,color,specification ,sstatus
+		FROM 
+			o_orderdetailinfo
+		WHERE 
+			orderId = #{orderId}
+  	</select>
+   
+   
+      <!-- 是否已经申请售后中 -->
+   <select id="getRepairOrderCount" parameterType="java.util.Map" resultType="Integer">
+		select
+			count(1)
+		from
+			o_orderinfo_service
+		where
+			 userId = #{user_id}
+			 and 
+			 sku = #{sku}
+			 and
+			 orderId = #{order_id}
+			 and state not in (2)
+   </select>
+    
+	
+</mapper>

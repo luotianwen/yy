@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <title>世峰户外商城-友情链接</title>
+    <meta name="keywords" content="世峰户外商城-友情链接" />
+    <meta name="description" content="世峰户外商城-友情链接" />
+    <meta name="Robots" content="all">
+    <meta name="author" content="世峰户外商城">
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/shop_success.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/laypage/laypage.js"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'友情链接'}){}%>
+<% include("/detailnav.btl"){}%>
+<div class="s_success_msg">
+    <div class="boxw clearfix" style="position: relative;">
+        <div class="title"><i></i><span>商品已加入购物车</span></div>
+        <div class="content">
+            <div class="img">
+                <a href="/detail/${detail.sku}.html"><img src="${detail.logo}" alt="" /></a>
+            </div>
+            <ul>
+                <li class="item_1">
+                    <a href="/detail/${detail.sku}.html">${detail.pName}</a>
+                </li>
+                <li class="item_2">颜色：<i>${detail.colorName}</i></li>
+                <li class="item_3"><span>尺码：<i>${detail.specName}</i></span>数量：<i>${pcount}</i></li>
+            </ul>
+        </div>
+        <div class="btn clearfix">
+            <span class="btn_1" onclick="window.location='/detail/${detail.sku}.html'">查看商品详情</span>
+            <span class="btn_2" onclick="window.location='/my/cart'">去购物车查看</span>
+        </div>
+    </div>
+</div>
+<div class="boxw submit_successfully">
+    <div class="related">
+        <div class="title">
+            <p>购买了该商品的还购买了</p>
+        </div>
+        <div class="r_menu">
+            <a class="left_btn"></a>
+            <a class="right_btn"></a>
+            <div class="r_show_shop">
+                <ul id="everybodybuy">
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="related">
+        <div class="title">
+            <p>你可能还想买</p>
+        </div>
+        <div class="r_menu">
+            <a class="left_btn"></a>
+            <a class="right_btn"></a>
+            <div class="r_show_shop">
+                <ul id="guessyoulike">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+<script>
+    var gylUrl="/product/guessyoulike";
+    $.post(gylUrl,{cid:"${detail.cid}",pcid:"${detail.pcid}", pid:"${detail.pid}"},function(data){
+        if(data.length>0){
+            var _html="";
+            for(var p in data){
+                a=data[p];
+                _html+='<li  ><a href="/detail/'+a.sku+'"><img src="'+a.logo+'"/><p>'+a.pName+'</p><span>￥'+a.price+'</span></a></li>';
+            }
+            $("#guessyoulike").html(_html);
+
+        }
+    });
+
+    var ebUrl="/product/everybodybuy";
+    $.post(ebUrl,{cid:"${detail.cid}",pcid:"${detail.pcid}", pid:"${detail.pid}"},function(data){
+        if(data.length>0){
+            var _html="";
+            for(var p in data){
+                _html+='<li>';
+                _html+= '<a href="/detail/'+data[p].sku+'.html"><img src="'+data[p].logo+'"/><span>￥'+data[p].price+'</span></a>';
+                _html+='</li>';
+            }
+            $("#everybodybuy").html(_html);
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 意见反馈图片(mall_feedback_img)Mapper -->
+<mapper namespace="mallfeedbackimgMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	img_id,feedback_id ,img_url 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.mall.MallFeedbackImg" id="MallFeedbackImgReturnMap">
+	  <!-- 图片ID -->
+      <id column="img_id" property="img_id"/>
+	  <!-- 反馈ID -->
+      <result column="feedback_id" property="feedback_id"/>
+	  <!-- 图片地址 -->
+      <result column="img_url" property="img_url"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllMallFeedbackImgPage" parameterType="Page" resultMap="MallFeedbackImgReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_feedback_img
+		where 1=1
+			<if test="t.feedback_id!=null and t.feedback_id!=''">
+				and feedback_id = #{t.feedback_id}
+			</if>
+			<if test="t.img_url!=null and t.img_url!=''">
+				and img_url = #{t.img_url}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findMallFeedbackImgById" parameterType="String" resultMap="MallFeedbackImgReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_feedback_img
+		where 
+			img_id = #{img_id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateMallFeedbackImg" parameterType="com.shifeng.entity.mall.MallFeedbackImg">
+		update 
+			mall_feedback_img 
+		set
+	      	feedback_id = #{feedback_id},
+	      	img_url = #{img_url}
+		 where
+			img_id = #{img_id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveMallFeedbackImg" parameterType="com.shifeng.entity.mall.MallFeedbackImg">
+		insert into mall_feedback_img
+			(
+		      feedback_id, img_url 
+			)
+		values
+			(
+		      #{feedback_id},
+		      #{img_url}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteMallFeedbackImg" parameterType="String">
+  		delete from mall_feedback_img
+  		where img_id = #{img_id}
+  	</delete>
+	
+</mapper>

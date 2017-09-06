@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>${explain.title}</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/txt.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:''}){}%>
+<% include("/detailnav.btl"){}%>
+
+<div class="boxw clearfix">
+    <div class="fl sidenav">
+
+
+        <dl>
+            <dt><i class="t5"></i>世峰户外商城</dt>
+            <%if(explain.name=='关于世峰'){%> <dd  class="current" > 关于世峰 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/about.html?name=关于世峰">关于世峰</a></dd><%}%>
+            <%if(explain.name=='企业文化'){%> <dd  class="current" > 企业文化 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/about.html?name=企业文化">企业文化</a></dd><%}%>
+            <%if(explain.name=='加入世峰'){%> <dd  class="current" > 加入世峰 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/about.html?name=加入世峰">加入世峰</a></dd><%}%>
+            <%if(explain.name=='投诉建议'){%> <dd  class="current" > 投诉建议 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/about.html?name=投诉建议">投诉建议</a></dd><%}%>
+            <%if(explain.name=='联系我们'){%> <dd  class="current" > 联系我们 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/about.html?name=联系我们">联系我们</a></dd><%}%>
+            <%if(explain.name=='客服中心'){%> <dd  class="current" > 客服中心 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/about.html?name=客服中心">客服中心</a></dd><%}%>
+
+        </dl>
+
+    </div>
+    <div class="fr txt-main clearfix">
+        <div class="mt">${explain.name}</div>
+        <div class="mc">${explain.content}</div>
+    </div>
+</div>
+
+<% include("/footer.btl"){}%>
+</body>
+</html>

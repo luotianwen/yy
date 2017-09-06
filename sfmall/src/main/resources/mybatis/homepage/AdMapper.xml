@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 首页广告(sys_app_homeads)Mapper -->
+<mapper namespace="adMapper">
+    
+       <resultMap type="com.shifeng.mall.homepage.dto.AdDTO" id="AdMap" >
+		   <!-- 广告id -->
+		   <id column="id" property="id"/>
+		   <!-- 类型 -->
+		   <result column="module" property="module"/>
+		   <!-- 第1张图片地址 -->
+		   <result column="fimg1" property="fimg1"/>
+		   <!-- 第1张链接 -->
+		   <result column="flink1" property="flink1"/>
+		   <!-- 第1张广告价格 -->
+		   <result column="fprice1" property="fprice1"/>
+		   <!-- 第2张图片地址 -->
+		   <result column="fimg2" property="fimg2"/>
+		   <!-- 第2张链接 -->
+		   <result column="flink2" property="flink2"/>
+		   <!-- 第2张广告价格 -->
+		   <result column="fprice2" property="fprice2"/>
+		   <!-- 第3张图片地址 -->
+		   <result column="fimg3" property="fimg3"/>
+		   <!-- 第3张链接 -->
+		   <result column="flink3" property="flink3"/>
+		   <!-- 第3张广告价格 -->
+		   <result column="fprice3" property="fprice3"/>
+		   <result column="remark" property="remark"/>
+		   <result column="remark2" property="remark2"/>
+		  <!-- 广告商品集合-->
+		  <collection property="wareList" ofType="com.shifeng.mall.homepage.dto.AdWareDTO" column="id" select="adWareMapper.getAdWareList" ></collection>
+	   
+	   </resultMap>
+ 
+   	<!-- 查询所有表 -->
+	<select id="getAdList" resultMap="AdMap">
+		select
+			id,module ,fimg1 ,flink1 ,fprice1 ,fimg2 ,flink2 ,fprice2,fimg3 ,flink3 ,fprice3,remark,remark2
+		from 
+			sys_pc_homeads
+		where  
+			state = 1
+		order by module asc
+	</select>
+
+	 
+	
+</mapper>

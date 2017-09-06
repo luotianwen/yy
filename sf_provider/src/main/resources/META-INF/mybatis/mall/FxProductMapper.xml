@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 商品分销价格(fx_product)Mapper -->
+<mapper namespace="fxproductMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+    <resultMap type="com.shifeng.entity.fx.FxProduct" id="FxProductReturnMap">
+        <!-- sku -->
+        <id column="sku" property="sku"/>
+		<id column="sku2" property="sku2"/>
+
+        <!-- 商品名称 -->
+        <result column="name" property="name"/>
+        <!-- 进货价 -->
+        <result column="costprice" property="costprice"/>
+        <!-- 世峰价 -->
+        <result column="price" property="price"/>
+        <!-- 毛利 -->
+        <result column="margin" property="margin"/>
+        <!-- 毛利率 -->
+        <result column="marginrate" property="marginrate"/>
+        <!-- 分销率 -->
+        <result column="distributionrate" property="distributionrate"/>
+        <!-- 佣金 -->
+        <result column="commission" property="commission"/>
+        <!-- 净毛利率 -->
+        <result column="lastmarginrate" property="lastmarginrate"/>
+        <!-- 最后修改时间 -->
+        <result column="lasttime" property="lasttime"/>
+        <!-- 最后修改人 -->
+        <result column="updatename" property="updatename"/>
+        <!-- 款号/货号 -->
+        <result column="snumber" property="snumber"/>
+    </resultMap>
+    
+    <!-- 根据订单号计算佣金 -->
+<!--     <select id="calculateCommission" parameterType="String" resultType="double">
+    	select
+		  sum(quantity*p.commission) commission
+		from  fx_product p
+		left join o_orderdetailinfo o on o.sku = p.sku
+		where
+			perentId = #{order_id}
+    
+    </select> -->
+
+    
+
+</mapper>

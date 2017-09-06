@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 银币设置(sys_sliver)Mapper -->
+<mapper namespace="syssliverMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,activate ,exchange 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.system.SysSliver" id="SysSliverReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 激活送银币 -->
+      <result column="activate" property="activate"/>
+	  <!-- 银币兑换E卡比例 -->
+      <result column="exchange" property="exchange"/>
+   </resultMap>
+
+	<!-- 获取银币兑换比例 -->
+	<select id="getExchangeRatio" resultType="java.lang.Integer">
+		select
+			exchange
+		from 
+			sys_sliver
+	</select>
+
+	<!-- 获取激活送银币数量 -->
+	<select id="getActivationGiveSilverCoin" resultType="java.lang.Integer">
+		select
+			activate
+		from 
+			sys_sliver
+	</select>
+
+ 
+	
+</mapper>

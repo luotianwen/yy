@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/leftbar.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/css/amend-phone.css" />
+	
+	<script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'账户安全'}){}%>
+<% include("/detailnav.btl"){}%>
+	<div class="boxw clearfix">
+		<% include("../my-left.btl",{type:'账户安全'}){}%>
+		<div class="fr content clearfix">
+			<div class="top-tit">
+				<i></i>修改手机号码
+			</div>
+			<div class="mod-main">
+				<div class="mc clearfix">
+					<div class="fp_nav clearfix">
+						<ul id="nva">
+							<li class="active">01/<i>验证身份</i></li>
+							<li>02/<i>更换手机</i></li>
+							<li>03/<i>完成</i></li>
+						</ul>
+					</div>
+					
+					<div id="content1">
+						<div class="vp_item phone">
+							<div class="title">
+								已绑定手机号码：
+							</div>
+							<div class="phone_num">${phone}</div>
+						</div>
+						<div class="ap_item phone_2 clearfix">
+							<div class="title">请输入验证码：</div>
+							<div class="send">
+								<input type="text" id="oldyzm"/>
+							</div>
+							<span id="sendold" class="send_btn">发送验证码</span>
+						</div>
+						<button type="button" id="next">下一步</button>
+					</div>
+					
+					<div id="content2" style="display:none;">
+						<div class="ap_item phone_1 clearfix">
+							<div class="title">请输入新的手机号：</div>
+							<div class="send">
+								<input type="text" id="phone"/>
+							</div>
+							<span id="error" class="error"><i></i><span></span></span>
+						</div>
+						<div class="ap_item phone_2 clearfix">
+							<div class="title">请输入验证码：</div>
+							<div class="send">
+								<input type="text" id="newyzm"/>
+							</div>
+							<span id="sendnew" class="send_btn">发送验证码</span>
+						</div>
+						<button type="button" id="submit">提交</button>
+					</div>
+					<div id="content3" style="display:none;">
+						<div class="step_3 d_show">
+							<div class="succeed clearfix">
+								<p><i></i>更换手机成功！</p>
+								<span>为了你的帐户安全，请注意保护好你的密码等信息！</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+
+<script type="text/javascript">
+	var isVerify = true;
+	var isnewVerify = true;
+	$(function(){
+		$("#sendold").on("click",function(){
+			var _this = $(this);
+			if(isVerify){
+				isVerify = false;
+				
+				$.post("/my/updatePhoneYzm.json",function(data){
+					if (data.RESPONSE_STATE == '200') {
+						time(_this,"old");
+					} else {
+						layer.alert(data.ERROR_INFO, {
+							icon : 0
+						});
+					}
+				})
+			}
+		})
+		
+		$("#sendnew").on("click",function(){
+			var _this = $(this);
+			var phone = $("#phone").val();
+			
+			if(check_phone()&&isnewVerify){
+				isnewVerify = false;
+				$.post("/my/updateNewPhoneYzm.json",{phone:phone},function(data){
+					if (data.RESPONSE_STATE == '200') {
+						time(_this,"new");
+					} else {
+						layer.alert(data.ERROR_INFO, {
+							icon : 0
+						});
+					}
+				})
+			}
+		})
+		
+		$("#next").on("click",function(){
+			var oldyzm = $("#oldyzm").val();
+			if(oldyzm!=""){
+				$.post("/my/verifyOldPhone.json",{yzm:oldyzm},function(data){
+					if (data.RESPONSE_STATE == '200') {
+						$("ul#nva li.active").removeClass("active");
+						$("ul#nva").find("li").eq(1).addClass("active");
+						$("#content1").css("display","none");
+						$("#content2").css("display","block");
+					} else {
+						layer.alert(data.ERROR_INFO, {
+							icon : 0
+						});
+					}
+				})
+			}else{
+				layer.alert("请输入手机验证码！", {
+					icon : 0
+				});
+			}
+		})
+		
+		$("#submit").on("click",function(){
+			var yzm = $("#newyzm").val();
+			var phone = $("#phone").val();
+			if(check_phone()){
+				if(yzm!=""){
+					$.post("/my/updatePhone.json",{yzm:yzm,newPhone:phone},function(data){
+						if (data.RESPONSE_STATE == '200') {
+							$("ul#nva li.active").removeClass("active");
+							$("ul#nva").find("li").eq(2).addClass("active");
+							$("#content2").css("display","none");
+							$("#content3").css("display","block");
+						} else {
+							layer.alert(data.ERROR_INFO, {
+								icon : 0
+							});
+						}
+					})
+				}else{
+					layer.alert("请输入手机验证码！", {
+						icon : 0
+					});
+				}
+			}
+			
+		})
+		
+	})
+	
+	function time(_this,type){
+		var count = 60;
+		_this.addClass("send_btn_no");
+		_this.html("重新发送<i>（"+count+"）</i>");
+		
+		var resend = setInterval(function(){
+			count--;
+        	
+      		if (count > 0){
+      	  		_this.html("重新发送<i>（"+count+"）</i>");
+        	}else {
+            	clearInterval(resend);
+            	
+            	// 绑定重新获取验证码事件
+            	_this.removeClass("send_btn_no");
+		   	    _this.html("发送验证码");
+            	
+		   	    if(type=="old"){
+		   	    	isVerify = true;
+		   	    }else{
+		   	    	isnewVerify = true;
+		   	    }
+        	}
+			
+        }, 1000);
+	}
+	
+	function check_phone(){
+		var phone = $("#phone").val();
+		var mobile = /^0?(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$/;
+		if(!mobile.test(phone)){
+			$("#error").css("display","block");
+			$("#error").find("span").html("请输入正确的手机号");
+			return false;
+		}
+		
+		$("#error").css("display","none");
+		return true;
+	}
+	
+</script>
+
+</html>

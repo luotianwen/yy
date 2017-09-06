@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 友情链接(s_friendship_link)Mapper -->
+<mapper namespace="friendshiplinkMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,name ,state ,note ,link ,releaseDate ,lasttime ,updatename ,contacts ,phone ,email 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.system.FriendshipLink" id="FriendshipLinkReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 名称 -->
+      <result column="name" property="name"/>
+	  <!-- 发布状态 -->
+      <result column="state" property="state"/>
+	  <!-- 备注 -->
+      <result column="note" property="note"/>
+	  <!-- 链接 -->
+      <result column="link" property="link"/>
+	  <!-- 发布日期 -->
+      <result column="releaseDate" property="releaseDate"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 联系人 -->
+      <result column="contacts" property="contacts"/>
+	  <!-- 联系人电话 -->
+      <result column="phone" property="phone"/>
+	  <!-- 联系人邮箱 -->
+      <result column="email" property="email"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllFriendshipLinkPage" parameterType="Page" resultMap="FriendshipLinkReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_friendship_link
+		where 1=1
+		<if test="t.name != null and t.name != ''">
+			AND name LIKE CONCAT(CONCAT('%', #{t.name}),'%')
+		</if>
+		<if test=" t.state!=0 ">
+			AND state= #{t.state}
+		</if>
+		<if test="t.lasttime!=null and t.lasttime!='' ">
+			<![CDATA[
+			AND date(releaseDate) <= #{t.lasttime}
+			]]>
+		</if>
+		<if test="t.releaseDate!=null and t.releaseDate!='' ">
+			<![CDATA[
+			AND date(releaseDate) >= #{t.releaseDate}
+			]]>
+		</if>
+			<if test="t.link!=null and t.link!=''">
+				AND link LIKE CONCAT(CONCAT('%', #{t.link}),'%')
+			</if>
+
+			<if test="t.contacts!=null and t.contacts!=''">
+				AND contacts LIKE CONCAT(CONCAT('%', #{t.contacts}),'%')
+			</if>
+		order by lasttime desc
+
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findFriendshipLinkById" parameterType="String" resultMap="FriendshipLinkReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_friendship_link
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateFriendshipLink" parameterType="com.shifeng.entity.system.FriendshipLink">
+		update 
+			s_friendship_link 
+		set
+	      	name = #{name},
+	      	state = #{state},
+	      	note = #{note},
+	      	link = #{link},
+	      	releaseDate = #{releaseDate},
+	      	lasttime = now(),
+	      	updatename = #{updatename},
+	      	contacts = #{contacts},
+	      	phone = #{phone},
+	      	email = #{email}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveFriendshipLink" parameterType="com.shifeng.entity.system.FriendshipLink">
+		insert into s_friendship_link
+			(
+		      name, state, note, link, releaseDate, lasttime, updatename, contacts, phone, email 
+			)
+		values
+			(
+		      #{name},
+		      #{state},
+		      #{note},
+		      #{link},
+		      #{releaseDate},
+		      now(),
+		      #{updatename},
+		      #{contacts},
+		      #{phone},
+		      #{email}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteFriendshipLink" parameterType="String">
+  		delete from s_friendship_link
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

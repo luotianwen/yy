@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 首页广告(sys_app_homeads)Mapper -->
+<mapper namespace="adMapper">
+    
+       <resultMap type="com.shifeng.webapi.dto.homepage.AdDTO" id="AdMap" >
+		  <!-- 广告id -->
+	      <id column="id" property="id"/>
+		  <!-- 名称 -->
+	      <result column="name" property="name"/>
+		  <!-- 标题 -->
+	      <result column="title" property="title"/>
+		  <!-- 图片地址 -->
+	      <result column="imgPath" property="imgPath"/>
+		  <!-- 链接 -->
+	      <result column="link" property="link"/>
+		  <!-- 类型 -->
+	      <result column="type" property="type"/>
+		  <!-- 序号 -->
+	      <result column="sort" property="sort"/>
+		  <!-- 展示模板类型 -->
+	      <result column="templet_type" property="templet_type"/>
+		  <!-- 是否楼层 -->
+	      <result column="isfloor" property="isfloor"/>
+			
+		  <!-- 广告商品集合-->
+		  <collection property="wareList" ofType="com.shifeng.webapi.dto.homepage.AdWareDTO" column="id" select="adWareMapper.getAdWareList" ></collection>
+	   
+	   </resultMap>
+ 
+   	<!-- 查询所有表 -->
+	<select id="getAdList" resultMap="AdMap">
+		select
+			id,name ,title ,imgPath ,link ,type ,sort ,templet_type ,isfloor 
+		from 
+			sys_app_homeads
+		where  
+			state = 1
+		order by sort asc	
+	</select>
+
+	 
+	
+</mapper>

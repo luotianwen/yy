@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/userinfo.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'订单详情页'}){}%>
+<% include("/detailnav.btl"){}%>
+	<div class="boxw clearfix">
+		<%var time = @orderInfo.getSubTime().getTime();%>
+		<div class="order-state clearfix">
+			<div class="state-lcol">
+				<div class="state-top">订单号：${orderInfo.orderId}</div>
+				<%if(orderInfo.orderStatus==0){%>
+					<h3 class="state-txt">等待付款</h3>
+					<div class="state-date" style="display: none;">
+						<i></i>剩余<span id="down">0时0分0秒</span>
+					</div>
+					<div class="state-btns">
+						<a class="btn-2" href="/my/goPay.html?orderId=${orderInfo.orderId}&time=${time}&type=2">去支付</a>
+					</div>
+				<%}%>
+				<%if(orderInfo.orderStatus==1){%>
+					<h3 class="state-txt ftx-02">付款成功</h3>
+					<div class="state-txt-2">等待商家发货</div>
+				<%}%>
+				<%if(orderInfo.orderStatus==2){%>
+					<h3 class="state-txt ftx-02">付款成功</h3>
+					<div class="state-txt-2">等待收货</div>
+				<%}%>
+				<%if(orderInfo.orderStatus==3){%><h3 class="state-txt ftx-02">交易成功</h3><%}%>
+				<%if(orderInfo.orderStatus==4){%><h3 class="state-txt">订单已取消</h3><%}%>
+				<%if(orderInfo.orderStatus==5){%><h3 class="state-txt">订单已关闭</h3><%}%>
+				<%if(orderInfo.orderStatus==6){%><h3 class="state-txt">退款中</h3><%}%>
+			</div>
+			<div class="state-lline"></div>
+			<div class="state-rcol">
+				<div class="state-rtop">
+					<%if(orderInfo.orderStatus==0){%>
+						该订单会为您保留24小时（从下单之日算起），24小时之后如果还未付款，系统将自动取消该订单。
+					<%}%>
+				</div>
+				<div class="order-process">
+					<%
+						var state = 1;
+						if(orderInfo.orderStatus==1){
+							state = 2;
+						}else if(orderInfo.orderStatus==2){
+							state = 3;
+						}else if(orderInfo.orderStatus==3){	
+							if(orderInfo.estatus==2){
+								state = 5;
+							}else{
+								state = 4;
+							}
+						}
+					%>
+					
+					<i class="node-icon-${state}"></i>
+					<div class="node01">
+						<p class="txt1 <%if(state==1){%>over<%}%>">提交订单</p>
+						<!-- <p class="txt2">
+							2017-04-21<br>11:56:06
+						</p> -->
+					</div>
+					<div class="node02">
+						<p class="txt1 <%if(state==2){%>over<%}%>">付款成功</p>
+					</div>
+					<div class="node02">
+						<p class="txt1 <%if(state==3){%>over<%}%>">商家发货</p>
+					</div>
+					<div class="node02">
+						<p class="txt1 <%if(state==4){%>over<%}%>">确认收货</p>
+					</div>
+					<div class="node03">
+						<p class="txt1 <%if(state==5){%>over<%}%>">评价</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="order-info clearfix">
+			<div class="info-lcol">
+				<h3 class="mt">
+					<i></i>订单信息
+				</h3>
+				<dl>
+					<dt>收货地址：</dt>
+					<dd>${orderInfo.address}</dd>
+				</dl>
+				<dl>
+					<dt>收货人：</dt>
+					<dd>${orderInfo.addressee}</dd>
+				</dl>
+				<dl>
+					<dt>联系方式：</dt>
+					<dd>${orderInfo.phone}</dd>
+				</dl>
+				<%if(isNotEmpty(orderInfo.invoice)){%>
+					<dl>
+						<dt>发票信息：</dt>
+						<dd><%if(orderInfo.invoice.type==1){%>普通发票（纸质）<%}else{%>增值税发票<%}%> ${orderInfo.invoice.paymentsUnit} 明细</dd>
+					</dl>
+				<%}%>
+				<!-- <dl>
+					<dt>备注信息：</dt>
+					<dd>我要发票我要发票我要发票</dd>
+				</dl> -->
+			</div>
+			<div class="info-lline"></div>
+			<div class="info-rcol">
+				<%
+					if(!isEmpty(logs)){
+				%>
+					<h3 class="mt">
+						<i></i>订单日志
+					</h3>
+					<ul>
+						<%
+							for(var i=0,len=logs.~size;i<len;i++){
+								var log = logs[i];
+						%>
+							<li <%if(i==len-1){%>class="last"<%}%>><i></i>${log.create_time,"yyyy-MM-dd HH:mm:ss"}${log.log_content}</li>
+						<%
+							}
+						%>
+					</ul>
+				<%
+					}
+				%>
+			</div>
+		</div>
+		<div class="track-list clearfix">
+			<h3 class="track-tit">
+				<i></i>物流信息
+			</h3>
+			
+			<%
+				for(expressTraces in expressTracess){
+			%>
+				<ul>
+					<%
+						if(!isEmpty(expressTraces))
+						for(expressTrace in expressTraces){
+					%>
+							<li class="afterdate">
+								<!-- <span class="date">
+									2017-03-20
+									<span class="week">周三</span>
+								</span> -->
+								<span class="time">${expressTrace.time}</span>
+								<span class="txt">${expressTrace.context}</span>
+							</li>
+					<%
+						}
+					%>
+				</ul>
+			<%	
+				}
+			%>
+			
+		</div>
+		<div class="g-list clearfix">
+			<div class="shop-name">${orderInfo.shopName}</div>
+			<table>
+				<colgroup>
+					<col class="info-col">
+					<col class="price-col">
+					<col class="number-col">
+					<col class="amount-col">
+					<col class="status-col">
+				</colgroup>
+				<thead>
+					<tr>
+						<th>订单详情</th>
+						<th>单价</th>
+						<th>数量</th>
+						<th>总价</th>
+						<th>状态</th>
+					</tr>
+				</thead>
+				<tbody>
+					<%
+						var sum = 0;
+						var prices = 0;
+						for(ware in orderInfo.wares){
+							sum = sum + ware.quantity;
+							prices = prices + ware.totalMoney;
+					%>
+						<tr class="tr-bd">
+							<td>
+								<div class="g-info">
+									<a href="/detail/${ware.sku}.html" target="_blank">
+										<img src="${ware.productImage}" alt="${ware.productName}">
+										${ware.productName}
+									</a>
+								</div>
+							</td>
+							<td>
+								<div class="g-others">¥${ware.quantity}</div>
+							</td>
+							<td>
+								<div class="g-others">x${ware.quantity}</div>
+							</td>
+							<td>
+								<div class="g-others">¥${ware.totalMoney}</div>
+							</td>
+							<td>
+								<div class="g-others">
+									<%
+										if(orderInfo.sstatus==0){
+										if(orderInfo.orderStatus==0){
+									%>
+										等待付款
+									<%	
+										}else if(orderInfo.orderStatus==1){
+									%>
+										等待发货
+									<%	
+										}else if(orderInfo.orderStatus==2){
+									%>
+										等待收货
+									<%	
+										}else if(orderInfo.orderStatus==3){
+									%>
+										交易完成
+									<%	
+										}else if(orderInfo.orderStatus==4||orderInfo.orderStatus==5){
+									%>
+										交易关闭
+									<%	
+										}else if(orderInfo.orderStatus==6){
+									%>
+										等待退款
+									<%	
+										}
+										}else{
+											if(orderInfo.sstatus==1){
+									%>
+												等待换货
+									<%
+											}else if(orderInfo.sstatus==2){
+									%>
+												等待退款
+									<%
+											}else if(orderInfo.sstatus==3){
+									%>
+												等待退款退货
+									<%
+											}else if(orderInfo.sstatus==4){
+									%>
+												等待维修
+									<%
+											}
+										}
+									%>
+								</div>
+							</td>
+	
+						</tr>
+					<%
+						}
+					%>
+				</tbody>
+			</table>
+		</div>
+		<div class="order-summary clearfix">
+			<div class="statistic fr">
+				<div class="list">
+					<span>${sum}件商品，总金额：</span> <em class="price">¥${prices}</em>
+				</div>
+				<div class="list">
+					<span>优惠券抵扣：</span> <em class="price">¥0.00</em>
+				</div>
+				<div class="list">
+					<span>世峰E卡抵扣：</span> <em class="price">¥0.00</em>
+				</div>
+				<div class="list">
+					<span>运费：</span> <em class="price">¥${orderInfo.order_payment}</em>
+				</div>
+				<div class="list ftx-01">
+					<span>应付总额：</span> <em class="price txt">¥${prices}</em>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		var the_s = ${time};
+		$(function(){
+			setInterval(promote, 1000);
+		})
+		
+		function promote() {
+			if(the_s>0){
+				var g = Math.floor(the_s / 3600);
+				var e = Math.floor((the_s - g * 3600) / 60);
+				var f = (the_s - g * 3600) % 60;
+				var html = g + "时" + e + "分" + f + "秒";
+				$("#down").html(html);
+				the_s--;
+			}
+		}
+	</script>
+	
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+</body>
+</html>

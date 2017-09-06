@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 银币设置(sys_sliver)Mapper -->
+<mapper namespace="syssliverMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,activate ,exchange ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.system.SysSliver" id="SysSliverReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 激活送银币 -->
+      <result column="activate" property="activate"/>
+	  <!-- 银币兑换E卡比例 -->
+      <result column="exchange" property="exchange"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllSysSliverPage" parameterType="Page" resultMap="SysSliverReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			sys_sliver
+		where 1=1
+			<if test="t.activate!=null and t.activate!=''">
+				and activate = #{t.activate}
+			</if>
+			<if test="t.exchange!=null and t.exchange!=''">
+				and exchange = #{t.exchange}
+			</if>
+			<if test="t.lasttime!=null and t.lasttime!=''">
+				and lasttime = #{t.lasttime}
+			</if>
+			<if test="t.updatename!=null and t.updatename!=''">
+				and updatename = #{t.updatename}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findSysSliverById" parameterType="String" resultMap="SysSliverReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			sys_sliver
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateSysSliver" parameterType="com.shifeng.entity.system.SysSliver">
+		update 
+			sys_sliver 
+		set
+	      	activate = #{activate},
+	      	exchange = #{exchange},
+	      	lasttime = now(),
+	      	updatename = #{updatename}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveSysSliver" parameterType="com.shifeng.entity.system.SysSliver">
+		insert into sys_sliver
+			(
+		      activate, exchange, lasttime, updatename 
+			)
+		values
+			(
+		      #{activate},
+		      #{exchange},
+		     now(),
+		      #{updatename}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteSysSliver" parameterType="String">
+  		delete from sys_sliver
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

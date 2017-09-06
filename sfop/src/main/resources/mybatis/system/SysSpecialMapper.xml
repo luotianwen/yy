@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 专题页名称(sys_special)Mapper -->
+<mapper namespace="sysspecialMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,title ,name ,script ,content ,state ,lasttime ,updatename ,remark 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.system.SysSpecial" id="SysSpecialReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 专题页名称 -->
+      <result column="title" property="title"/>
+	  <!-- 页面名称(html) -->
+      <result column="name" property="name"/>
+	  <!-- 语言脚本代码 -->
+      <result column="script" property="script"/>
+	  <!-- 内容 -->
+      <result column="content" property="content"/>
+	  <!-- 状态 -->
+      <result column="state" property="state"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllSysSpecialPage" parameterType="Page" resultMap="SysSpecialReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			sys_special
+		where 1=1
+			<if test="t.title!=null and t.title!=''">
+				and title = #{t.title}
+			</if>
+			<if test="t.name!=null and t.name!=''">
+				and name = #{t.name}
+			</if>
+			<if test="t.script!=null and t.script!=''">
+				and script = #{t.script}
+			</if>
+			<if test="t.content!=null and t.content!=''">
+				and content = #{t.content}
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and state = #{t.state}
+			</if>
+			<if test="t.lasttime!=null and t.lasttime!=''">
+				and lasttime = #{t.lasttime}
+			</if>
+			<if test="t.updatename!=null and t.updatename!=''">
+				and updatename = #{t.updatename}
+			</if>
+			<if test="t.remark!=null and t.remark!=''">
+				and remark = #{t.remark}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findSysSpecialById" parameterType="String" resultMap="SysSpecialReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			sys_special
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateSysSpecial" parameterType="com.shifeng.entity.system.SysSpecial">
+		update 
+			sys_special 
+		set
+	      	title = #{title},
+	      	name = #{name},
+	      	script = #{script},
+	      	content = #{content},
+	      	state = #{state},
+	      	lasttime = now(),
+	      	updatename = #{updatename},
+	      	remark = #{remark}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveSysSpecial" parameterType="com.shifeng.entity.system.SysSpecial">
+		insert into sys_special
+			(
+		      title, name, script, content, state, lasttime, updatename, remark 
+			)
+		values
+			(
+		      #{title},
+		      #{name},
+		      #{script},
+		      #{content},
+		      #{state},
+		      now(),
+		      #{updatename},
+		      #{remark}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteSysSpecial" parameterType="String">
+  		delete from sys_special
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

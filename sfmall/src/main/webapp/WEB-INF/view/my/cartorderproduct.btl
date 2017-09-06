@@ -1,0 +1,69 @@
+
+    <ul class="gt">
+        <li class="first w622">商品信息</li>
+        <li class="w132">单价</li>
+        <li class="w132">数量</li>
+        <li class="last w132">小计</li>
+    </ul>
+    <div class="gc">
+        <%
+        var countPrice=0;
+        var  num=0;
+        var freight=0;
+        for(shop in data){
+            var shopPrice = 0;
+            var shopFreight = 0;
+            if(!isEmpty(freights)){
+                for(  _freight in freights ){
+                    if(_freight.shopid==shop.shopid){
+                        shopFreight=_freight.freight;
+                        freight=freight+shopFreight;
+                    }
+
+                }
+            }
+        %>
+        <h3>商家：${shop.shopName}</h3>
+        <table width="100%" border="0">
+            <%for(cart in shop.wareList ){
+                num = num+cart.number;
+                shopPrice=shopPrice+(parseDouble(cart.price)*cart.number);
+                countPrice=countPrice+(parseDouble(cart.price)*cart.number);
+            %>
+
+            <tr>
+                <td width="100" class="txt-center"><img src="${cart.colorPic}" class="g-img"  alt=""/></td>
+                <td><a href="/detail/${cart.sku}.html" target="_blank">${cart.pName}</a></td>
+                <td width="160">
+                	<%if(!isEmpty(cart.colorName)){%><p>颜色：${cart.colorName}</p><%}%>
+                	<%if(!isEmpty(cart.specName)){%><p>尺码：${cart.specName}</p><%}%>
+                </td>
+                <td width="132" class="txt-center">¥${cart.price}</td>
+                <td width="132" class="txt-center">${cart.number}</td>
+                <td width="132" class="txt-center">¥${parseDouble(cart.price)*cart.number}</td>
+            </tr>
+            <%}%>
+            <tr><td colspan="6">
+                <div class="others">
+                    <div class="fl">备注：<input name="remark" type="text" class="form-control w500"/></div>
+                    <div class="fr"><span>快递运费：¥${shopFreight}</span><span class="total">合计：<b class="txt-red">¥${shopPrice+shopFreight}</b></span></div>
+                </div>
+            </td></tr>
+        </table>
+        <%}%>
+
+    </div>
+<script>
+    $(function () {
+        var countPrice=${countPrice,numberFormat='#.00'};
+        var  num=${num};
+        
+        $("#allnum").html(num+"件商品，总金额：");
+        $("#allnums").html("共"+num+"件商品");
+        $("#allprice").html("¥"+countPrice.toFixed(2));
+        var freight=${freight};
+        $("#allfreight").html("¥"+freight.toFixed(2));
+        var allPriceFreight=${countPrice+freight}
+        $("#allPriceFreight").html("¥"+allPriceFreight.toFixed(2));
+    });
+</script>

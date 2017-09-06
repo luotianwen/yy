@@ -1,0 +1,96 @@
+.mod-main .mc {
+  margin-top: 20px;
+}
+.mod-main .mc .user_menu {
+  -moz-box-shadow: 0 0 5px #969696;
+  -webkit-box-shadow: 0 0 5px #969696;
+  box-shadow: 0 0 5px #969696;
+}
+.mod-main .mc .user_menu .user_item {
+  border-bottom: 1px solid #c8c8c8;
+  margin: 0 35px;
+  padding: 20px 0;
+  height: 60px;
+}
+.mod-main .mc .user_menu .user_item .title,
+.mod-main .mc .user_menu .user_item .hint,
+.mod-main .mc .user_menu .user_item .amend_btn {
+  position: relative;
+  float: left;
+  height: 100%;
+}
+.mod-main .mc .user_menu .user_item .br:after {
+  content: " ";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 60px;
+  border-right: 1px solid #e0e0e0;
+  color: #D9D9D9;
+}
+.mod-main .mc .user_menu .user_item .title i {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url(../img/tick_img.png) no-repeat;
+  float: left;
+  margin-left: 42px;
+  margin-top: 20px;
+  margin-right: 16px;
+}
+.mod-main .mc .user_menu .user_item .title span {
+  display: inline-block;
+  height: 60px;
+  line-height: 60px;
+  font-size: 20px;
+  font-weight: bold;
+  padding-right: 75px;
+}
+.mod-main .mc .user_menu .user_item .hint {
+  width: 480px;
+  padding-left: 8px;
+  color: #FF5B29;
+  font-size: 14px;
+  line-height: 60px;
+}
+.mod-main .mc .user_menu .user_item .hint span {
+  color: #969696;
+  margin-right: 7px;
+}
+.mod-main .mc .user_menu .user_item .hint span i {
+  color: #505050;
+  font-weight: bold;
+}
+.mod-main .mc .user_menu .user_item .amend_btn span {
+  display: inline-block;
+  width: 80px;
+  height: 30px;
+  border: 1px solid #06B639;
+  border-radius: 5px;
+  text-align: center;
+  line-height: 30px;
+  color: #06B639;
+  margin-top: 15px;
+  margin-left: 50px;
+}
+.mod-main .mc .user_menu .user_item .amend_btn span:active {
+  background: #06b639;
+  color: #fff;
+}
+.mod-main .mc .safety-tips {
+  margin-top: 20px;
+  padding: 40px 20px;
+  -moz-box-shadow: 0 0 5px #969696;
+  -webkit-box-shadow: 0 0 5px #969696;
+  box-shadow: 0 0 5px #969696;
+  color: #505050;
+}
+.mod-main .mc .safety-tips .title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 21px;
+}
+.mod-main .mc .safety-tips .msg p {
+  margin-bottom: 12px;
+}

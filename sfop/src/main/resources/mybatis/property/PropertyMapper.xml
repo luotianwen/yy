@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 属性表(p_property)Mapper -->
+<mapper namespace="propertyMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,name ,sort ,ismultiple ,lasttime ,updatename ,remark
+    </sql>
+
+    <resultMap type="com.shifeng.entity.category.Property" id="PropertyReturnMap">
+	  <!-- 属性编号 -->
+      <id column="id" property="id"/>
+	  <!-- 属性名称 -->
+      <result column="name" property="name"/>
+	  <!-- 排序 -->
+      <result column="sort" property="sort"/>
+	  <!-- 是否多选 -->
+      <result column="ismultiple" property="ismultiple"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+      <!-- 备注 -->
+      <result column="remark" property="remark"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllProperty" parameterType="String" resultMap="PropertyReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_property
+		where 1=1
+		and name like CONCAT("%",#{name},"%")
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findPropertyById" parameterType="String" resultMap="PropertyReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_property
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateProperty" parameterType="com.shifeng.entity.category.Property">
+		update 
+			p_property 
+		set
+	      	name = #{name},
+	      	sort = #{sort},
+	      	ismultiple = #{ismultiple},
+	      	lasttime = now(),
+	      	updatename = #{updatename},
+	      	remark = #{remark}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveProperty" parameterType="com.shifeng.entity.category.Property">
+		insert into p_property
+			(
+		      name, sort, ismultiple,lasttime, updatename,remark
+			)
+		values
+			(
+		      #{name},
+		      #{sort},
+		      #{ismultiple},
+		      lasttime = now(),
+		      #{updatename},
+		      #{remark}
+			)
+	</insert>
+  
+	<!-- 删除 -->
+	<delete id="deleteProperty" parameterType="String">
+	    delete from p_property
+	    where id = #{id}
+	</delete>
+	
+	
+</mapper>

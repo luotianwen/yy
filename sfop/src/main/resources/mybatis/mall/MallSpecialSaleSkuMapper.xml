@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 特卖商品(mall_special_sale_sku)Mapper -->
+<mapper namespace="mallspecialsaleskuMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,pid ,sku ,sort ,starttime ,endtime ,activitytype ,activityprice ,activitystocks ,discount 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.mall.MallSpecialSaleSku" id="MallSpecialSaleSkuReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- pid -->
+      <result column="pid" property="pid"/>
+	  <!-- sku -->
+      <result column="sku" property="sku"/>
+	  <!-- 序号 -->
+      <result column="sort" property="sort"/>
+	  <!-- 开始时间 -->
+      <result column="starttime" property="starttime"/>
+	  <!-- 结束时间 -->
+      <result column="endtime" property="endtime"/>
+	  <!-- 活动类型 -->
+      <result column="activitytype" property="activitytype"/>
+	  <!-- 活动价 -->
+      <result column="activityprice" property="activityprice"/>
+	  <!-- 活动数量 -->
+      <result column="activitystocks" property="activitystocks"/>
+	  <!-- 折扣 -->
+      <result column="discount" property="discount"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllMallSpecialSaleSkuPage" parameterType="Page" resultMap="MallSpecialSaleSkuReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_special_sale_sku
+		where 1=1
+			<if test="t.pid!=null and t.pid!=''">
+				and pid = #{t.pid}
+			</if>
+			<if test="t.sku!=null and t.sku!=''">
+				and sku = #{t.sku}
+			</if>
+			<if test="t.sort!=null and t.sort!=''">
+				and sort = #{t.sort}
+			</if>
+			<if test="t.starttime!=null and t.starttime!=''">
+				and starttime = #{t.starttime}
+			</if>
+			<if test="t.endtime!=null and t.endtime!=''">
+				and endtime = #{t.endtime}
+			</if>
+			<if test="t.activitytype!=null and t.activitytype!=''">
+				and activitytype = #{t.activitytype}
+			</if>
+			<if test="t.activityprice!=null and t.activityprice!=''">
+				and activityprice = #{t.activityprice}
+			</if>
+			<if test="t.activitystocks!=null and t.activitystocks!=''">
+				and activitystocks = #{t.activitystocks}
+			</if>
+			<if test="t.discount!=null and t.discount!=''">
+				and discount = #{t.discount}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findMallSpecialSaleSkuById" parameterType="String" resultMap="MallSpecialSaleSkuReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_special_sale_sku
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateMallSpecialSaleSku" parameterType="com.shifeng.entity.mall.MallSpecialSaleSku">
+		update 
+			mall_special_sale_sku 
+		set
+	      	sku = #{sku},
+	      	sort = #{sort},
+	      	starttime = #{starttime},
+	      	endtime = #{endtime},
+	      	activitytype = #{activitytype},
+	      	activityprice = #{activityprice},
+	      	activitystocks = #{activitystocks},
+	      	discount = #{discount}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveMallSpecialSaleSku" parameterType="com.shifeng.entity.mall.MallSpecialSaleSku">
+		insert into mall_special_sale_sku
+			(
+		      pid, sku, sort, starttime, endtime, activitytype, activityprice, activitystocks, discount 
+			)
+		values
+			(
+		      #{pid},
+		      #{sku},
+		      #{sort},
+		      #{starttime},
+		      #{endtime},
+		      #{activitytype},
+		      #{activityprice},
+		      #{activitystocks},
+		      #{discount}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteMallSpecialSaleSku" parameterType="String">
+  		delete from mall_special_sale_sku
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

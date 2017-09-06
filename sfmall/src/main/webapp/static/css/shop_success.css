@@ -1,0 +1,180 @@
+.s_success_msg{
+	height: 120px;
+	width: 100%;
+	background-color: #f5f5f5;
+}
+.s_success_msg .title{
+	font-size: 20px;
+	color: #06b639;
+	font-weight: 600;
+	padding-top: 11px;
+}
+.s_success_msg .title i{
+	float: left;
+	display: inline-block;
+	width: 24px;
+	height:20px;
+	background: url(../img/accomplish_img.png) no-repeat;
+	margin-top: 4px;
+	margin-right: 9px;
+}
+.s_success_msg .content{
+	margin-top: 15px;
+}
+.s_success_msg .content ul{
+	float: left;
+}
+.s_success_msg .content ul li{
+	font-size: 12px;
+	color:#969696;
+}
+.item_2,.item_3{
+	margin-top: 5px;
+}
+.item_3 span{
+	margin-right: 8px;
+}
+.btn{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+.btn span{
+	cursor: pointer;
+	height: 30px;
+	line-height: 30px;
+	padding:0 23px;
+	display: inline-block;
+}
+.btn span.btn_1{
+	color:#06b639;
+	margin-right: 10px;
+	border: 1px solid #06b639;
+}
+.btn span.btn_1:active{
+	background-color: #ededed;
+}
+.btn span.btn_2{
+	color:#fff;
+	border: 1px solid #ff5b2d;
+	background-color: #ff5b2d;
+}
+.btn span.btn_2:active{
+	background-color: #f33e0b;
+	border: 1px solid #f33e0b;
+}
+.s_success_msg .content ul li.item_1 a{
+		font-size: 14px;
+		color: #505050;
+}
+.s_success_msg .content .img{
+	float: left;
+	width: 60px;
+	height: 60px;
+	margin-right: 10px;
+	border: 1px solid #c8c8c8;
+}
+.s_success_msg .content .img img{
+	width: 100%;
+	height: 100%;
+}
+.submit_successfully .su_title {
+  width: 100%;
+  height: 65px;
+  line-height: 65px;
+  padding-top: 57px;
+  margin-left: 332px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #06B639;
+}
+.submit_successfully .related .title {
+  padding-bottom: 7px;
+  border-bottom: 1px solid #b4b4b4;
+}
+.submit_successfully .related .title p {
+  height: 18px;
+  border-left: 4px solid #06b639;
+  font-size: 16px;
+  color: #2d2d2d;
+  line-height: 18px;
+  padding: 0 6px;
+  font-weight: 600;
+}
+.submit_successfully .su_title i {
+  float: left;
+  display: inline-block;
+  width: 65px;
+  height: 65px;
+  background: url(../img/vehicle_img.png) no-repeat;
+  margin-right: 24px;
+}
+.submit_successfully .related {
+  margin-top: 33px;
+  float: left;
+}
+.submit_successfully .related .r_menu {
+  width: 100%;
+  float: left;
+}
+.submit_successfully .related .r_menu a {
+  width: 28px;
+  height: 46px;
+  margin-top: 90px;
+}
+.submit_successfully .related .r_menu a.left_btn {
+  float: left;
+  background: url(../img/left_img_1.png);
+}
+.submit_successfully .related .r_menu a.left_btn:hover {
+  background: url(../img/left_img_2.png);
+}
+.submit_successfully .related .r_menu a.right_btn {
+  float: right;
+  background: url(../img/right_img_1.png);
+}
+.submit_successfully .related .r_menu a.right_btn:hover {
+  background: url(../img/right_img_2.png);
+}
+.submit_successfully .related .r_menu .r_show_shop {
+  position: relative;
+  float: left;
+  width: 1120px;
+  height: 324px;
+  padding: 0 12px;
+  margin-top: 13px;
+  overflow: hidden;
+}
+.submit_successfully .related .r_menu .r_show_shop ul {
+  position: absolute;
+  float: left;
+  width: 99999999px;
+}
+.submit_successfully .related .r_menu .r_show_shop ul li {
+  float: left;
+  width: 200px;
+  margin-right: 30px;
+}
+.submit_successfully .related .r_menu .r_show_shop ul li a img {
+  width: 196px;
+  height: 196px;
+  border: 2px solid #C8C8C8;
+}
+.submit_successfully .related .r_menu .r_show_shop ul li a img.active {
+  border: 2px solid #06b639;
+}
+.submit_successfully .related .r_menu .r_show_shop ul li a p {
+  height: 35px;
+  overflow: hidden;
+  margin: 10px 0;
+  font-size: 14px;
+  color: #515151;
+  text-align: center;
+}
+.submit_successfully .related .r_menu .r_show_shop ul li a span {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  color: #FF5B29;
+}

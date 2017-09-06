@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="solrProductMapper">
+
+	<resultMap type="com.shifeng.provide.entity.solr.SolrProductSkuDTO" id="solrProductDTOMap">
+	  <!-- sku -->
+      <id column="sku" property="sku"/>
+      <!-- 商品编号 -->
+      <result column="pid" property="pid"/>
+      <!-- 库存 -->
+      <result column="stocks" property="stocks"/>
+      <!-- 重量 -->
+      <result column="weight" property="weight"/>
+      <!-- 市场价 -->
+      <result column="marketprice" property="marketprice"/>
+      <!-- 世峰价 -->
+      <result column="price" property="price"/>
+      <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+      <!-- 颜色 -->
+      <result column="colorid" property="colorid"/>
+      <!-- 规格 -->
+      <result column="specid" property="specid"/>
+      <!-- 开始时间 -->
+      <result column="starttime" property="starttime"/>
+      <!-- 结束时间 -->
+      <result column="endtime" property="endtime"/>
+      <!-- 活动类型 -->
+      <result column="activitytype" property="activitytype"/>
+      <!-- 活动价 -->
+      <result column="activityprice" property="activityprice"/>
+      <!-- 活动数量 -->
+      <result column="activitystocks" property="activitystocks"/>
+ 
+	  <collection property="rules" ofType="com.shifeng.provide.entity.solr.SolrProductRulesDTO" column="sku" 
+	  	 	select="solrProductMapper.getProductRules"></collection> 
+ 
+	  <collection property="product" ofType="com.shifeng.provide.entity.solr.SolrProductDTO" column="pid" 
+	  	 	select="solrProductMapper.getProduct"></collection> 
+ 
+	  <collection property="property" ofType="Integer" column="pid" 
+	  	 	select="solrProductMapper.getProductProperty"></collection> 
+		
+	</resultMap>
+	
+	<!-- 商品sku列表 -->
+	<select id="getProductSkuPage" parameterType="Page" resultMap="solrProductDTOMap">
+		SELECT
+			 pr.pid,pr.sku,pr.marketprice,pr.price,pr.stocks,pr.colorid,pr.specid,activitytype
+			 ,pr.activityprice,pr.activitystocks
+			 ,pr.lasttime,pr.starttime,pr.endtime,weight
+		FROM
+		    p_pro_rules pr
+		GROUP BY 
+			pr.colorid
+	</select>
+	
+	<!-- 商品规格 -->
+	<select id="getProductRules" parameterType="String" resultType="com.shifeng.provide.entity.solr.SolrProductRulesDTO">
+		SELECT
+		   c.name AS colorName,sp.name AS specName,si.ipath AS colorPic 
+		FROM
+		    p_pro_rules pr
+		LEFT JOIN p_color c ON pr.colorid = c.id
+		LEFT JOIN p_sku_images si ON pr.colorid = si.colorid AND ismain = 1
+		LEFT JOIN p_spec sp ON pr.specid = sp.id
+		WHERE
+		  sku = #{sku}
+	</select>
+	
+	<!-- 商品 -->
+	<select id="getProduct" parameterType="Integer" resultType="com.shifeng.provide.entity.solr.SolrProductDTO">
+		SELECT
+			shopid,brandid,pcid,cid,p.name AS pName,goods_subtitle,p.logo,is_seven_return,keywords,p.state
+			,s.logo shopLogo,s.name shopName,origin originId,sa.name originName
+		FROM
+			p_product p
+		LEFT JOIN s_shopinfo s ON p.shopid = s.s_merchants_id
+		LEFT JOIN sys_address sa ON p.origin = sa.id
+		WHERE
+			p.id = #{id}
+	</select>
+	
+	<!-- 商品 -->
+	<select id="getProductProperty" parameterType="Integer" resultType="Integer">
+		SELECT
+			 propertyValueId  
+		FROM
+			p_product_property 
+		WHERE
+		  productId = #{productId}
+	</select>
+	 
+	
+
+</mapper>

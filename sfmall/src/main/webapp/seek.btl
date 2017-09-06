@@ -1,0 +1,41 @@
+<div class="seek">
+    <div class="boxw" style="height: 100%;">
+        <a href="/" class="logo"> <img src="/static/img/logo.png" /> </a> <span class="cutting_line"></span>
+        <div class="store_msg">
+            <span class="page_name">${page_name}</span>
+
+        </div>
+        <div class="shop_search fr">
+            <ul id="shelper" style="display: none;"></ul>
+            <div class="form">
+                <input type="text" name="keyword" id="keyword" value="" placeholder="冲锋衣" />
+                <a href=""><i></i></a>
+            </div>
+            <div class="search_btn">
+                <a class="global">搜索</a>
+            </div>
+            <ul class="links">
+                <!-- <li>
+                    <a href="">世峰户外</a>
+                </li>
+                <li>
+                    <a href="">世峰户外</a>
+                </li>
+                <li>
+                    <a href="">世峰户外</a>
+                </li>
+                <li>
+                    <a href="">世峰户外</a>
+                </li>
+                <li>
+                    <a href="">世峰户外</a>
+                </li>
+                <li>
+                    <a href="">世峰户外</a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/static/js/search.js"></script>

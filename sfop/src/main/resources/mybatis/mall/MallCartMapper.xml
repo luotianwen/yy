@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 购物车(mall_cart)Mapper -->
+<mapper namespace="mallcartMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,userid ,sku ,number ,shopid ,cdate ,price 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.mall.MallCart" id="MallCartReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 用户id -->
+		<result column="userid" property="userid"/>
+		<!-- 用户id -->
+		<result column="uname" property="uname"/>
+	  <!-- sku -->
+      <result column="sku" property="sku"/>
+	  <!-- 数量 -->
+      <result column="number" property="number"/>
+	  <!-- 店铺id -->
+      <result column="shopid" property="shopid"/>
+	  <!-- 创建时间 -->
+      <result column="cdate" property="cdate"/>
+	  <!-- 当时价格 -->
+      <result column="price" property="price"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllMallCartPage" parameterType="Page" resultMap="MallCartReturnMap">
+		select
+		m.id,m.userid ,m.sku ,m.number ,m.shopid ,m.cdate ,m.price,u.uname
+		from 
+			mall_cart m ,
+		   mall_users u
+		where m.userid=u.id
+			<if test="t.userid!=null and t.userid!=''">
+				and m.userid = #{t.userid}
+			</if>
+			<if test="t.uname!=null and t.uname!=''">
+				and u.uname = #{t.uname}
+			</if>
+			<if test="t.sku!=null and t.sku!=''">
+				and m.sku = #{t.sku}
+			</if>
+			<if test="t.number!=null and t.number!=''">
+				and number = #{t.number}
+			</if>
+			<if test="t.shopid!=null and t.shopid!=''">
+				and shopid = #{t.shopid}
+			</if>
+			<if test="t.cdate!=null and t.cdate!=''">
+				and m.cdate &gt;= #{t.cdate}
+			</if>
+			<if test="t.edate!=null and t.edate!=''">
+				and m.cdate &lt;=#{t.edate}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findMallCartById" parameterType="String" resultMap="MallCartReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_cart
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateMallCart" parameterType="com.shifeng.entity.mall.MallCart">
+		update 
+			mall_cart 
+		set
+	      	userid = #{userid},
+	      	sku = #{sku},
+	      	number = #{number},
+	      	shopid = #{shopid},
+	      	cdate = #{cdate},
+	      	price = #{price}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveMallCart" parameterType="com.shifeng.entity.mall.MallCart">
+		insert into mall_cart
+			(
+		      userid, sku, number, shopid, cdate, price 
+			)
+		values
+			(
+		      #{userid},
+		      #{sku},
+		      #{number},
+		      #{shopid},
+		      #{cdate},
+		      #{price}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteMallCart" parameterType="String">
+  		delete from mall_cart
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

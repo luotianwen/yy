@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 店铺审核日志(s_shopinfo_log)Mapper -->
+<mapper namespace="shopinfologMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	s_merchants_id,type ,state ,note ,lasttime ,updatename ,remark 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.ShopinfoLog" id="ShopinfoLogReturnMap">
+	  <!-- 入驻id -->
+      <id column="s_merchants_id" property="s_merchants_id"/>
+	  <!-- 审核阶段 -->
+      <result column="type" property="type"/>
+	  <!-- 审核状态 -->
+      <result column="state" property="state"/>
+	  <!-- 说明 -->
+      <result column="note" property="note"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllShopinfoLogPage" parameterType="Page" resultMap="ShopinfoLogReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_shopinfo_log
+		where 1=1
+			<if test="t.type!=null and t.type!=''">
+				and type = #{t.type}
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and state = #{t.state}
+			</if>
+			<if test="t.note!=null and t.note!=''">
+				and note = #{t.note}
+			</if>
+			<if test="t.lasttime!=null and t.lasttime!=''">
+				and lasttime = #{t.lasttime}
+			</if>
+			<if test="t.updatename!=null and t.updatename!=''">
+				and updatename = #{t.updatename}
+			</if>
+			<if test="t.s_merchants_id!=null and t.s_merchants_id!=''">
+				and s_merchants_id = #{t.s_merchants_id}
+			</if>
+		order by  lasttime desc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findShopinfoLogById" parameterType="String" resultMap="ShopinfoLogReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_shopinfo_log
+		where 
+			s_merchants_id = #{s_merchants_id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateShopinfoLog" parameterType="com.shifeng.entity.shop.ShopinfoLog">
+		update 
+			s_shopinfo_log 
+		set
+	      	type = #{type},
+	      	state = #{state},
+	      	note = #{note},
+	      	lasttime = #{lasttime},
+	      	updatename = #{updatename},
+	      	remark = #{remark}
+		 where
+			s_merchants_id = #{s_merchants_id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveShopinfoLog" parameterType="com.shifeng.entity.shop.ShopinfoLog">
+		insert into s_shopinfo_log
+			(
+		      s_merchants_id,type, state, note, lasttime, updatename, remark
+			)
+		values
+			(
+			#{s_merchants_id},
+		      #{type},
+		      #{state},
+		      #{note},
+		      now(),
+		      #{updatename},
+		      #{remark}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteShopinfoLog" parameterType="String">
+  		delete from s_shopinfo_log
+  		where s_merchants_id = #{s_merchants_id}
+  	</delete>
+	
+</mapper>

@@ -1,0 +1,30 @@
+.leftbar{width:200px;box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);overflow:hidden;margin-top:20px;margin-bottom:20px;}
+.leftbar dl{overflow:hidden;line-height:40px;}
+.leftbar dt{font-size:16px;color:#06b639;padding-left:48px;box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);background:#fff;margin:5px 0;}
+.leftbar dt.one{margin-top:0;}
+.leftbar dd{padding-left:73px;font-size:14px;color:#505050;background:#fff;}
+.leftbar dd a{font-size:14px;color:#505050;}
+.leftbar dd.current{background:#76cf8f;}
+.leftbar dd.current a{font-size:16px;color:#fff;font-weight:bold;}
+.t7,.t8,.t9,.t10{width:16px;height:16px;background:url(../img/icons-p.png) no-repeat;margin-right:9px; vertical-align:-2px;}
+.leftbar .t7{background-position:-14px -40px;display:inline-block;vertical-align:-3px;}
+.leftbar .t8{background-position:-43px -40px;display:inline-block;}
+.leftbar .t9{background-position:-75px -40px;display:inline-block;}
+.leftbar .t10{background-position:-105px -40px;display:inline-block;vertical-align:-3px;}
+
+.form-control {background: #fff;border: 1px solid #c8c8c8;border-radius: 4px;color: #505050;height:22px;line-height:22px;font-size: 14px;padding: 2px 8px;}
+.form-control:focus {border-color: #06b639;}
+.form-control::-moz-placeholder {color: #c8c8c8;opacity: 1;}
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {background-color: #eee;cursor: not-allowed; opacity: 1;}
+textarea.form-control {height: auto;resize: none;padding:6px 8px;}
+select.form-control{height:auto;}
+
+.content{width:970px;margin:20px 0;}
+.top-tit{border:1px solid #dcdcdc;height:38px;line-height:38px;background:#f5f5f5;font-size:16px;color:#505050;position:relative;padding-left:14px;}
+.top-tit i{width:4px;height:20px;display:block;position:absolute;left:0;top:9px;background:#06b639;}
+.mod-main{width:100%;}
+.mod-main .mt{padding:10px 0;overflow:hidden;}
+.mod-main .mt li{float:left;width:100px;height:30px;line-height:30px;}
+.mod-main .mt li.current{border-bottom:2px solid #06b639;}
+.mod-main .mt li.w140{width:140px;}
+.mod-main .mt a{width:100%;height:30px;display:block;font-size:14px;color:#505050;text-align:center;}

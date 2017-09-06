@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+  
+	
+	<!-- 商品搜索 -->
+	<bean id="wareSolrClient" class="com.shifeng.mall.solr.MyHttpSolrClient">
+		 <property name="baseURL" value="${solr.baseURL}" />
+		 <property name="coreName" value="${solr.WareCore}" />
+		 <property name="timeout" value="${solr.timeout}" />
+		 <property name="connectionTimeout" value="${solr.connectionTimeout}" />
+		 <property name="defaultMaxConnectionsPerHost" value="${solr.defaultMaxConnectionsPerHost}" />
+		 <property name="maxTotal" value="${solr.maxTotal}" />
+		 <property name="followRedirects" value="${solr.followRedirects}" />
+		 <property name="allowCompression" value="${solr.allowCompression}" />
+	</bean>	
+	
+	<!-- 关键词提示 -->
+	<bean id="suggestSolrClient" class="com.shifeng.mall.solr.MyHttpSolrClient">
+		 <property name="baseURL" value="${solr.baseURL}" />
+		 <property name="coreName" value="${solr.suggestCore}" />
+		 <property name="timeout" value="${solr.timeout}" />
+		 <property name="connectionTimeout" value="${solr.connectionTimeout}" />
+		 <property name="defaultMaxConnectionsPerHost" value="${solr.defaultMaxConnectionsPerHost}" />
+		 <property name="maxTotal" value="${solr.maxTotal}" />
+		 <property name="followRedirects" value="${solr.followRedirects}" />
+		 <property name="allowCompression" value="${solr.allowCompression}" />
+	</bean>	
+	
+	
+	 
+</beans>

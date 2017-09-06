@@ -1,0 +1,7 @@
+/* 修正layer日期插件样式错乱 */
+.laydate_box {
+	box-sizing: content-box !important;
+}
+.laydate_box * {
+	box-sizing: content-box !important;
+}

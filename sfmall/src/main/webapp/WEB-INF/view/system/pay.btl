@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>${explain.title}</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/txt.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:''}){}%>
+<% include("/detailnav.btl"){}%>
+
+<div class="boxw clearfix">
+    <div class="fl sidenav">
+
+        <dl>
+            <dt><i class="t2"></i>支付/配送</dt>
+            <%if(explain.name=='支付方式'){%> <dd  class="current" > 支付方式 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/pay.html?name=支付方式">支付方式</a></dd><%}%>
+            <%if(explain.name=='在线支付'){%> <dd  class="current" > 在线支付 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/pay.html?name=在线支付">在线支付</a></dd><%}%>
+            <%if(explain.name=='银行转账'){%> <dd  class="current" > 银行转账 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/pay.html?name=银行转账">银行转账</a></dd><%}%>
+            <%if(explain.name=='配送费用'){%> <dd  class="current" > 配送费用 </dd>  <%}%>
+            <%else{%><dd    ><a href="/footer/pay.html?name=配送费用">配送费用</a></dd><%}%>
+
+        </dl>
+
+    </div>
+    <div class="fr txt-main clearfix">
+        <div class="mt">${explain.name}</div>
+        <div class="mc">${explain.content}</div>
+    </div>
+</div>
+
+<% include("/footer.btl"){}%>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- pc首页广告商品(sys_pc_homead_ware)Mapper -->
+<mapper namespace="syspchomeadwareMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,ad_id ,imgLink ,top_pic ,sort ,sku ,state ,lasttime ,updatename ,remark 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.system.SysPcHomeadWare" id="SysPcHomeadWareReturnMap">
+	  <!-- 广告明细id -->
+      <id column="id" property="id"/>
+	  <!-- 广告ID -->
+      <result column="ad_id" property="ad_id"/>
+	  <!-- 链接 -->
+      <result column="imgLink" property="imgLink"/>
+	  <!-- 顶部图标 -->
+      <result column="top_pic" property="top_pic"/>
+	  <!-- 序号 -->
+      <result column="sort" property="sort"/>
+	  <!-- sku -->
+      <result column="sku" property="sku"/>
+	  <!-- 状态 -->
+      <result column="state" property="state"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllSysPcHomeadWarePage" parameterType="Page" resultMap="SysPcHomeadWareReturnMap">
+		select
+		  	hw.id as id,
+			hw.sku as sku,
+			hw.imgLink as imgLink,
+			hw.top_pic as top_pic,
+			hw.state as state,
+		    hw.sort as sort,
+			hw.lasttime,
+			hw.updatename,
+			hw.remark,
+		    pr.price as price,
+			pr.activityprice as activityprice,
+			p.name as name,
+			pi.ipath as imgPath
+		from 
+			sys_pc_homead_ware hw
+		LEFT JOIN
+			p_pro_rules pr on pr.sku=hw.sku
+		LEFT JOIN
+			p_product p on p.id=pr.pid
+		LEFT JOIN
+			p_sku_images pi on pi.colorid=pr.colorid and pi.ismain=1
+			
+		where 1=1
+			<if test="t.ad_id!=null and t.ad_id!=''">
+				and hw.ad_id = #{t.ad_id}
+			</if>
+			<if test="t.sku!=null and t.sku!=''">
+				and hw.sku = #{t.sku}
+			</if>
+		GROUP BY hw.id
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findSysPcHomeadWareById" parameterType="String" resultMap="SysPcHomeadWareReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			sys_pc_homead_ware
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateSysPcHomeadWare" parameterType="com.shifeng.entity.system.SysPcHomeadWare">
+		update 
+			sys_pc_homead_ware 
+		set
+	      	ad_id = #{ad_id},
+	      	imgLink = #{imgLink},
+	      	top_pic = #{top_pic},
+	      	sort = #{sort},
+	      	sku = #{sku},
+	      	state = #{state},
+	      	lasttime = now(),
+	      	updatename = #{updatename},
+	      	remark = #{remark}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveSysPcHomeadWare" parameterType="com.shifeng.entity.system.SysPcHomeadWare">
+		insert into sys_pc_homead_ware
+			(
+		      ad_id, imgLink, top_pic, sort, sku, state, lasttime, updatename, remark 
+			)
+		values
+			(
+		      #{ad_id},
+		      #{imgLink},
+		      #{top_pic},
+		      #{sort},
+		      #{sku},
+		      #{state},
+		      now(),
+		      #{updatename},
+		      #{remark}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteSysPcHomeadWare" parameterType="String">
+  		delete from sys_pc_homead_ware
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

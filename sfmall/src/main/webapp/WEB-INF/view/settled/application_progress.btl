@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<% include("/basecss.btl"){}%>
+		<link rel="stylesheet" type="text/css" href="/static/css/check_in.css"/>
+	</head>
+
+	<body>
+		<% include("/header.btl"){}%>
+		<div class="h_container h_feature_1">
+			<div class="boxw">
+				<div class="h_function">
+					<div class="logo_1 fl">
+						<a href="http://www.seebong.com/" target="_blank"><img src="/static/img/all/logo.jpg" /></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="CheckNav">
+			<div class="boxw">
+				<ul class="CheckList">
+					<li class="">招商首页</li>
+					<li class="check_active">申请进度</li>
+					<li>招商标准</li>
+					<li>资费标准</li>
+				</ul>
+			</div>
+		</div>
+		<div class="boxw">
+			<div class="check_message_1" id="check_message_1">
+				<ul class="check_num">
+					<li <%if(progressDTO.next>=0){%>class="m_item_first"<%}%>>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li <%if(progressDTO.next>=1){if(progressDTO.state==2){%>class="m_item_error"<%}else if(progressDTO.state==1){%>class="m_item_active"<%}}%>>
+						
+						<%if(progressDTO.next>=1){
+							if(progressDTO.state==2){%>
+								<div class="not_pass">
+									未通过
+								</div>
+						<%	}
+						}%>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li <%if(progressDTO.next>=2){if(progressDTO.fstate==2){%>class="m_item_error"<%}else if(progressDTO.fstate==1){%>class="m_item_active"<%}}%>>
+						<%if(progressDTO.next>=2){
+							if(progressDTO.fstate==2){%>
+								<div class="not_pass">
+									未通过
+								</div>
+						<%	}
+						}%>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li <%if(progressDTO.next>=3){%>class="m_item_active"<%}%>>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li <%if(progressDTO.next>=4){%>class="m_item_active"<%}%>>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li <%if(progressDTO.next>=5){%>class="m_item_active"<%}%>>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="m_item_last"></li>
+				</ul>
+				<ul class="check_text">
+					<li <%if(progressDTO.next>=0){%>class="active"<%}%>>
+						<i>1</i> 查看入住须知及协议
+					</li>
+					<li <%if(progressDTO.next>=1){if(progressDTO.state==2){%>class="active_error"<%}else if(progressDTO.state==1){%>class="active"<%}}%>>
+						<i>2</i> 填写公司信息
+					</li>
+					<li <%if(progressDTO.next>=2){if(progressDTO.fstate==2){%>class="active_error"<%}else if(progressDTO.fstate==1){%>class="active"<%}}%>>
+						<i>3</i> 填写店铺信息
+					</li>
+					<li <%if(progressDTO.next>=3){%>class="active"<%}%>>
+						<i>4</i> 完成，等待审核
+					</li>
+					<li <%if(progressDTO.next>=4){%>class="active"<%}%>>
+						<i>5</i> 付款
+					</li>
+					<li <%if(progressDTO.next>=5){%>class="active"<%}%>>
+						<i>6</i> 入驻成功
+					</li>
+				</ul>
+			</div>
+			<div class="audit_log">
+				<h1>审核日志</h1>
+				<table border="1" cellspacing="" cellpadding="">
+					<tr>
+						<th style="width: 120px;">审核人</th>
+						<th>审核时间</th>
+						 <th>未通过项目</th>
+						<th>未通过原因</th>
+					</tr>
+					<%
+					var bool = true;
+					for(shopinfoLog in shopinfoLogs){
+					bool = false;
+					%>
+					<tr>
+						<td>${shopinfoLog.updatename}</td>
+						<td>${shopinfoLog.lasttime,"yyyy-MM-dd HH:mm:ss"}</td>
+						<td  >${shopinfoLog.type==1?' 公司信息有误':'店铺信息有误'}</td>
+						<td >${shopinfoLog.note}</td>
+					</tr>
+					<%}
+					if(bool){
+					%>
+					<tr>
+						<td colspan="4">暂无审核数据</td>
+					</tr>
+					<%}%>
+				</table>
+			</div>
+		</div>
+		
+		<% include("/footer.btl"){}%>
+		<% include("/basejs.btl"){}%>
+		<script type="text/javascript" src="/static/js/settled/settled.js"></script>
+	</body>
+
+</html>

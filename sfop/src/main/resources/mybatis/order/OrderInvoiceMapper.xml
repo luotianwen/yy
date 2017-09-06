@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 订单发票(o_orderInvoice)Mapper -->
+<mapper namespace="orderInvoiceMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	orderId,invoiceId ,paymentsUnit ,content ,type ,vat_companyName ,vat_code ,vat_address ,vat_phone ,vat_bankName ,vat_bankAccount ,totalMoneyLower ,drawer ,subTime ,remark ,userId ,postAddress ,postName ,postPhone ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.order.OrderInvoice" id="OrderInvoiceReturnMap">
+	  <!-- 订单编号 -->
+      <id column="orderId" property="orderId"/>
+	  <!-- 发票编号 -->
+      <result column="invoiceId" property="invoiceId"/>
+	  <!-- 发票抬头 -->
+      <result column="paymentsUnit" property="paymentsUnit"/>
+	  <!-- 发票内容 -->
+      <result column="content" property="content"/>
+	  <!-- 发票类型 -->
+      <result column="type" property="type"/>
+	  <!-- 单位名称 -->
+      <result column="vat_companyName" property="vat_companyName"/>
+	  <!-- 纳税人识别码 -->
+      <result column="vat_code" property="vat_code"/>
+	  <!-- 注册地址 -->
+      <result column="vat_address" property="vat_address"/>
+	  <!-- 注册电话 -->
+      <result column="vat_phone" property="vat_phone"/>
+	  <!-- 开户银行 -->
+      <result column="vat_bankName" property="vat_bankName"/>
+	  <!-- 银行账户 -->
+      <result column="vat_bankAccount" property="vat_bankAccount"/>
+	  <!-- 发票金额 -->
+      <result column="totalMoneyLower" property="totalMoneyLower"/>
+	  <!-- 开票人 -->
+      <result column="drawer" property="drawer"/>
+	  <!-- 时间 -->
+      <result column="subTime" property="subTime"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 用户编号 -->
+      <result column="userId" property="userId"/>
+	  <!-- 邮寄地址 -->
+      <result column="postAddress" property="postAddress"/>
+	  <!-- 收件人姓名 -->
+      <result column="postName" property="postName"/>
+	  <!-- 收件人电话 -->
+      <result column="postPhone" property="postPhone"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllOrderInvoicePage" parameterType="Page" resultMap="OrderInvoiceReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_orderInvoice
+		where 1=1
+			<if test="t.invoiceId!=null and t.invoiceId!=''">
+				and invoiceId = #{t.invoiceId}
+			</if>
+			<if test="t.paymentsUnit!=null and t.paymentsUnit!=''">
+				and paymentsUnit = #{t.paymentsUnit}
+			</if>
+			<if test="t.content!=null and t.content!=''">
+				and content = #{t.content}
+			</if>
+			<if test="t.type!=null and t.type!=''">
+				and type = #{t.type}
+			</if>
+			<if test="t.vat_companyName!=null and t.vat_companyName!=''">
+				and vat_companyName = #{t.vat_companyName}
+			</if>
+			<if test="t.vat_code!=null and t.vat_code!=''">
+				and vat_code = #{t.vat_code}
+			</if>
+			<if test="t.vat_address!=null and t.vat_address!=''">
+				and vat_address = #{t.vat_address}
+			</if>
+			<if test="t.vat_phone!=null and t.vat_phone!=''">
+				and vat_phone = #{t.vat_phone}
+			</if>
+			<if test="t.vat_bankName!=null and t.vat_bankName!=''">
+				and vat_bankName = #{t.vat_bankName}
+			</if>
+			<if test="t.vat_bankAccount!=null and t.vat_bankAccount!=''">
+				and vat_bankAccount = #{t.vat_bankAccount}
+			</if>
+			<if test="t.totalMoneyLower!=null and t.totalMoneyLower!=''">
+				and totalMoneyLower = #{t.totalMoneyLower}
+			</if>
+			<if test="t.drawer!=null and t.drawer!=''">
+				and drawer = #{t.drawer}
+			</if>
+			<if test="t.subTime!=null and t.subTime!=''">
+				and subTime = #{t.subTime}
+			</if>
+			<if test="t.remark!=null and t.remark!=''">
+				and remark = #{t.remark}
+			</if>
+			<if test="t.userId!=null and t.userId!=''">
+				and userId = #{t.userId}
+			</if>
+			<if test="t.postAddress!=null and t.postAddress!=''">
+				and postAddress = #{t.postAddress}
+			</if>
+			<if test="t.postName!=null and t.postName!=''">
+				and postName = #{t.postName}
+			</if>
+			<if test="t.postPhone!=null and t.postPhone!=''">
+				and postPhone = #{t.postPhone}
+			</if>
+			<if test="t.lasttime!=null and t.lasttime!=''">
+				and lasttime = #{t.lasttime}
+			</if>
+			<if test="t.updatename!=null and t.updatename!=''">
+				and updatename = #{t.updatename}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findOrderInvoiceById" parameterType="String" resultMap="OrderInvoiceReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_orderInvoice
+		where 
+			orderId = #{orderId}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateOrderInvoice" parameterType="com.shifeng.entity.order.OrderInvoice">
+		update 
+			o_orderInvoice 
+		set
+	      	invoiceId = #{invoiceId},
+	      	paymentsUnit = #{paymentsUnit},
+	      	content = #{content},
+	      	type = #{type},
+	      	vat_companyName = #{vat_companyName},
+	      	vat_code = #{vat_code},
+	      	vat_address = #{vat_address},
+	      	vat_phone = #{vat_phone},
+	      	vat_bankName = #{vat_bankName},
+	      	vat_bankAccount = #{vat_bankAccount},
+	      	totalMoneyLower = #{totalMoneyLower},
+	      	drawer = #{drawer},
+	      	subTime = #{subTime},
+	      	remark = #{remark},
+	      	userId = #{userId},
+	      	postAddress = #{postAddress},
+	      	postName = #{postName},
+	      	postPhone = #{postPhone},
+	      	lasttime = #{lasttime},
+	      	updatename = #{updatename}
+		 where
+			orderId = #{orderId}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveOrderInvoice" parameterType="com.shifeng.entity.order.OrderInvoice">
+		insert into o_orderInvoice
+			(
+		      invoiceId, paymentsUnit, content, type, vat_companyName, vat_code, vat_address, vat_phone, vat_bankName, vat_bankAccount, totalMoneyLower, drawer, subTime, remark, userId, postAddress, postName, postPhone, lasttime, updatename 
+			)
+		values
+			(
+		      #{invoiceId},
+		      #{paymentsUnit},
+		      #{content},
+		      #{type},
+		      #{vat_companyName},
+		      #{vat_code},
+		      #{vat_address},
+		      #{vat_phone},
+		      #{vat_bankName},
+		      #{vat_bankAccount},
+		      #{totalMoneyLower},
+		      #{drawer},
+		      #{subTime},
+		      #{remark},
+		      #{userId},
+		      #{postAddress},
+		      #{postName},
+		      #{postPhone},
+		      #{lasttime},
+		      #{updatename}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteOrderInvoice" parameterType="String">
+  		delete from o_orderInvoice
+  		where orderId = #{orderId}
+  	</delete>
+	
+</mapper>

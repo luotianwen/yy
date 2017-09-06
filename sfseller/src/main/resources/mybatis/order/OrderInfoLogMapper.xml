@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 订单日志(o_orderInfo_log)Mapper -->
+<mapper namespace="orderInfologMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	log_id,order_id ,create_time ,log_content ,create_user_id ,create_user_name ,log_level ,after_status ,before_status 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.order.OrderInfoLog" id="OrderInfoLogReturnMap">
+	  <!-- 日志id -->
+      <id column="log_id" property="log_id"/>
+	  <!-- 订单id -->
+      <result column="order_id" property="order_id"/>
+	  <!-- 操作时间 -->
+      <result column="create_time" property="create_time"/>
+	  <!-- 日志内容 -->
+      <result column="log_content" property="log_content"/>
+	  <!-- 操作人id -->
+      <result column="create_user_id" property="create_user_id"/>
+	  <!-- 操作人 -->
+      <result column="create_user_name" property="create_user_name"/>
+	  <!-- 日志级别（1：普通用户可看；2：系统用户（包含普通用户）） -->
+      <result column="log_level" property="log_level"/>
+	  <!-- 修改后状态 -->
+      <result column="after_status" property="after_status"/>
+	  <!-- 修改前状态 -->
+      <result column="before_status" property="before_status"/>
+   </resultMap>
+   
+	<!-- 根据订单ID查询表 -->
+	<select id="findOrderInfoLogByOrderId" parameterType="String" resultMap="OrderInfoLogReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_orderInfo_log
+		where 
+			order_id = #{id}
+	</select>
+	
+	<insert id="saveOrderInfoLog" parameterType="com.shifeng.entity.order.OrderInfoLog">
+	    insert into o_orderInfo_log
+			(
+		      order_id, create_time, log_content, create_user_id, create_user_name, log_level, after_status, before_status 
+			)
+		values
+			(
+		      #{order_id},
+		      now(),
+		      #{log_content},
+		      #{create_user_id},
+		      #{create_user_name},
+		      #{log_level},
+		      #{after_status},
+		      #{before_status}
+			)
+	</insert>
+	
+</mapper>

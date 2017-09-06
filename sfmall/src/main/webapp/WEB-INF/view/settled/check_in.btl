@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+	  <% include("/basecss.btl"){}%>
+    <link rel="stylesheet" type="text/css" href="/static/css/check_in.css"/>
+  </head>
+  <body>
+  <% include("/header.btl"){}%>
+		<div class="h_container h_feature_1">
+			<div class="boxw">
+				<div class="h_function">
+					<div class="logo_1 fl">
+						<a href="http://www.seebong.com/" target="_blank"><img src="/static/img/all/logo.jpg" /></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="CheckNav">
+			<div class="boxw">
+				<ul class="CheckList">
+					<li  class="check_active">招商首页</li>
+					<li>申请进度</li>
+					<li>招商标准</li>
+					<li>资费标准</li>
+				</ul>
+			</div>			
+		</div>
+		<div class="boxw">
+			<div class="check_message_1" id="check_message_1">
+				<ul class="check_num">
+					<li class="m_item_first">
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="m_item">
+							<div>
+								<div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="m_item_last"></li>
+				</ul>
+				<ul class="check_text">
+					<li class="active">
+						<i>1</i>
+						查看入住须知及协议
+					</li>
+					<li>
+						<i>2</i>
+						填写公司信息
+					</li>
+					<li>
+						<i>3</i>
+						填写店铺信息
+					</li>
+					<li>
+						<i>4</i>
+						完成，等待审核
+					</li>
+					<li>
+						<i>5</i>
+						付款
+					</li>
+					<li>
+						<i>6</i>
+						入驻成功
+					</li>
+				</ul>
+			</div>
+		</div>
+  </div>
+  <div class="enter_message">
+  		<h1>入驻须知</h1>
+  		<p class="enter_introduce">世峰秉承“客户为先，诚信至上”的宗旨、“让生活变得简单，快乐！”为我们的最终目标，为广大用户提供最优质的商品及服务。 世峰开放平台欢迎国际国内知名品牌、拥有特色货品及垂直电商入驻。</p>
+  		
+  		<div class="enter_datum">
+  			<p class="enter_item_1">入驻需要提交哪些？<br/>A：卖家企业资质审核 ：<br/>( 1 ) 卖家企业资质要求：公司注册资金30万及30万以上<br/>( 2 ) 需要卖家提供以下资料：</p>
+  			<table width="800" cellspacing="0" cellpadding="0" border="0" class="gridtable">
+                <tbody>
+                    <tr>
+                        <th width="400" align="center">资质清单</th>
+                        <th width="400">备注</th>
+                    </tr>
+                    <tr>
+                        <td align="center">营业执照复印件</td>
+                        <td align="center">通过最新年检</td>
+                    </tr>
+                    <tr>
+                        <td align="center">组织机构代码证复印件</td>
+                        <td align="center"></td>
+                    </tr>
+                    <tr>
+                        <td align="center">税务登记证复印件</td>
+                        <td align="center">国税＋地税</td>
+                    </tr>
+                    <tr>
+                        <td align="center">开户银行许可证复印件</td>
+                        <td align="center"></td>
+                    </tr>
+                    <tr>
+                        <td align="center">商标注册证复印件</td>
+                        <td align="center">商标正在申请的品牌请提供《商标注册申请书》</td>
+                    </tr>
+                    <tr>
+                        <td align="center">品牌销售授权证明复印件</td>
+                        <td align="center">附上注册人与授权人的关系证明</td>
+                    </tr>
+                    <tr>
+                        <td align="center">质检报告复印件或产品质量合格证明</td>
+                        <td align="center">不同品牌不同类目产品均需提供一份</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="enter_item_2">*所有证件均需在有效期内，并在正面空白处加盖公章。</p>
+            <p class="enter_item_3">( 3 ) 特殊商品的资质要求<br/>需要卖家提供以下资料：</p>
+            <table width="800" cellspacing="0" cellpadding="0" border="0" class="gridtable">
+                <tbody>
+                    <tr>
+                        <th width="200">类型</th>
+                        <th width="600">资 质 清 单</th>
+                    </tr>
+                    <tr>
+                        <td align="center">化妆品商品卖家</td>
+                        <td style="padding-left: 20px;">
+                            <p>化妆品生产厂商持有的《化妆品卫生许可证》复印件；</p>
+                            <p>《化妆品生产许可证》（即《全国工业产品生产许可证》）复印件；</p>
+                            <p>化妆品生产厂商的营业执照副本复印件；</p>
+                            <p>部分商品检验检疫合格的报告或证明复印件；</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">进口化妆品商品卖家</td>
+                        <td style="padding-left: 20px;">
+                            <p>海关进口货物报关单复印件；</p>
+                            <p>出入境检验检疫入境货物检验检疫证明复印件；</p>
+                            <p>进口非特殊用途化妆品备案凭证复印件；</p>
+                            <p>商品需带有CIQ标示和中文标签；</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">食品商品卖家</td>
+                        <td style="padding-left: 20px;">
+                            <p>《食品卫生许可证》或《食品流通许可证》复印件；</p>
+                            <p>《食品生产许可证》复印件；</p>
+                            <p>如系进口商品还须提供商品出入境检验检疫合格证明、《卫生证书》复印件、以及报关单；</p>
+                            <p>如系酒类销售还须提供《酒类零售许可证》或《酒类流通备案登记表》复印件；</p>
+                            <p>如系蔬果、生鲜产品还须提供产地证明及卫生检疫合格证明复印件；</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="enter_item_2">*另：特殊产品资质以我公司质控部需要的资料为准。</p>
+            <p class="enter_item_3">B：注意事项</p>
+            <p>1） 代理商需要提供的授权资质：需要确保授权链条的完整，即申请入驻企业拿到的授权能够逐级逆推回品牌商。</p>
+            <p>2）发票：所有入驻的企业必须给消费者提供正规发票，发票盖章的公司名称必须与卖家与世峰商城合作的公司名称一致。</p>
+            <p>3）世峰商城暂不接受未取得国家商标总局颁发的商标注册证或商标受理通知书的境外品牌的开店申请。</p>
+            <p>4）请务必保证您入驻前后提供的相关资质的真实有效性（若您提供的相关资质为第三方提供，如商标注册证、授权书等，请务必先行核实其真实有效性），一旦发现虚假资质，您的公司将被列入非诚信卖家名单，世峰商城将不再与您进行合作，并将扣除保证金。</p>
+  					<p class="enter_item_3">C：相关文件下载</p>
+  					<p class="enter_item_4">1）世峰户外商城代销模式网签协议2016.8.26
+  							<a target="_blank" href="/Content/document/1.pdf" download="/Content/document/1.pdf">下载</a>
+                <a target="_blank" href="/Content/document/1.pdf">浏览</a>                
+            </p>
+            <p class="enter_item_4">2）世峰户外商城入驻模式网签协议2016.8.26
+                <a target="_blank" href="/Content/document/2.pdf" download="/Content/document/2.pdf">下载</a>
+    						<a target="_blank" href="/Content/document/2.pdf">浏览</a>
+            </p>
+            <p class="enter_item_4">3）委托收款授权书
+        				<a target="_blank" href="/Content/document/3.pdf" download="/Content/document/3.pdf">下载</a>
+                <a target="_blank" href="/Content/document/3.pdf">浏览</a>                
+            </p>
+            <p class="enter_item_4">4）给世峰户外的授权书
+            		<a target="_blank" href="/Content/document/4.pdf" download="/Content/document/4.pdf">下载</a>
+                <a target="_blank" href="/Content/document/4.pdf">浏览</a>               
+            </p>
+            <p class="enter_item_4">5）京东授权书
+            		<a target="_blank" href="/Content/document/5.pdf" download="/Content/document/5.pdf">下载</a>
+                <a target="_blank" href="/Content/document/5.pdf">浏览</a>               
+            </p>
+            <p class="enter_item_4">6）世峰户外商城订单联络人信息
+            		<a target="_blank" href="/Content/document/6.pdf" download="/Content/document/6.pdf">下载</a>
+                <a target="_blank" href="/Content/document/6.pdf">浏览</a>                
+            </p>
+            <p class="enter_item_4">7）世峰户外商城货款结算指定账户及财务人员信息
+            		<a target="_blank" href="/Content/document/7.pdf" download="/Content/document/7.pdf">下载</a>
+                <a target="_blank" href="/Content/document/7.pdf">浏览</a> 
+            </p>
+            <p class="enter_item_4">8）苏宁易购授权书
+            		<a target="_blank" href="/Content/document/8.pdf" download="/Content/document/8.pdf">下载</a>
+                <a target="_blank" href="/Content/document/8.pdf">浏览</a>
+            </p>
+  		</div>
+  		<div class="agree_btn">
+  				<input type="checkbox"   id="check" value="1" />我已同意协议
+  		</div>
+  		<div class="next_btn " id="next_btn_1">
+  			<button id="nextbtn" disabled class="btn_c8c8c8">下一步</button>
+  		</div>
+	 </div>
+  <% include("/footer.btl"){}%>
+  </body>
+  <% include("/basejs.btl"){}%>
+  <script type="text/javascript" src="/static/js/settled/settled.js"></script>
+<script>
+	$("#check").click(function() {
+		var f=$("input[type='checkbox']").is(':checked');
+		if(f){
+			$("#nextbtn").removeClass("btn_c8c8c8").addClass("btn_038a2a");
+			$("#nextbtn").attr("disabled",false);
+		}
+		else{
+			$("#nextbtn").removeClass("btn_038a2a").addClass("btn_c8c8c8");
+			$("#nextbtn").attr("disabled",true);
+		}
+	});
+	$("#nextbtn").click(function() {
+		$.post("/settled/check_in_save",function(data){
+			if(data.RESPONSE_STATE=='200'){
+				window.location.href="/settled/check_in_1";
+			}else{
+				layer.alert("系统错误，请刷新后重试", {
+					icon : 0
+				});
+			}
+		})
+	});
+</script>
+</html>

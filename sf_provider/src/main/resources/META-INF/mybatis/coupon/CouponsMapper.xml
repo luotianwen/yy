@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="couponsMapper">
+	<sql id="Base_Column_List">
+    	id,name ,type ,scope ,category ,sellerId ,number ,surplusNumber ,receiveCount ,useCount ,full ,minus ,startDate ,endDate ,note ,url ,isPackage ,state ,user_id ,createTime ,lastTime ,updateName ,remark 
+    </sql>
+    <resultMap type="com.shifeng.entity.coupon.Coupons" id="CouponsReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 名称 -->
+      <result column="name" property="name"/>
+	  <!-- 类型 -->
+      <result column="type" property="type"/>
+	  <!-- 适用范围 -->
+      <result column="scope" property="scope"/>
+	  <!-- 使用分类 -->
+      <result column="category" property="category"/>
+	  <!-- 店铺 -->
+      <result column="sellerId" property="sellerId"/>
+	  <!-- 发券数量 -->
+      <result column="number" property="number"/>
+	  <!-- 剩余数量 -->
+      <result column="surplusNumber" property="surplusNumber"/>
+	  <!-- 已领取数量 -->
+      <result column="receiveCount" property="receiveCount"/>
+	  <!-- 已使用数量 -->
+      <result column="useCount" property="useCount"/>
+	  <!-- 优惠券面值(满) -->
+      <result column="full" property="full"/>
+	  <!-- 优惠券面值(减) -->
+      <result column="minus" property="minus"/>
+	  <!-- 优惠券有效期 -->
+      <result column="startDate" property="startDate"/>
+	  <!-- 优惠券有效期结束 -->
+      <result column="endDate" property="endDate"/>
+	  <!-- 优惠券说明 -->
+      <result column="note" property="note"/>
+	  <!-- 领取地址 -->
+      <result column="url" property="url"/>
+	  <!-- 是否套餐 -->
+      <result column="isPackage" property="isPackage"/>
+	  <!-- 状态(1：正常；2：过期；3：待发放； 4：暂停发放；5：领取完毕) -->
+      <result column="state" property="state"/>
+	  <!-- 创建人 -->
+      <result column="user_id" property="user_id"/>
+	  <!-- 创建时间 -->
+      <result column="createTime" property="createTime"/>
+	  <!-- 最后修改时间 -->
+      <result column="lastTime" property="lastTime"/>
+	  <!-- 最后修改人 -->
+      <result column="updateName" property="updateName"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllCoupons" parameterType="map" resultMap="CouponsReturnMap">
+		select
+		DISTINCT c.*
+		from
+		c_coupons  c,
+
+		c_coupons_range cr
+		where
+		cr.coupons_id=c.id
+		and
+		c.surplusNumber>0
+		and
+		(
+
+		c.startDate &lt;=date(now())
+		and
+		c.endDate &gt;= date(now())
+
+		)
+		and c.state=1
+		and
+		(c.scope=1
+		<if test="sku!=null and sku!=''">
+		or (c.scope=2 and cr.number=#{sku} )
+		</if>
+		<if test="shopid!=null and shopid!=''">
+		or (c.scope=4 and cr.number=#{shopid} )
+		</if>
+		<if test="categoryid!=null and categoryid!=''">
+		or (c.scope=6 and cr.number=#{categoryid} )
+		</if>
+		)
+	</select>
+
+	
+</mapper>

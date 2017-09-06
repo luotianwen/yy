@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 商品评价回复(p_product_evaluate_replay)Mapper -->
+<mapper namespace="productevaluatereplayMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,rdate ,ruserId ,rName ,rcontent ,ppeid 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.product.ProductEvaluateReplay" id="ProductEvaluateReplayReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 回复时间 -->
+      <result column="rdate" property="rdate"/>
+	  <!-- 回复人id -->
+      <result column="ruserId" property="ruserId"/>
+	  <!-- 回复人名称 -->
+      <result column="rName" property="rName"/>
+	  <!-- 回复内容 -->
+      <result column="rcontent" property="rcontent"/>
+	  <!-- 评价id -->
+      <result column="ppeid" property="ppeid"/>
+   </resultMap>
+   
+	<!-- 根据ID查询表 -->
+	<select id="findProductEvaluateReplayByPid" parameterType="String" resultMap="ProductEvaluateReplayReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_product_evaluate_replay
+		where 
+			ppeid = #{id}
+	</select>
+	
+</mapper>

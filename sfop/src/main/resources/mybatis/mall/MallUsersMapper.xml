@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 前台用户表(mall_users)Mapper -->
+<mapper namespace="mallusersMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,lasttime ,grade ,state,uname
+    </sql>
+
+    <resultMap type="com.shifeng.entity.mall.MallUsers" id="MallUsersReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+		<result column="uname" property="uname"/>
+	  <!-- 最后更新时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 等级 -->
+      <result column="grade" property="grade"/>
+	  <!-- 状态 -->
+      <result column="state" property="state"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllMallUsersPage" parameterType="Page" resultMap="MallUsersReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_users
+		where 1=1
+			<if test="t.id!=null and t.id!=''">
+				and id = #{t.id}
+			</if>
+			<if test="t.uname!=null and t.uname!=''">
+				and uname = #{t.uname}
+			</if>
+
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findMallUsersById" parameterType="String" resultMap="MallUsersReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_users
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateMallUsers" parameterType="com.shifeng.entity.mall.MallUsers">
+		update 
+			mall_users 
+		set
+	      	lasttime = #{lasttime},
+	      	grade = #{grade},
+	      	state = #{state}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveMallUsers" parameterType="com.shifeng.entity.mall.MallUsers">
+		insert into mall_users
+			(
+		      lasttime, grade, state 
+			)
+		values
+			(
+		      #{lasttime},
+		      #{grade},
+		      #{state}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteMallUsers" parameterType="String">
+  		delete from mall_users
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

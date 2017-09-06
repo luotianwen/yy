@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 订单日志(o_orderInfo_log)Mapper -->
+<mapper namespace="mallOrderInfologMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+    
+	<!-- 新增log -->
+	<insert id="saveOrderInfoLog" parameterType="com.shifeng.entity.order.OrderInfoLog">
+		insert into o_orderInfo_log
+			(
+		      order_id, create_time, log_content, create_user_id, create_user_name, log_level, after_status, before_status 
+			)
+		values
+			(
+		      #{order_id},
+		      NOW(),
+		      #{log_content},
+		      #{create_user_id},
+		      #{create_user_name},
+		      #{log_level},
+		      #{after_status},
+		      #{before_status}
+			)
+	</insert>
+   
+	
+</mapper>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 特卖(mall_special_sale)Mapper -->
+<mapper namespace="mallspecialsaleMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,starttime ,endtime ,name ,note ,state ,user_id ,createTime ,lastTime ,updateName ,remark 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.mall.MallSpecialSale" id="MallSpecialSaleReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 开始时间 -->
+      <result column="starttime" property="starttime"/>
+	  <!-- 结束时间 -->
+      <result column="endtime" property="endtime"/>
+	  <!-- 名称 -->
+      <result column="name" property="name"/>
+	  <!-- 说明 -->
+      <result column="note" property="note"/>
+	  <!-- 状态 -->
+      <result column="state" property="state"/>
+	  <!-- 创建人 -->
+      <result column="user_id" property="user_id"/>
+	  <!-- 创建时间 -->
+      <result column="createTime" property="createTime"/>
+	  <!-- 最后修改时间 -->
+      <result column="lastTime" property="lastTime"/>
+	  <!-- 最后修改人 -->
+      <result column="updateName" property="updateName"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllMallSpecialSalePage" parameterType="Page" resultMap="MallSpecialSaleReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_special_sale
+		where 1=1
+			<if test="t.starttime!=null and t.starttime!=''">
+				and starttime = #{t.starttime}
+			</if>
+			<if test="t.endtime!=null and t.endtime!=''">
+				and endtime = #{t.endtime}
+			</if>
+			<if test="t.name!=null and t.name!=''">
+				and name = #{t.name}
+			</if>
+			<if test="t.note!=null and t.note!=''">
+				and note = #{t.note}
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and state = #{t.state}
+			</if>
+			<if test="t.user_id!=null and t.user_id!=''">
+				and user_id = #{t.user_id}
+			</if>
+			<if test="t.createTime!=null and t.createTime!=''">
+				and createTime = #{t.createTime}
+			</if>
+			<if test="t.lastTime!=null and t.lastTime!=''">
+				and lastTime = #{t.lastTime}
+			</if>
+			<if test="t.updateName!=null and t.updateName!=''">
+				and updateName = #{t.updateName}
+			</if>
+			<if test="t.remark!=null and t.remark!=''">
+				and remark = #{t.remark}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findMallSpecialSaleById" parameterType="String" resultMap="MallSpecialSaleReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_special_sale
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateMallSpecialSale" parameterType="com.shifeng.entity.mall.MallSpecialSale">
+		update 
+			mall_special_sale 
+		set
+	      	starttime = #{starttime},
+	      	endtime = #{endtime},
+	      	name = #{name},
+	      	note = #{note},
+	      	state = #{state},
+	      	lastTime = now(),
+	      	updateName = #{updateName},
+	      	remark = #{remark}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveMallSpecialSale" parameterType="com.shifeng.entity.mall.MallSpecialSale">
+		insert into mall_special_sale
+			(
+		      starttime, endtime, name, note, state, user_id, createTime, lastTime,  remark
+			)
+		values
+			(
+		      #{starttime},
+		      #{endtime},
+		      #{name},
+		      #{note},
+		      #{state},
+		      #{user_id},
+		      #{createTime},
+		      #{lastTime},
+		      #{remark}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteMallSpecialSale" parameterType="String">
+  		delete from mall_special_sale
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

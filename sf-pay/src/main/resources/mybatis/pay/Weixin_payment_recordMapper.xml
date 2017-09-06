@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 微信支付流水信息(weixin_payment_record)Mapper -->
+<mapper namespace="weixinPaymentRecordMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    serial_number,appid ,mch_id ,device_info ,nonce_str ,sign ,sign_type ,result_code ,err_code ,err_code_des ,openid ,is_subscribe ,trade_type ,bank_type ,total_fee ,settlement_total_fee ,fee_type ,cash_fee ,cash_fee_type ,coupon_fee ,coupon_count ,transaction_id ,out_trade_no ,attach ,time_end 
+    </sql>
+
+    <resultMap type="com.shifeng.pay.entity.pay.WeixinPaymentRecord" id="WeixinPaymentRecordReturnMap">
+		<!-- 流水号 -->
+      <id column="serial_number" property="serial_number"/>
+		<!-- 公众账号ID -->
+      <result column="appid" property="appid"/>
+		<!-- 商户号 -->
+      <result column="mch_id" property="mch_id"/>
+		<!-- 设备号 -->
+      <result column="device_info" property="device_info"/>
+		<!-- 随机字符串 -->
+      <result column="nonce_str" property="nonce_str"/>
+		<!-- 签名 -->
+      <result column="sign" property="sign"/>
+		<!-- 签名类型 -->
+      <result column="sign_type" property="sign_type"/>
+		<!-- 业务结果 -->
+      <result column="result_code" property="result_code"/>
+		<!-- 错误代码 -->
+      <result column="err_code" property="err_code"/>
+		<!-- 错误代码描述 -->
+      <result column="err_code_des" property="err_code_des"/>
+		<!-- 用户标识 -->
+      <result column="openid" property="openid"/>
+		<!-- 是否关注公众账号 -->
+      <result column="is_subscribe" property="is_subscribe"/>
+		<!-- 交易类型 -->
+      <result column="trade_type" property="trade_type"/>
+		<!-- 付款银行 -->
+      <result column="bank_type" property="bank_type"/>
+		<!-- 订单金额，单位为分 -->
+      <result column="total_fee" property="total_fee"/>
+		<!-- 应结订单金额，单位为分 -->
+      <result column="settlement_total_fee" property="settlement_total_fee"/>
+		<!-- 货币种类 -->
+      <result column="fee_type" property="fee_type"/>
+		<!-- 现金支付金额，单位为分 -->
+      <result column="cash_fee" property="cash_fee"/>
+		<!-- 现金支付货币类型 -->
+      <result column="cash_fee_type" property="cash_fee_type"/>
+		<!-- 总代金券金额 -->
+      <result column="coupon_fee" property="coupon_fee"/>
+		<!-- 代金券使用数量 -->
+      <result column="coupon_count" property="coupon_count"/>
+		<!-- 微信支付订单号 -->
+      <result column="transaction_id" property="transaction_id"/>
+		<!-- 商户订单号 -->
+      <result column="out_trade_no" property="out_trade_no"/>
+		<!-- 商家数据包 -->
+      <result column="attach" property="attach"/>
+		<!-- 支付完成时间 -->
+      <result column="time_end" property="time_end"/>
+   </resultMap>
+   
+   
+   	<!-- 新增 -->
+	<insert id="savePaymentRecord"  parameterType="com.shifeng.pay.entity.pay.WeixinPaymentRecord">
+		insert into pay_weixin_payment_record
+			(
+		      serial_number,appid,mch_id,device_info,nonce_str,sign,sign_type,result_code,err_code,err_code_des,openid,is_subscribe,trade_type,bank_type,total_fee,settlement_total_fee,fee_type,cash_fee,cash_fee_type,coupon_fee,coupon_count,transaction_id,out_trade_no,attach,time_end
+			)
+		values
+			(
+		      #{serial_number},
+		      #{appid},
+		      #{mch_id},
+		      #{device_info},
+		      #{nonce_str},
+		      #{sign},
+		      #{sign_type},
+		      #{result_code},
+		      #{err_code},
+		      #{err_code_des},
+		      #{openid},
+		      #{is_subscribe},
+		      #{trade_type},
+		      #{bank_type},
+		      #{total_fee},
+		      #{settlement_total_fee},
+		      #{fee_type},
+		      #{cash_fee},
+		      #{cash_fee_type},
+		      #{coupon_fee},
+		      #{coupon_count},
+		      #{transaction_id},
+		      #{out_trade_no},
+		      #{attach},
+		      #{time_end}
+			)
+	</insert>
+   
+  
+	
+</mapper>

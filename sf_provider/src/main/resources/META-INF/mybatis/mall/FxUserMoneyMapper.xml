@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 用户余额(fx_user_money)Mapper -->
+<mapper namespace="fxusermoneyMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	uid,money ,allmoney ,costmoney ,pending_income ,lasttime 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.fx.FxUserMoney" id="FxUserMoneyReturnMap">
+	  <!-- uid -->
+      <id column="uid" property="uid"/>
+	  <!-- 金额 -->
+      <result column="money" property="money"/>
+	  <!-- 所有佣金 -->
+      <result column="allmoney" property="allmoney"/>
+	  <!-- 已提现佣金 -->
+      <result column="costmoney" property="costmoney"/>
+	  <!-- 待收益佣金 -->
+      <result column="pending_income" property="pending_income"/>
+	  <!-- 最后更新时间 -->
+      <result column="lasttime" property="lasttime"/>
+   </resultMap>
+   
+
+    <!-- 获取分销账户金额 -->
+    <select id="findFxUserMoney" parameterType="String" resultType="com.shifeng.dto.fx.FxUserMoneyDTO">
+          SELECT
+			 uid, money ,allmoney ,costmoney ,pending_income
+		  FROM
+			  fx_user_money
+		  WHERE
+			  uid = #{uid}
+    </select>
+    
+    <!-- 分销佣金提现 -->
+    <update id="updateEexchange" parameterType="com.shifeng.dto.fx.FxUserMoneyDTO">
+       update 
+			fx_user_money 
+		set
+	      	money = #{money},
+	      	costmoney = #{costmoney},
+	      	lasttime = now()
+		 where
+			uid = #{uid}
+    
+    </update>
+
+   
+    
+    <!-- 更新分销佣金 -->
+    <update id="updateCommission" parameterType="java.util.Map">
+       update 
+			fx_user_money 
+		set
+	      	money = money+#{commission},
+	      <!-- 	pending_income = pending_income-#{commission}, -->
+	      	lasttime = now()
+		 where
+			uid = #{recommend_userid}
+    
+    </update>
+    
+    
+   <!--  初始化用户佣金账户 -->
+    <insert id="initUserMoney" parameterType="String">
+    	insert into fx_user_money
+    	(uid,money ,allmoney ,costmoney ,pending_income ,lasttime )
+    	values
+    	(#{recommend_userid},0 ,0 ,0 ,0 ,NOW() )
+    
+    </insert>
+    
+    
+
+</mapper>

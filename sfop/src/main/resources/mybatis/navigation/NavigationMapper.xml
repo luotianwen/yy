@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 导航表(p_navigation)Mapper -->
+<mapper namespace="navigationMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,name ,url ,state ,type ,sort ,lasttime ,updatename ,remark 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.category.Navigation" id="NavigationReturnMap">
+	  <!-- 主键 -->
+      <id column="id" property="id"/>
+	  <!-- 名称 -->
+      <result column="name" property="name"/>
+	  <!-- url链接路径 -->
+      <result column="url" property="url"/>
+	  <!-- 状态 -->
+      <result column="state" property="state"/>
+	  <!-- 类型 -->
+      <result column="type" property="type"/>
+	  <!-- 排序 -->
+      <result column="sort" property="sort"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllNavigation" resultMap="NavigationReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_navigation
+		where state = 1
+		order by sort asc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findNavigationById" parameterType="String" resultMap="NavigationReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_navigation
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateNavigation" parameterType="com.shifeng.entity.category.Navigation">
+		update 
+			p_navigation 
+		set
+	      	name = #{name},
+	      	url = #{url},
+	      	sort = #{sort},
+	      	lasttime = now(),
+	      	updatename = #{updatename},
+	      	remark = #{remark}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveNavigation" parameterType="com.shifeng.entity.category.Navigation">
+		insert into p_navigation
+			(
+		      name, url, state, sort, lasttime, updatename, remark 
+			)
+		values
+			(
+		      #{name},
+		      #{url},
+		      1,
+		      #{sort},
+		      now(),
+		      #{updatename},
+		      #{remark}
+			)
+	</insert>
+  
+	<update id="deleteNavigation" parameterType="java.util.Map">
+	    update p_navigation set
+	    state = 2,
+	    lasttime = now(),
+	    updatename = #{name}
+	    where id = #{id}
+	</update>
+	
+	
+</mapper>

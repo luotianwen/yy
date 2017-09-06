@@ -1,0 +1,525 @@
+.header img {
+  margin-top: 30px;
+  margin-bottom: 18px;
+}
+input::-webkit-input-placeholder {
+  color: #B4B4B4;
+}
+.login_content {
+  width: 100%;
+  height: 700px;
+  background: url(../img/background.png);
+}
+.login_content .login_interface {
+  position: relative;
+  background: url(../img/dim_bgd.png);
+  width: 454px;
+  float: right;
+  margin-right: 39px;
+  margin-top: 86px;
+  border-radius: 4px;
+}
+.login_content .login_interface .title {
+  width: 139px;
+  height: 24px;
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 50px;
+  font-size: 24px;
+  line-height: 16px;
+  color: #FFFFFF;
+}
+.login_content .login_interface .title span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #fff;
+  margin-top: 9px;
+}
+.login_content .login_interface .title span.t_1 {
+  float: left;
+}
+.login_content .login_interface .title span.t_2 {
+  float: right;
+}
+.login_content .login_interface form {
+  margin-top: 30px;
+}
+.login_content .login_interface form .id_num {
+  margin-left: 51px;
+}
+.login_content .login_interface form .id_num i {
+  float: left;
+  display: inline-block;
+  width: 28px;
+  height: 42px;
+  background: url(../img/account.png) no-repeat;
+  background-position-y: 4px;
+  margin-right: 17px;
+}
+.login_content .login_interface form .id_num input {
+  padding: 0 20px;
+  width: 265px;
+  height: 42px;
+  border-radius: 4px;
+  font-size: 14px;
+  border: 1px solid #969696;
+}
+.login_content .login_interface form .id_num input:focus {
+  border: 1px solid #038a2a;
+}
+.login_content .login_interface form .psd_num {
+  margin-top: 25px;
+  margin-left: 49px;
+}
+.login_content .login_interface form .psd_num i {
+  float: left;
+  display: inline-block;
+  width: 32px;
+  height: 38px;
+  background: url(../img/psd.png) no-repeat;
+  background-position-y: 5px;
+  margin-right: 15px;
+}
+.login_content .login_interface form .psd_num input {
+  padding: 0 20px;
+  width: 265px;
+  height: 42px;
+  border-radius: 4px;
+  font-size: 14px;
+  border: 1px solid #969696;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.login_content .login_interface form .psd_num input:focus {
+  border: 1px solid #038a2a;
+}
+.login_content .login_interface form button {
+  margin-left: 56px;
+  width: 347px;
+  height: 44px;
+  margin-top: 56px;
+  border-radius: 4px;
+  border: 0;
+  background-color: #30c75c;
+  font-size: 20px;
+  color: #FFFFFF;
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+}
+.login_content .login_interface form button:hover {
+  background-color: #25ae4d;
+}
+.login_content .login_interface form .other_functions {
+  margin-left: 56px;
+  width: 347px;
+  margin-top: 34px;
+  margin-bottom: 25px;
+  font-size: 14px;
+}
+.login_content .login_interface form .other_functions .forget_password {
+  padding-left: 24px;
+  float: left;
+}
+.login_content .login_interface form .other_functions .forget_password a {
+  color: #FFFFFF;
+}
+.login_content .login_interface form .other_functions .register_immediately {
+  float: right;
+  padding-right: 24px;
+}
+.login_content .login_interface form .other_functions .register_immediately a {
+  color: #005b1a;
+}
+.login_content .login_interface form .other_ways {
+  margin-left: 56px;
+  width: 347px;
+  height: 21px;
+  text-align: center;
+  font-size: 16px;
+  color: #FFFFFF;
+  line-height: 21px;
+}
+.login_content .login_interface form .other_ways span {
+  display: inline-block;
+  width: 121px;
+  height: 21px;
+  background: url(../img/halving_line.png);
+  font-size: 16px;
+}
+.login_content .login_interface form .other_ways span.ow_1 {
+  float: left;
+}
+.login_content .login_interface form .other_ways span.ow_2 {
+  float: right;
+}
+.login_content .login_interface form .login_method {
+  margin-left: 56px;
+  margin-bottom: 30px;
+  width: 347px;
+  margin-top: 24px;
+}
+.login_content .login_interface form .login_method div {
+  float: left;
+}
+.login_content .login_interface form .login_method div.lm_1 {
+  margin-left: 81px;
+  margin-right: 98px;
+}
+.login_content .login_interface form .error {
+  top: 230px;
+  left: 56px;
+  position: absolute;
+  width: 315px;
+  height: 26px;
+  border: 1px solid #ff5b2d;
+  background-color: #ffd5c9;
+  padding: 0 15px;
+  line-height: 26px;
+  color: #FF5B2D;
+}
+.login_content .login_interface form .error i {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url(../img/warning.png) no-repeat;
+  margin-top: 6px;
+  margin-right: 7px;
+  float: left;
+}
+.login_content .register {
+  position: relative;
+  background: url(../img/dim_bgd.png);
+  width: 454px;
+  float: right;
+  margin-right: 39px;
+  margin-top: 86px;
+  border-radius: 4px;
+}
+.login_content .register .title {
+  width: 139px;
+  height: 24px;
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 50px;
+  font-size: 24px;
+  line-height: 16px;
+  color: #FFFFFF;
+}
+.login_content .register .title span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #fff;
+  margin-top: 9px;
+}
+.login_content .register .title span.t_1 {
+  float: left;
+}
+.login_content .register .title span.t_2 {
+  float: right;
+}
+.login_content .register form {
+  margin-top: 30px;
+}
+.login_content .register form .id_num {
+  margin-left: 51px;
+}
+.login_content .register form .id_num i {
+  float: left;
+  display: inline-block;
+  width: 28px;
+  height: 42px;
+  background: url(../img/account.png) no-repeat;
+  background-position-y: 4px;
+  margin-right: 17px;
+}
+.login_content .register form .id_num input {
+  padding: 0 20px;
+  width: 265px;
+  height: 42px;
+  border-radius: 4px;
+  font-size: 14px;
+  border: 1px solid #969696;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.login_content .register form .id_num input:focus {
+  border: 1px solid #038a2a;
+}
+.login_content .register form .psd_num {
+  margin-top: 25px;
+  margin-left: 49px;
+}
+.login_content .register form .psd_num i {
+  float: left;
+  display: inline-block;
+  width: 32px;
+  height: 38px;
+  background: url(../img/psd.png) no-repeat;
+  background-position-y: 5px;
+  margin-right: 15px;
+}
+.login_content .register form .psd_num input {
+  padding: 0 20px;
+  width: 265px;
+  height: 42px;
+  border-radius: 4px;
+  font-size: 14px;
+  border: 1px solid #969696;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.login_content .register form .psd_num input:focus {
+  border: 1px solid #038A2A;
+}
+.login_content .register form .auth_code {
+  margin-top: 25px;
+  width: 307px;
+  margin-left: 97px;
+}
+.login_content .register form .auth_code input {
+  float: left;
+  width: 135px;
+  height: 42px;
+  line-height: 42px;
+  padding: 0 20px;
+  border: 1px solid #969696;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.login_content .register form .auth_code input:focus {
+  border: 1px solid #038a2a;
+}
+.login_content .register form .auth_code span {
+  cursor:pointer;
+  float: right;
+  display: inline-block;
+  width: 120px;
+  height: 44px;
+  background-color: #30c75c;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 44px;
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.login_content .register form .auth_code span:hover {
+  background-color: #25ae4d;
+}
+.login_content .register form .auth_code span.noclick {
+  background-color: #dcdcdc;
+  color: #30c75c;
+}
+.login_content .register form .turing_number {
+  margin-top: 25px;
+  width: 307px;
+  margin-left: 97px;
+}
+.login_content .register form .turing_number span {
+  display: inline-block;
+  float: left;
+  width: 148px;
+  height: 44px;
+}
+.login_content .register form .turing_number input {
+  float: right;
+  padding: 0 20px;
+  width: 108px;
+  height: 42px;
+  border-radius: 4px;
+  border: 1px solid #969696;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.login_content .register form .turing_number input:focus {
+  border: 1px solid #038a2a;
+}
+.login_content .register form button {
+  margin-left: 56px;
+  width: 347px;
+  height: 44px;
+  margin-top: 56px;
+  border-radius: 4px;
+  border: 0;
+  background-color: #30c75c;
+  font-size: 20px;
+  color: #FFFFFF;
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+}
+.login_content .register form button:hover {
+  background-color: #25ae4d;
+}
+.login_content .register form .deal {
+  margin-left: 56px;
+  margin-top: 11px;
+  font-size: 12px;
+  color: #fff;
+}
+.login_content .register form .deal a {
+  color: #005b1a;
+  cursor: pointer;
+}
+.login_content .register form .deal input {
+  float: left;
+  margin-top: 2px;
+}
+.login_content .register form .to_login {
+  margin-top: 3px;
+  float: right;
+  padding: 0 14px 10px 0;
+  cursor: pointer;
+}
+.login_content .register form .to_login a {
+  color: #fff;
+}
+.login_content .register form .error {
+  top: 440px;
+  left: 56px;
+  position: absolute;
+  width: 315px;
+  height: 26px;
+  border: 1px solid #ff5b2d;
+  background-color: #ffd5c9;
+  padding: 0 15px;
+  line-height: 26px;
+  color: #FF5B2D;
+}
+.login_content .register form .error i {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url(../img/warning.png) no-repeat;
+  margin-top: 6px;
+  margin-right: 7px;
+  float: left;
+}
+.protocol {
+  position: fixed;
+  top: 214px;
+  left: 50%;
+  width: 800px;
+  margin-left: -400px;
+  background-color: #fff;
+}
+.protocol .pro_header {
+  position: relative;
+  width: 100%;
+  height: 44px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #dcdcdc;
+}
+.protocol .pro_header .pro_title {
+  width: 100%;
+  font-size: 14px;
+  color: #2d2d2d;
+  display: inline-block;
+  padding: 13px 0 0 14px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+.protocol .pro_header .close_btn {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  background: url(../img/close_btn.png) no-repeat;
+  top: 13px;
+  right: 14px;
+}
+.protocol .pro_show {
+  width: 772px;
+  height: 338px;
+  margin: 10px 14px 16px 14px;
+  overflow: hidden;
+}
+.protocol .pro_show .pro_content {
+  max-width: 772px;
+  max-height: 338px;
+  overflow-y: auto;
+}
+.protocol .pro_show .pro_content h1 {
+  padding: 10px 0;
+  font-size: 14px;
+}
+.protocol .pro_show .pro_content p {
+  font-size: 12px;
+  line-height: 20px;
+}
+.protocol .pro_show .pro_content p.pro_msg {
+  margin-top: 5px;
+}
+.protocol .pro_show .pro_content p.pro_msg i {
+  font-weight: bold;
+  padding-right: 5px;
+}
+.protocol .pro_show .pro_content p.pro_item {
+  padding-left: 20px;
+  padding-top: 5px;
+}
+.protocol .pro_show .pro_content p.pro_wish {
+  padding-right: 30px;
+  font-size: 14px;
+  margin-top: 20px;
+  text-align: right;
+}
+.protocol .pro_show .pro_content::-webkit-scrollbar {
+  display: none;
+}
+.protocol button {
+  position: relative;
+  left: 50%;
+  margin-left: -100px;
+  margin-bottom: 20px;
+  width: 200px;
+  height: 36px;
+  background-color: #30c75c;
+  border-radius: 4px;
+  text-align: center;
+  border: 0;
+  font-size: 16px;
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+}
+.protocol button:hover {
+  background-color: #25ae4d;
+}
+.error_border {
+  border: 1px solid #FF5B2D !important;
+}
+#shade {
+    width:100%;
+    height:1200px;
+    background-color:#000;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:99;
+    opacity:0.3;
+    /*兼容IE8及以下版本浏览器*/
+    filter: alpha(opacity=30);
+    display:none;
+}

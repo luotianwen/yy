@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 店铺经营类目(s_shop_category)Mapper -->
+<mapper namespace="shopcategoryMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	s_merchants_id,c_category_id ,categoryName ,deposit ,platformfee ,points ,consignmentpoints 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.shop.ShopCategory" id="ShopCategoryReturnMap">
+	  <!-- 入驻id -->
+      <id column="s_merchants_id" property="s_merchants_id"/>
+	  <!-- 类目id -->
+      <result column="c_category_id" property="c_category_id"/>
+	  <!-- 类目名称 -->
+      <result column="categoryName" property="categoryName"/>
+	  <!-- 类目保证金标准（元） -->
+      <result column="deposit" property="deposit"/>
+	  <!-- 平台使用费 -->
+      <result column="platformfee" property="platformfee"/>
+	  <!-- 扣点 -->
+      <result column="points" property="points"/>
+	  <!-- 代销店铺扣点 -->
+      <result column="consignmentpoints" property="consignmentpoints"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllShopCategory" parameterType="Page" resultMap="ShopCategoryReturnMap">
+		select
+		s_merchants_id,c_category_id ,categoryName ,deposit ,platformfee ,
+		CASE cooperation
+		WHEN 1 THEN points
+		ELSE consignmentpoints END as  points
+		from
+		s_shop_category s,
+		s_merchants_settled m
+		where s.s_merchants_id=m.id
+		and s.s_merchants_id=#{t.s_merchants_id}
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findShopCategoryById" parameterType="String" resultMap="ShopCategoryReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_shop_category
+		where 
+			s_merchants_id = #{s_merchants_id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateShopCategory" parameterType="com.shifeng.entity.shop.ShopCategory">
+		update 
+			s_shop_category 
+		set
+	      	c_category_id = #{c_category_id},
+	      	categoryName = #{categoryName},
+	      	deposit = #{deposit},
+	      	platformfee = #{platformfee},
+	      	points = #{points},
+	      	consignmentpoints = #{consignmentpoints}
+		 where
+			id = #{s_merchants_id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveShopCategory" parameterType="com.shifeng.entity.shop.ShopCategory">
+		insert into s_shop_category
+			(
+		      c_category_id, categoryName, deposit, platformfee, points, consignmentpoints 
+			)
+		values
+			(
+		      #{c_category_id},
+		      #{categoryName},
+		      #{deposit},
+		      #{platformfee},
+		      #{points},
+		      #{consignmentpoints}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteShopCategory" parameterType="String">
+  		delete from s_shop_category
+  		where id = #{s_merchants_id}
+  	</delete>
+	
+</mapper>

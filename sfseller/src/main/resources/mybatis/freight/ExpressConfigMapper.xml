@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 快递配置(o_expressConfig)Mapper -->
+<mapper namespace="expressConfigMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,name ,code ,phone ,state ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.freight.ExpressConfig" id="ExpressConfigReturnMap">
+	  <!-- 编号 -->
+      <id column="id" property="id"/>
+	  <!-- 名称 -->
+      <result column="name" property="name"/>
+      <!-- code -->
+      <result column="code" property="code"/>
+      <!-- 客服电话 -->
+      <result column="phone" property="phone"/>
+	  <!-- 状态（1正常2冻结） -->
+      <result column="state" property="state"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllExpressConfig" resultMap="ExpressConfigReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			o_expressConfig
+		where state = 1
+	</select>
+	
+</mapper>

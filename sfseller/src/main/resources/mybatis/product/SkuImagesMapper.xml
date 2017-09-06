@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- sku图片表(p_sku_images)Mapper -->
+<mapper namespace="skuimagesMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,pid ,ipath ,sort ,colorid ,lasttime ,updatename ,remark ,ismain 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.product.SkuImages" id="SkuImagesReturnMap">
+	  <!-- 主键 -->
+      <id column="id" property="id"/>
+	  <!-- 商品编号 -->
+      <result column="pid" property="pid"/>
+	  <!-- 图片路径 -->
+      <result column="ipath" property="ipath"/>
+	  <!-- 图片顺序 -->
+      <result column="sort" property="sort"/>
+	  <!-- 颜色 -->
+      <result column="colorid" property="colorid"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+	  <!-- 备注 -->
+      <result column="remark" property="remark"/>
+	  <!-- 是否主图 -->
+      <result column="ismain" property="ismain"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllSkuImages" parameterType="String" resultMap="SkuImagesReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_sku_images
+		where pid = #{id}
+		order by sort asc
+	</select>
+	
+	<!-- 查询所有颜色 -->
+	<select id="findAllColorId" parameterType="String" resultMap="SkuImagesReturnMap">
+		select
+			id,pid ,ipath ,sort ,colorid ,lasttime ,updatename ,remark ,ismain 
+		from 
+			p_sku_images
+		where pid = #{pid}
+		GROUP BY colorid
+		order by sort asc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findSkuImagesById" parameterType="String" resultMap="SkuImagesReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_sku_images
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateSkuImages" parameterType="com.shifeng.entity.product.SkuImages">
+		update 
+			p_sku_images 
+		set
+	      	ipath = #{ipath},
+	      	sort = #{sort},
+	      	lasttime = now(),
+	      	updatename = #{updatename},
+	      	ismain = #{ismain}
+		 where
+			id = #{id}
+	</update>
+	
+	<!-- 新增表 -->
+	<insert id="saveSkuImage" parameterType="com.shifeng.seller.product.dto.SkuImagesDTO">
+		insert into p_sku_images
+			(
+		      pid, ipath, sort, colorid, lasttime, updatename, ismain 
+			)
+		values
+			(
+		      #{pid},
+		      #{ipath},
+		      #{sort},
+		      #{colorid},
+		      now(),
+		      #{updatename},
+		      #{ismain}
+			)
+	</insert>
+	
+	<!-- 批量新增表 -->
+	<insert id="saveSkuImages" parameterType="com.shifeng.seller.product.dto.SkuImagesDTO">
+		insert into p_sku_images
+			(
+		      pid, ipath, sort, colorid, lasttime, updatename, ismain 
+			)
+		values
+			<foreach collection="imageurl" item="item" index="index" separator=",">
+			    (
+			      #{pid},
+			      #{item},
+			      #{index},
+			      #{colorid},
+			      now(),
+			      #{updatename},
+			      <if test="index==0">
+			          1
+			      </if>
+			      <if test="index!=0">
+			          2
+			      </if>
+				)
+			</foreach>
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteSkuImages" parameterType="java.util.Map">
+  		delete from p_sku_images
+  		where pid = #{pid}
+  	</delete>
+	
+</mapper>

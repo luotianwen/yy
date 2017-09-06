@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 商品咨询(p_product_consultation)Mapper -->
+<mapper namespace="productconsultationMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,sku ,pid ,name ,colorid ,colorName ,specid ,specName ,userId ,receiveName ,shopid ,content ,state ,cdate 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.product.ProductConsultation" id="ProductConsultationReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- sku -->
+      <result column="sku" property="sku"/>
+	  <!-- 商品编号 -->
+      <result column="pid" property="pid"/>
+	  <!-- 商品名称 -->
+      <result column="name" property="name"/>
+	  <!-- 颜色id -->
+      <result column="colorid" property="colorid"/>
+	  <!-- 颜色名称 -->
+      <result column="colorName" property="colorName"/>
+      <!-- 规格id -->
+      <result column="specid" property="specid"/>
+	  <!-- 规格名称 -->
+      <result column="specName" property="specName"/>
+	  <!-- 用户编号 -->
+      <result column="userId" property="userId"/>
+	  <!-- 买家姓名 -->
+      <result column="receiveName" property="receiveName"/>
+	  <!-- 店铺编号 -->
+      <result column="shopid" property="shopid"/>
+	  <!-- 内容 -->
+      <result column="content" property="content"/>
+      <!-- 审核状态（1：未审核；2：审核成功；3：审核失败） -->
+      <result column="state" property="state"/>
+	  <!-- 创建时间 -->
+      <result column="cdate" property="cdate"/>
+   </resultMap>
+   	
+	<resultMap type="com.shifeng.seller.product.dto.ProductConsultationDTO" id="ProductConsultationDTOReturnMap">
+        <id column="id" property="id"/>
+        
+        <association property="productConsultationReplay" javaType="com.shifeng.entity.product.ProductConsultationReplay" column="id" select="productconsultationreplayMapper.findProductConsultationReplayByPid"></association>
+    </resultMap>
+    
+   	<!-- 查询所有表 -->
+	<select id="findAllProductConsultationPage" parameterType="Page" resultMap="ProductConsultationDTOReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_product_consultation
+		where 1=1
+			<if test="t.sku!=null and t.sku!=''">
+				and sku = #{t.sku}
+			</if>
+			<if test="t.pid!=null and t.pid!=''">
+				and pid = #{t.pid}
+			</if>
+			<if test="t.colorid!=null and t.colorid!=''">
+				and colorid = #{t.colorid}
+			</if>
+			<if test="t.userId!=null and t.userId!=''">
+				and userId = #{t.userId}
+			</if>
+			<if test="t.receiveName!=null and t.receiveName!=''">
+				and receiveName = #{t.receiveName}
+			</if>
+			<if test="t.shopid!=null and t.shopid!=''">
+				and shopid = #{t.shopid}
+			</if>
+			<if test="t.content!=null and t.content!=''">
+				and content = #{t.content}
+			</if>
+			<if test="t.cdate!=null and t.cdate!=''">
+				and cdate = #{t.cdate}
+			</if>
+	</select>
+
+</mapper>

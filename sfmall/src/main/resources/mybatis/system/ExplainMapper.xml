@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 商城说明表(s_explain)Mapper -->
+<mapper namespace="explainMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,title ,name ,content ,type ,releaseDate ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.mall.footer.dto.ExplainDTO" id="ExplainReturnMap">
+	  <!-- id -->
+      <id column="id" property="id"/>
+	  <!-- 标题 -->
+      <result column="title" property="title"/>
+	  <!-- 名称 -->
+      <result column="name" property="name"/>
+	  <!-- 内容 -->
+      <result column="content" property="content"/>
+	  <!-- 类型 -->
+      <result column="type" property="type"/>
+	  <!-- 发布日期 -->
+      <result column="releaseDate" property="releaseDate"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllExplain" parameterType="java.util.Map" resultMap="ExplainReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			s_explain
+		WHERE
+	         name =#{name}
+
+			AND type= #{type}
+
+
+		order by lasttime desc
+	</select>
+
+
+
+</mapper>

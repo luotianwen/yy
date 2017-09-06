@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 分类属性关联表(p_propertycategory)Mapper -->
+<mapper namespace="propertycategoryMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,pid ,cid ,lasttime ,updatename 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.category.Propertycategory" id="PropertycategoryReturnMap">
+	  <!-- 主键 -->
+      <id column="id" property="id"/>
+	  <!-- 属性id -->
+      <result column="pid" property="pid"/>
+	  <!-- 分类id -->
+      <result column="cid" property="cid"/>
+	  <!-- 最后修改时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 最后修改人 -->
+      <result column="updatename" property="updatename"/>
+   </resultMap>
+   
+	<resultMap type="com.shifeng.seller.property.dto.PropertyCategoryDTO" id="PropertycategoryDTOReturnMap">
+		<result column="pid" property="pid"/>
+		
+		<!-- 属性值 -->
+		<collection property="propertyvalue" ofType="com.shifeng.entity.category.Propertyvalue" column="pid" select="propertyvalueMapper.findAllPropertyvalue"></collection>
+	</resultMap>
+    
+	<!-- 根据分类ID查询所有分类属性 -->
+	<select id="findAllPropertycategoryByCid" parameterType="java.util.Map" resultMap="PropertycategoryDTOReturnMap">
+	    select
+			pc.id ,p.name,p.sort,p.ismultiple,pc.pid,pc.cid
+		from
+			p_propertycategory pc
+		left join p_property p on p.id = pc.pid
+		where cid = #{id} or cid = #{parentid}
+		order by sort asc
+	</select>
+	
+</mapper>

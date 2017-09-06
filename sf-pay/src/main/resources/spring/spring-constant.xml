@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 支付宝支付参数配置 -->
+	<bean id="alipayConfig" class="com.alipay.config.AlipayConfig">
+		<property name="partner" value="${alipay.partner}" />
+		<property name="key" value="${alipay.key}" />
+		<property name="private_key" value="${alipay.private_key}" />
+		<property name="alipay_public_key" value="${alipay.alipay_public_key}" />
+		<property name="notify_url" value="${alipay.notify_url}" /> 
+        <property name="return_url" value="${alipay.return_url}" />
+        <property name="wap_return_url" value="${alipay.wap_return_url}" />
+     	<property name="sign_type" value="${alipay.sign_type}" />
+        <property name="log_path" value="${alipay.log_path}" />
+	</bean>
+	
+	<!-- 微信支付参数配置 -->
+	<bean id="wxPayConfig" class="com.shifeng.pay.sdk.weixin.config.WxPayConfig">
+		<property name="APPID" value="${weixin.APPID}" />
+		<property name="MCHID" value="${weixin.MCHID}" />
+		<property name="KEY" value="${weixin.KEY}" />
+		<property name="APPSECRET" value="${weixin.APPSECRET}" />
+		<property name="notifyUrl" value="${weixin.notifyUrl}" />
+	</bean>
+	
+   <!-- 财付通支付参数配置 -->
+	<bean id="tenPayConfig" class="com.tenpay.config.TenPayConfig">
+		<property name="spname" value="${tenPay.spname}" />
+		<property name="partner" value="${tenPay.partner}" />
+		<property name="key" value="${tenPay.key}" />
+		<property name="return_url" value="${tenPay.return_url}" />
+		<property name="notify_url" value="${tenPay.notify_url}" />
+		
+	</bean>
+	
+	
+	
+	
+	
+   <!-- 支付回调地址 -->
+	<bean id="payReturnUrl" class="com.shifeng.pay.config.PayReturnUrl">
+		<property name="PC_PAY_RETURN_URL" value="${PC_PAY_RETURN_URL}" />
+		<property name="APP_PAY_RETURN_URL" value="${APP_PAY_RETURN_URL}" />
+		<property name="WAP_PAY_RETURN_URL" value="${WAP_PAY_RETURN_URL}" />
+		<property name="SHOP_RETURN_URL" value="${SHOP_RETURN_URL}" />
+	</bean>
+	
+	
+     
+</beans>

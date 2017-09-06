@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 前台用户登录日志(mall_user_log)Mapper -->
+<mapper namespace="malluserlogMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	uid,ip ,lasttime ,browser ,type 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.mall.MallUserLog" id="MallUserLogReturnMap">
+	  <!-- uid -->
+      <id column="uid" property="uid"/>
+	  <!-- ip -->
+      <result column="ip" property="ip"/>
+	  <!-- 最后登录时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 浏览器 -->
+      <result column="browser" property="browser"/>
+	  <!-- 类型 -->
+      <result column="type" property="type"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllMallUserLogPage" parameterType="Page" resultMap="MallUserLogReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_user_log
+		where 1=1
+			<if test="t.ip!=null and t.ip!=''">
+				and ip = #{t.ip}
+			</if>
+			<if test="t.lasttime!=null and t.lasttime!=''">
+				and lasttime = #{t.lasttime}
+			</if>
+			<if test="t.browser!=null and t.browser!=''">
+				and browser = #{t.browser}
+			</if>
+			<if test="t.type!=null and t.type!=''">
+				and type = #{t.type}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findMallUserLogById" parameterType="String" resultMap="MallUserLogReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_user_log
+		where 
+			uid = #{uid}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateMallUserLog" parameterType="com.shifeng.entity.mall.MallUserLog">
+		update 
+			mall_user_log 
+		set
+	      	ip = #{ip},
+	      	lasttime = #{lasttime},
+	      	browser = #{browser},
+	      	type = #{type}
+		 where
+			uid = #{uid}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveMallUserLog" parameterType="com.shifeng.entity.mall.MallUserLog">
+		insert into mall_user_log
+			(
+		      ip, lasttime, browser, type 
+			)
+		values
+			(
+		      #{ip},
+		      #{lasttime},
+		      #{browser},
+		      #{type}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteMallUserLog" parameterType="String">
+  		delete from mall_user_log
+  		where uid = #{uid}
+  	</delete>
+	
+</mapper>

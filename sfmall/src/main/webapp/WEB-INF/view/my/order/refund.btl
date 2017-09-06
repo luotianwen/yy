@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/order_success.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/userinfo.css" />
+    <link rel="stylesheet" type="text/css" href="/static/upload/style.css"/>
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'返修/退换货'}){}%>
+<% include("/detailnav.btl"){}%>
+<div class="boxw clearfix">
+	<% include("../my-left.btl",{type:'返修/退换货'}){}%>
+	<form id="form">
+		<div class="fr content clearfix">
+			<input type="hidden" value="${orderId}" name="order_id"/>
+			<input type="hidden" value="${sku}" name="wareId"/>
+			
+			<div class="top-tit">
+				<i></i>返修/退换货
+			</div>
+			<div class="form-repair">
+				<dl class="clearfix">
+					<dt>处理方式：</dt>
+					<dd>
+						<a data_type="1" class="options selected">换货<i></i></a>
+						<a data_type="2" class="options">退款<i></i></a>
+						<a data_type="3" class="options">退款退货<i></i></a>
+						<a data_type="4" class="options">维修<i></i></a>
+						<input type="hidden" id="applyType" name="applyType" value="1"/>
+					</dd>
+				</dl>
+				<dl class="clearfix">
+					<dt>问题描述：</dt>
+					<dd>
+						<textarea name="questionDesc" class="form-control" style="width: 800px; height: 119px;" placeholder="请填写详细的商品问题信息，以便我们的售后人员及时判断并处理您的问题"></textarea>
+						<em class="textarea-num"><b>0</b>/500</em>
+					</dd>
+				</dl>
+				<dl class="clearfix">
+					<dt>图片信息：</dt>
+					<dd class="refund_upload">
+						<div id="upload">
+							<a id="uploadImg" class="img-upload">上传图片</a>
+							<p class="msg-text">为了帮助您更好的解决问题，请上传图片最多可上传5张图片，每张图片大小不超过5M，支持jpg,png,jpeg格式文件</p>
+						</div>
+					</dd>
+				</dl>
+				<div class="btn-box">
+					<a id="submit" class="btn-submit">提交</a>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+	
+	<script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="/static/upload/plupload-2.1.8/js/plupload.full.min.js"></script>
+	<script type="text/javascript" src="/static/js/order/uploadrefund.js"></script>
+	<script type="text/javascript" src="/static/js/order/textarea_number.js"></script>
+	<script type="text/javascript" src="/static/js/order/refund.js"></script>
+	
+</body>
+</html>

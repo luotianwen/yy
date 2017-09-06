@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/order_success.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/userinfo.css" />
+    
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/js/order/orderinfo.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/js/layer/laypage/laypage.js"></script>
+	
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'我的订单'}){}%>
+<% include("/detailnav.btl"){}%>
+<div class="boxw clearfix">
+	<% include("../my-left.btl",{type:'我的订单'}){}%>
+	<div class="fr content clearfix">
+		<div class="top-tit">
+			<i></i>我的订单
+		</div>
+		<div class="mod-main">
+			<div class="mt">
+				<ul>
+					<li data_type="" <%if(state==null){%> class="current"<%}%>><a href="/my/order.html">全部订单</a></li>
+					<li data_type="0" <%if(state==0){%> class="current"<%}%>><a href="/my/order.html?state=0">待付款</a></li>
+					<li data_type="1" <%if(state==1){%> class="current"<%}%>><a href="/my/order.html?state=1">待发货</a></li>
+					<li data_type="2" <%if(state==2){%> class="current"<%}%>><a href="/my/order.html?state=2">待收货</a></li>
+					<li data_type="3" <%if(state==3){%> class="current"<%}%>><a href="/my/order.html?state=3">待评价</a></li>
+				</ul>
+			</div>
+			<div class="mc">
+				<table>
+					<colgroup>
+						<col class="info-col">
+						<col class="price-col">
+						<col class="number-col">
+						<col class="amount-col">
+						<col class="status-col">
+						<col class="operate-col">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>订单详情</th>
+							<th>单价</th>
+							<th>数量</th>
+							<th>实付款</th>
+							<th>订单状态</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%
+							for(orderInfo in page.resultData){
+						%>
+							<tr class="sep-row">
+								<td colspan="6"></td>
+							</tr>
+							<tr class="tr-th">
+								<td colspan="6">
+									<span class="shop-name">${orderInfo.shopName}</span>
+									<span class="order-num">订单号：${orderInfo.orderId}</span>
+									<span class="order-date">下单时间：${orderInfo.subTime,"yyyy-MM-dd HH:mm:ss"}</span>
+									<i class="order-del" title="删除订单"></i>
+								</td>
+							</tr>
+							
+						<%
+								var count = 0;
+								for(ware in orderInfo.wares){
+						%>
+									<tr class="tr-bd">
+										<td>
+											<div class="g-info">
+												<a href="/detail/${ware.sku}.html" target="_blank">
+													<img src="${ware.productImage}" alt="${ware.productName}">
+													${ware.productName}
+												</a>
+											</div>
+										</td>
+										<td><div class="g-others">¥${ware.soldPrice}</div></td>
+										<td><div class="g-others">x${ware.quantity}</div></td>
+										<td><div class="g-others">¥${ware.totalMoney}</div></td>
+										<td <%if(orderInfo.orderStatus==0||(orderInfo.orderStatus>=3&&orderInfo.orderStatus<=5)){%>rowspan="${orderInfo.wares.~size}"<%if(count!=0){%>style="display:none;"<%}}%>>
+											<div class="g-others pad">
+												<%
+													if(orderInfo.orderStatus==0){
+												%>
+													<span class="color-org">待付款</span>
+												<%	
+													}else if(orderInfo.orderStatus==1){
+												%>
+													<span>等待发货</span>
+												<%	
+													}else if(orderInfo.orderStatus==2){
+												%>
+													<span>等待收货</span>
+												<%	
+													}else if(orderInfo.orderStatus==3){
+												%>
+													<span>交易完成</span>
+												<%	
+													}else if(orderInfo.orderStatus==4){
+												%>
+													<span>订单已取消</span>
+												<%	
+													}else if(orderInfo.orderStatus==5){
+												%>
+													<span>交易关闭</span>
+												<%	
+													}else if(orderInfo.orderStatus==6){
+												%>
+													<span>退款中</span>
+												<%	
+													}
+												%>
+												
+												<a href="/my/getOrderInfo?orderId=${orderInfo.orderId}" target="_blank" class="links margin">订单详情</a>
+											</div>
+										</td>
+										<td <%if(orderInfo.orderStatus==0||(orderInfo.orderStatus>=3&&orderInfo.orderStatus<=5)){%>rowspan="${orderInfo.wares.~size}"<%if(count!=0){%>style="display:none;"<%}}%>>
+											<div class="g-others pad">
+												<%
+													if(orderInfo.sstatus==0||orderInfo.sstatus==9){
+													if(orderInfo.orderStatus==0){
+												%>
+													<a data_id="${orderInfo.orderId}" id="cancel" target="_blank" class="links">取消订单</a>
+													<a href="/my/goPay.html?orderId=${orderInfo.orderId}&time=<%var time = @orderInfo.getSubTime().getTime();%>${time}&type=2" target="_blank" class="btns-2">去支付</a>
+												<%	
+													}else if(orderInfo.orderStatus==1){
+												%>
+													<a id="refund" data_id="${orderInfo.orderId}" class="links">申请退款</a>
+												<%	
+													}else if(orderInfo.orderStatus==2){
+												%>
+													<a data_id="${orderInfo.orderId}" id="confirm" target="_blank" class="btns">确认收货</a>
+												<%	
+													}else if(orderInfo.orderStatus==3){
+												%>
+													<a href="/my/refund.html?orderId=${orderInfo.orderId}&&sku=${ware.sku}" target="_blank" class="links">申请售后</a>
+													<%
+														if(orderInfo.estatus==2){
+													%>
+														<a data_id="${orderInfo.orderId}" href="/my/comment.html?orderId=${orderInfo.orderId}" target="_blank" class="links">去评价</a>
+													<%
+														}else{
+													%>	
+														<a href="/detail/${ware.sku}.html" target="_blank" class="btns">再次购买</a>
+													<%	
+														}
+													%>
+												<%	
+													}else if(orderInfo.orderStatus==4||orderInfo.orderStatus==5){
+												%>
+													<a class="links">交易关闭</a>
+												<%	
+													}else if(orderInfo.orderStatus==6){
+												%>
+													<a class="links">等待退货</a>
+													<a href="/my/refundDetail.html?orderId=${orderInfo.orderId}" target="_blank" class="btns">退款详情</a>
+												<%	
+													}else if(orderInfo.orderStatus==7){
+												%>
+													<a class="links">等待退款</a>
+													<a href="/my/refundDetail.html?orderId=${orderInfo.orderId}" target="_blank" class="btns">退款详情</a>
+												<%	
+													}
+													}else{
+														if(orderInfo.sstatus==1){
+												%>
+															<a class="links">等待换货</a>
+												<%
+														}else if(orderInfo.sstatus==2){
+												%>
+															<a class="links">等待退款</a>
+												<%
+														}else if(orderInfo.sstatus==3){
+												%>
+															<a class="links">等待退款退货</a>
+												<%
+														}else if(orderInfo.sstatus==4){
+												%>
+															<a class="links">等待维修</a>
+												<%
+														}
+												%>
+													<a href="/my/refundDetail.html?orderId=${orderInfo.orderId}" target="_blank" class="btns">退款详情</a>
+												<%
+													}
+												%>
+											</div>
+											
+										</td>
+									</tr>
+						<%
+								count++;
+								}
+							}
+						%>
+
+					</tbody>
+				</table>
+			</div>
+			
+			<div style="text-align: center; margin-top: 20px;" id="page"></div>
+			
+		</div>
+	</div>
+</div>
+
+<script>
+	page("${page.totalPage}","${page.currentPage}");
+</script>
+
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+</body>
+</html>

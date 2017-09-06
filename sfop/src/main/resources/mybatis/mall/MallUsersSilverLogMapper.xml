@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 我的银币日志(mall_users_silver_log)Mapper -->
+<mapper namespace="malluserssilverlogMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	uid,silver ,lasttime ,lastsilver ,type 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.mall.MallUsersSilverLog" id="MallUsersSilverLogReturnMap">
+	  <!-- uid -->
+      <id column="uid" property="uid"/>
+	  <!-- 银币 -->
+      <result column="silver" property="silver"/>
+	  <!-- 兑换时间 -->
+      <result column="lasttime" property="lasttime"/>
+	  <!-- 余额 -->
+      <result column="lastsilver" property="lastsilver"/>
+	  <!-- 类型 -->
+      <result column="type" property="type"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllMallUsersSilverLogPage" parameterType="Page" resultMap="MallUsersSilverLogReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_users_silver_log
+		where   uid = #{t.uid}
+			order by lasttime desc
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findMallUsersSilverLogById" parameterType="String" resultMap="MallUsersSilverLogReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			mall_users_silver_log
+		where 
+			uid = #{uid}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateMallUsersSilverLog" parameterType="com.shifeng.entity.mall.MallUsersSilverLog">
+		update 
+			mall_users_silver_log 
+		set
+	      	silver = #{silver},
+	      	lasttime = #{lasttime},
+	      	lastsilver = #{lastsilver},
+	      	type = #{type}
+		 where
+			uid = #{uid}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveMallUsersSilverLog" parameterType="com.shifeng.entity.mall.MallUsersSilverLog">
+		insert into mall_users_silver_log
+			(
+		      silver, lasttime, lastsilver, type 
+			)
+		values
+			(
+		      #{silver},
+		      #{lasttime},
+		      #{lastsilver},
+		      #{type}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteMallUsersSilverLog" parameterType="String">
+  		delete from mall_users_silver_log
+  		where uid = #{uid}
+  	</delete>
+	
+</mapper>

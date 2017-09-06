@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/css/leftbar.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/dis-add.css" />	
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'我的分销商'}){}%>
+<% include("/detailnav.btl"){}%>
+<div class="boxw clearfix">
+	<% include("../my-left.btl",{type:'我的分销商'}){}%>
+	<div class="fr content clearfix">
+		<div class="top-tit"><i></i>我的分销商</div>
+		<div class="form-search clearfix">
+			<div class="search-input">
+				<input type="text" id="name" name="name" placeholder="搜索分销商">
+				<a id="submit" role="input"></a>
+			</div>
+			<div class="btns">
+				<a href="/my/distributorEdit.html" class="btn-add"><i></i>添加分销商</a>
+			</div>
+		</div>
+		<div class="distributor-list" id="list"></div>
+		<div id="page" style="text-align: center;"></div>
+	</div>
+</div>
+	<script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/js/layer/laypage/laypage.js"></script>
+	<script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$(function(){
+			list();
+
+			$("#submit").on("click",function(){
+				var name = $("#name").val();
+				list(name);
+			})
+		})
+		
+		function list(name,phone){
+			var str = "";
+			if(name!=undefined){
+				str = "?name="+name;
+			}
+			$.post("/my/distributorList.json"+str,function(data){
+				$("#list").html(data);
+			})
+		}
+		
+	</script>
+	
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+</body>
+</html>

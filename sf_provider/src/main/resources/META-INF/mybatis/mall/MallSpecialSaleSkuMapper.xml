@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mallSpecialSaleSkuMapper">
+
+	 
+	<select id="getSpecialSaleSkuPage" parameterType="page" resultType="com.shifeng.dto.mall.MallSpecialSaleSkuDTO">
+	 	SELECT
+			sss.sku,sss.starttime,sss.endtime,sss.activitytype,sss.activityprice,sss.activitystocks,sss.discount
+			,p.name AS pName,p.logo,pr.marketprice,si.ipath AS colorPic
+		FROM 
+			mall_special_sale ss
+		INNER JOIN mall_special_sale_sku sss ON ss.`id` = sss.pid
+		LEFT JOIN p_pro_rules pr ON sss.sku = pr.sku
+		LEFT JOIN p_product p ON pr.pid = p.id
+		LEFT JOIN p_sku_images si ON pr.colorid = si.colorid AND ismain = 1	
+		WHERE
+			ss.state = 1
+	</select>
+	
+	 
+	
+
+</mapper>

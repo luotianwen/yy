@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rightnav.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/userinfo.css" />
+    
+    <script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/layer/laydate/laydate.js"></script>
+    <script src="/static/js/xq.js" type="text/javascript" charset="utf-8"></script>
+	
+</head>
+
+<body>
+<% include("/top_header.btl"){}%>
+<% include("/seek.btl",{page_name:'意见反馈'}){}%>
+<% include("/detailnav.btl"){}%>
+	<div class="boxw clearfix">
+		<% include("../my-left.btl",{type:'意见反馈'}){}%>
+		<div class="fr content clearfix">
+			<div class="top-tit">
+				<i></i>意见反馈
+			</div>
+			<div class="mod-main">
+				<div class="mt">
+					<ul>
+						<li class="current"><a>我要反馈</a></li>
+						<li><a href="/my/opinion.html">我的反馈</a></li>
+					</ul>
+				</div>
+				<div class="mc">
+					<form id="form">
+						<div class="form-fb">
+							<dl>
+								<dt>反馈类型：</dt>
+								<dd>
+									<select id="feedback_type" name="feedback_type">
+										<option value="1">功能BUG</option>
+										<option value="2">体验问题</option>
+										<option value="3">功能建议</option>
+										<option value="4">举报投诉</option>
+										<option value="5">其他</option>
+									</select>
+								</dd>
+							</dl>
+							<dl>
+								<dt>反馈内容：</dt>
+								<dd>
+									<textarea id="feedback_content" name="feedback_content" class="form-control w600" maxlength="200"></textarea>
+								</dd>
+							</dl>
+							<dl>
+								<dt>反馈图片：</dt>
+								<dd>
+									<div class="imgshow clearfix">
+										<div class="img-add" id="upload">
+											<span class="btn-upload" id="uploadImg"></span>
+										</div>
+									</div>
+								</dd>
+							</dl>
+							<div class="btn-box">
+								<a id="submit" class="btn-submit">提交信息</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<% include("/rightnav.btl"){}%>
+<% include("/footer.btl"){}%>
+<script type="text/javascript" src="/static/upload/plupload-2.1.8/js/plupload.full.min.js"></script>
+<script type="text/javascript" src="/static/js/feedback/uploadFeedback.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#submit").on("click",function(){
+			var text = $("#feedback_content").val();
+			if(text.trim()==""){
+				layer.alert("请输入反馈内容", {
+					icon : 0
+				});
+				return;
+			}
+			
+			var bool = true;
+			$(".uploadimg").each(function(){
+				if($(this).val()==""&&bool){
+					bool = false;
+				}
+			})
+			
+			if(!bool){
+				layer.alert("图片正在上传，请稍等！", {
+					icon : 0
+				});
+				return;
+			}
+			
+			$.post("/my/saveFeedback.json",$('#form').serialize(),function(req){
+				if (req.code == '0') {
+					layer.msg('反馈成功', {
+						icon : 1,
+						time : 1 * 1000
+					}, function() {
+						window.location.href = "/";
+					});
+				} else {
+					layer.alert(req.msg, {
+						icon : 0
+					});
+				}
+			})
+		})
+		
+	})
+</script>
+</body>
+</html>

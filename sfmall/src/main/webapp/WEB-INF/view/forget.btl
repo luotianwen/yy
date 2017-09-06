@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="/static/css/fp.css" />
+		<% include("/basecss.btl"){}%>
+		
+	</head>
+	<body>
+		<div class="header boxw">
+			<a href=""><img src="/static/img/logo.png" /></a>
+		</div>
+		<div class="fp_content" id="forget">
+			<div class="title">
+				<span>找回密码</span>
+			</div>
+			<div class="nav clearfix">
+				<ul>
+					<li class="active">01/<i>输入手机号</i></li>
+					<li>02/<i>验证信息</i></li>
+					<li>03/<i>重置密码</i></li>
+				</ul>
+			</div>
+			<div class="fp_msg clearfix">
+				<div class="fpm_item step_1">
+					<div class="fpm_phone clearfix">
+						<input type="text" name="phone" id="phone" placeholder="请输入手机号" />
+						<span class="hint" id="phone_error">请输入手机号</span>
+					</div>
+					
+					<div class="auth_code clearfix">
+						<p>
+							<img id="verify-img" src="/verifyCode/getVerifyCodeImage/forget"/>
+						</p>
+						<input type="text" name="imgyzm" id="imgyzm" placeholder="请输入图片验证码" />
+						<!--获取焦点时-->
+						<span class="hint" id="imgyzm_error">请输入图片验证码</span>
+					</div>
+					<button type="button" id="next">下一步</button>
+				</div>
+				
+				<div class="fpm_item step_2 clearfix" style="display:none;">
+					<p class="marked_words">
+						已向你的手机号码<i id="_phone"></i>发送验证码，请在下方输入：
+					</p>
+					<div class="phone_code clearfix">
+						<input type="text" name="yzm" id="yzm" placeholder="请输入验证码" />
+						<!--倒计时完成之后添加类名clickable-->
+						<span class="click_before" id="sendSMS"></i>
+						</span>
+					</div>
+					<div class="btn">
+						<span class="last_step" id="last">上一步</span>
+						<span class="next_step" id="end">下一步</span>
+					</div>
+				</div>
+				
+				<div class="fpm_item step_3" style="display:none;">
+					<div class="new_code clearfix">
+						<!--input报错添加类名error_border-->
+						<input type="text" name="password" id="password" placeholder="请输入新密码" onfocus="this.type='password'"/>
+						<!--获取焦点时-->
+						<span class="hint" id="password_error">请输入新密码</span>
+					</div>
+					<div class="enter_again clearfix">
+						<!--input报错添加类名error_border-->
+						<input type="text" name="again" id="again" placeholder="请确认新密码" onfocus="this.type='password'"/>
+						<!--获取焦点时-->
+						<span class="hint" id="again_error">请确认新密码</span>
+					</div>
+					<button type="button" id="submit">完成</button>
+				</div>
+			</div>
+		</div>
+		<div class="succeed clearfix boxw" id="success" style="display:none;">
+			<p>
+				<i></i>密码设置成功！
+			</p>
+			<span>为了你的帐户安全，请注意保护好你的密码等信息！</span> <a href="/login">去登陆</a>
+		</div>
+		
+		<% include("/basejs.btl"){}%>
+		<script type="text/javascript" src="/static/js/forget.js"></script>
+		
+	</body>
+</html>

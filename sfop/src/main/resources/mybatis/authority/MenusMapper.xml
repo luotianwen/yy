@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menusMapper">
+	<sql id="Base_Column_List">
+    mId,mName ,mParentId ,mOrder ,mIcon ,mPath ,mLastUpTime ,mLastUpUser
+    </sql>
+
+    <resultMap type="com.shifeng.op.entity.menu.Menus" id="MenusReturnMap">
+      <id column="mId" property="mId"/>
+      <result column="mName" property="mName"/>
+      <result column="mParentId" property="mParentId"/>
+      <result column="mOrder" property="mOrder"/>
+      <result column="mIcon" property="mIcon"/>
+      <result column="mPath" property="mPath"/>
+      <result column="mLastUpTime" property="mLastUpTime"/>
+      <result column="mLastUpUser" property="mLastUpUser"/>
+   </resultMap>
+   
+   <!-- 全部菜单 -->
+   <select id="findAllMenus" resultMap="MenusReturnMap">
+   select <include refid="Base_Column_List"/>
+   from op_menus
+   where 1=1
+   </select>
+   
+   <!-- 查询主菜单列表 -->
+   <select id="getMenuList" resultMap="MenusReturnMap" >
+   SELECT mId,mName ,mParentId ,mOrder ,mIcon ,mPath ,mLastUpTime,u.uName mLastUpUser
+   FROM op_menus m
+   LEFT JOIN op_users u ON m.mLastUpUser = u.U_ID
+   WHERE 1=1
+   AND mParentId = '0'
+   ORDER BY mOrder
+   </select>
+   
+   <!-- 跳转菜单编辑页面 -->
+   <select id="getMenuBymId" parameterType="String" resultMap="MenusReturnMap" >
+   SELECT <include refid="Base_Column_List"/>
+   FROM op_menus
+   WHERE mId=#{id}
+   </select>
+   
+   <!-- 添加菜单功能，查询顶级菜单 -->
+   <select id="goMenuAddGetParentList" resultMap="MenusReturnMap" >
+   SELECT <include refid="Base_Column_List" />
+   FROM op_menus
+   WHERE 1=1 
+   AND mParentId = '0'
+   ORDER BY mOrder
+   </select>
+   
+   <!-- 查询子菜单列表 -->
+   <select id="getMenuListById" parameterType="String" resultMap="MenusReturnMap" >
+   SELECT mId,mName ,mParentId ,mOrder ,mIcon ,mPath ,mLastUpTime,u.uName mLastUpUser
+   FROM op_menus m
+   LEFT JOIN op_users u ON m.mLastUpUser = u.U_ID
+   WHERE mParentId=#{mParentId}
+   ORDER BY mOrder
+   </select>
+   
+   <!-- 保存菜单 -->
+   <insert id="saveMenu" parameterType="com.shifeng.op.entity.menu.Menus" >
+   INSERT INTO op_menus VALUES
+  (
+  #{mId},#{mName} ,#{mParentId} ,#{mOrder} ,#{mIcon} ,#{mPath} ,#{mLastUpTime} ,#{mLastUpUser}
+  )
+   </insert>
+
+   <!-- 删除 -->
+   <delete id="deleteMenuMain" parameterType="java.lang.String">
+	   	DELETE FROM op_menus WHERE mParentId=#{mId} OR mid=#{mId}
+   </delete>
+   
+   <!-- 删除 -->
+   <delete id="deleteMenuChildren" parameterType="java.lang.String">
+	   	DELETE FROM op_menus WHERE mid=#{mId}
+   </delete>
+   
+   <!-- update -->
+   <update id="updateMenu" parameterType="com.shifeng.op.entity.menu.Menus">
+   UPDATE op_menus
+	SET mname    =#{mName},
+	  mOrder     =#{mOrder},
+	  mPath      =#{mPath},
+	  mLastUpTime=#{mLastUpTime},
+	  mLastUpUser=#{mLastUpUser},
+	  mIcon	     =#{mIcon}
+	WHERE mId    = #{mId}
+   </update>
+   
+   <!-- 查询登录用户菜单集合 -->
+   <select id="findLoginUserMenus" parameterType="String" resultMap="MenusReturnMap">
+    SELECT m.* FROM op_authorization au
+	LEFT JOIN op_menus m ON au.mid   = m.mid
+	WHERE au.RID=#{rId} ORDER BY m.mOrder
+   </select>
+</mapper>

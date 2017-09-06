@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 颜色表(p_color)Mapper -->
+<mapper namespace="colorMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 不使用缓存加入useCache="false" -->
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>  -->
+
+	<sql id="Base_Column_List">
+    	id,pid ,name 
+    </sql>
+
+    <resultMap type="com.shifeng.entity.product.Color" id="ColorReturnMap">
+	  <!-- 编号 -->
+      <id column="id" property="id"/>
+	  <!-- pid -->
+      <result column="pid" property="pid"/>
+	  <!-- 颜色名称 -->
+      <result column="name" property="name"/>
+   </resultMap>
+   
+   	<!-- 查询所有表 -->
+	<select id="findAllColorPage" parameterType="Page" resultMap="ColorReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_color
+		where 1=1
+			<if test="t.pid!=null and t.pid!=''">
+				and pid = #{t.pid}
+			</if>
+			<if test="t.name!=null and t.name!=''">
+				and name = #{t.name}
+			</if>
+	</select>
+
+	<!-- 根据ID查询表 -->
+	<select id="findColorById" parameterType="String" resultMap="ColorReturnMap">
+		select
+			<include refid="Base_Column_List"></include>
+		from 
+			p_color
+		where 
+			id = #{id}
+	</select>
+
+	<!-- 修改表 -->
+	<update id="updateColor" parameterType="com.shifeng.entity.product.Color">
+		update 
+			p_color 
+		set
+	      	pid = #{pid},
+	      	name = #{name}
+		 where
+			id = #{id}
+	</update>
+
+	<!-- 新增表 -->
+	<insert id="saveColor" parameterType="com.shifeng.entity.product.Color">
+		insert into p_color
+			(
+		      pid, name 
+			)
+		values
+			(
+		      #{pid},
+		      #{name}
+			)
+	</insert>
+  
+  	<!-- 删除 -->
+  	<delete id="deleteColor" parameterType="String">
+  		delete from p_color
+  		where id = #{id}
+  	</delete>
+	
+</mapper>

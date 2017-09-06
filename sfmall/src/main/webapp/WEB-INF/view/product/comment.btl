@@ -1,0 +1,69 @@
+<%
+if(isEmpty(wareComments)){%>
+    <div class="no_msg">
+        暂无评价~~
+    </div>
+<%}else{%>
+<script>
+    $("#ljpj").val(${wareComments.~size});
+    $("#sppj").val(${wareComments.~size});
+
+</script>
+
+
+<div>
+    <% for( comment in wareComments){%>
+
+    <div class="comment_item">
+        <div class="user_column">
+            <div class="user_info"><img src="//storage.360buyimg.com/i.imageUpload/6a645f3534383265646130663535393331343931373031383237383235_sma.jpg" width="25" height="25" class="avatar">${comment.receiveName} </div>
+            <div class="user_level"> <span></span> </div>
+        </div>
+        <div class="comment_column">
+            <div class="atar_Show">
+                <p tip="5" style="width: 90px;"></p>
+            </div>
+            <p class="comment_con">${comment.content}</p>
+            <div class="pic_list">
+                <% for( img in comment.commentImgs){%>
+                <a href="${img}" target="_blank"><img src="${img}" width="48" height="48"></a>
+                <%}%>
+            </div>
+            <div class="pic_view_wrap clearfix">
+                <div class="pic_view">
+                   <div class="pic_op">
+                    </div>
+                </div>
+            </div>
+            <div class="comment_message">
+                <div class="order_info"><span>${comment.specName}</span><span>${comment.colorName}</span> <span></span> <span>${comment.cdate}</span> </div>
+                <div class="comment_op">
+                    <a class="nice" href="#"><i class="sprite_praise"></i>${comment.replycount}</a>
+                    <a class="reply" href="#" target="_blank"><i class="sprite_comment"></i>${comment.replycount}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%}%>
+    <div class="com_table_footer">
+        <div class="ui_page_wrap clearfix">
+            <div class="ui_page">
+                <%if(page.currentPage>1){%>
+                <a class="ui-pager-next" onclick="commentPage(${page.currentPage-1})">上一页</a>
+                <%}%>
+                <%if(page.currentPage!=1){%>
+                <a  href="javascript:void(0)" onclick="commentPage(1)">1</a>
+                <%}%>
+                <a class="ui_page_curr" href="javascript:void(0)">${page.currentPage}</a>
+                <%if(page.totalPage>1&&page.currentPage!=page.totalPage){%>
+                <a href="javascript:void(0)" onclick="commentPage(${page.currentPage+1})">${page.currentPage+1}</a>
+                <%if(page.totalPage>2){%>
+                <span>...</span>
+                <a class="ui-pager-next" href="javascript:void(0)" onclick="commentPage(${page.currentPage+1})">下一页</a>
+                <%}%>
+                <%}%>
+            </div>
+        </div>
+    </div>
+</div>
+<%}%>
