@@ -16,7 +16,7 @@ import java.util.Set;
 public class RedisTool {
 
     public static final String ZK_ADDR = "127.0.0.1:4181";
-    public static final String ZK_PROXY_DIR = "/jodis/ddsdk/proxy-9a22453e3d36a54262f3eee1e13811ab";
+    public static final String ZK_PROXY_DIR = "/jodis/ddsdk";
     private static Log logger = LogFactory.getLog(RedisTool.class);
 
     private static JedisResourcePool jedisPool;
