@@ -18,7 +18,7 @@
 							<label for="FirstLetter" class="col-sm-2 control-label">选择商品类目：</label>
 							<div class="col-sm-10">
 								<div class="category-list">
-									<ul id="parent" class="c-item" style="border-right: 1px solid #ebebeb;height: 245px;">
+									<ul id="parent" class="c-item" style="border-right: 1px solid #ebebeb;height: 345px;overflow-y: scroll ">
 										<c:forEach items="${shopCategoryDTO }" var="item">
 											<li class="cursor">
 												<a data_id="${item.parentid }">
@@ -28,7 +28,7 @@
 											</li>
 										</c:forEach>
 									</ul>
-									<ul id="category" class="c-item" style="border-left: 0;height: 245px;"></ul>
+									<ul id="category" class="c-item" style="border-left: 0;height: 345px;overflow-y: scroll"></ul>
 								</div>
 								<!-- <div class="btn-select">
 									<button class="btn btn-success btn-sm">选 择</button>

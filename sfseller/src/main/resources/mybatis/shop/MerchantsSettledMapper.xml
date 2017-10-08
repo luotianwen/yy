@@ -20,7 +20,7 @@
       <id column="website" property="website"/>
 	  <!-- 三方平台店铺网址 -->
       <result column="onlinestore" property="onlinestore"/>
-	  <!-- 通过哪种渠道知道世峰户外商城 -->
+	  <!-- 通过哪种渠道知道悠氧商城商城 -->
       <result column="channel" property="channel"/>
 	  <!-- 负责人姓名 -->
       <result column="head_name" property="head_name"/>

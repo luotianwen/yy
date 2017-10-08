@@ -4,9 +4,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>世峰户外商城-商家后台</title>
+    <title>悠氧商城商城-商家后台</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="世峰户外商城">
+    <meta name="description" content="悠氧商城商城">
 	
 	<jsp:include page="basecss.jsp"></jsp:include>
 

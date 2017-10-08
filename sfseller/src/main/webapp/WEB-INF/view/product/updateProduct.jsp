@@ -102,7 +102,7 @@
 					</div>
 					
 					<h4>
-						商品属性<span class="fred tips">*如果属性和属性值选项不满足业务需要，请联系世峰户外对接运营人员进行修改或添加</span>
+						商品属性<span class="fred tips">*如果属性和属性值选项不满足业务需要，请联系悠氧商城对接运营人员进行修改或添加</span>
 					</h4>
 					
 					<c:forEach items="${propertycategory }" var="item" varStatus="var">
@@ -283,7 +283,7 @@
 										<c:if test="${product.pspecs.size()>0 }">
 											<th>规格</th>
 										</c:if>
-										<th>世峰价（元）</th>
+										<th>销售价（元）</th>
 										<th>市场价（元）</th>
 										<th>库存（件）</th>
 										<th>重量（KG）</th>

@@ -102,7 +102,7 @@
 					</div>
 					
 					<h4>
-						商品属性<span class="fred tips">*如果属性和属性值选项不满足业务需要，请联系世峰户外对接运营人员进行修改或添加</span>
+						商品属性<span class="fred tips">*如果属性和属性值选项不满足业务需要，请联系悠氧商城对接运营人员进行修改或添加</span>
 					</h4>
 					
 					<c:forEach items="${propertycategory }" var="item" varStatus="var">
@@ -231,7 +231,7 @@
 							<table id="p_table" class="table table-bordered" style="margin-top: 20px;">
 								<thead id="p_title">
 									<tr>
-										<th>世峰价（元）</th>
+										<th>销售价（元）</th>
 										<th>市场价（元）</th>
 										<th>库存（件）</th>
 										<th>重量（KG）</th>
@@ -264,7 +264,7 @@
 					
 					<h4>
 						商品图片<span class="fred tips">*图片尺寸为800*800px,单张大小不超过1024KB,仅支持 jpg，jpeg，png 格式</span>
-						<input class="isPImg isPImgcount" type="hidden" name="productimg"/>
+						<input class="isPImg isPImgcount" type="text" name="productimg"/>
 					</h4>
 					<div class="form-group" style="margin-left: 220px" id="productimg">
 						<div class="col-sm-10">
